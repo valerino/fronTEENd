@@ -7,7 +7,7 @@ moreover, fronTEENd supports compressed sets (through 7zip binary, not included)
 web-browser which automatically google-search for the selected rom.
 
 Q: why fronTEENd ?
-A: it's a frontend for emulators. and emulator reminds me of my teen years, when i spent hours with c64, spectrum, amiga and older computers.
+A: it's a frontend for emulators. and emulators remind me of my teen years, when i spent hours with c64, spectrum, amiga and older computers.
 
 Q: why JavaFX ?
 A: it's portable, and who knows ..... one day it could run on android, if they port it :)
@@ -95,5 +95,8 @@ A: sure, just quote me for the original idea/author :)
 Q: emulator <name> seems to not work with fronTEENd. WTF?!
 A: solution 1: check the emulator from plain commandline first, some emulators (i.e. mame) needs some configuration files to be set before running for the first time.
 solution 2: improve it yourself and contribute to the project!
+
+Q: paths in the emulator definitions refers to your folders, and obviously do not work on my setup
+A: i know. just replace the strings with "" and rerun the frontend: you will be asked for your paths
 
 
