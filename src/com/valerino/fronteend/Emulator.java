@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 
@@ -76,14 +74,16 @@ public class Emulator {
 
         // try to normalize name (strip substrings starting with ( and [ common in romsets)
         String[] tokens = rom.split("[\\(|\\[]");
-        final String normalized = tokens[0].trim();
+        String normalized = tokens[0].trim();
 
-        try {
-            return URLDecoder.decode(google + "\"" + normalized + " " + _emulator.system + "\"", "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return "";
-        }
+        // replace characters in the normalized string
+        normalized = normalized.replace("%","%25");
+        normalized = normalized.replace("&","%26");
+        normalized = normalized.replace("'","%27");
+        normalized = normalized.replace(" ","+");
+
+        final String url = google + "\"" + normalized + "\" " + _emulator.system;
+        return url;
     }
 
     /**

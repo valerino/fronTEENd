@@ -70,6 +70,7 @@ public class MainController {
             r = r.substring(0,rom.lastIndexOf("."));
         }
         final String url = emu.infoUrl(r);
+
         infoWeb.getEngine().load(url);
     }
 
