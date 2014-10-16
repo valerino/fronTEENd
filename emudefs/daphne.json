@@ -31,8 +31,8 @@
   "isMame" : false,
   "system" : "arcade",
   "lastFolder" : "",
-  "emuBinary" : "/home/valerino/Downloads/daphne/daphnebin.sh",
-  "emuParams" : "%rom% vldp -framefile /media/valerino/daphne/vldp_dl/lair/lair.txt -homedir /media/valerino/daphne -ignore_aspect_ratio -blank_searches -min_seek_delay 1000 -seek_frames_per_ms 20 -fastboot -bank 0 11011001 -bank 1 00100111 -sound_buffer 2048",
+  "emuBinary" : "",
+  "emuParams" : "%rom% vldp -framefile <framefilepath> -homedir <emudir> -ignore_aspect_ratio -blank_searches -min_seek_delay 1000 -seek_frames_per_ms 20 -fastboot -bank 0 11011001 -bank 1 00100111 -sound_buffer 2048",
   "stripPath" : false,
   "noCheckReturn" : false
 }

@@ -3,9 +3,9 @@
   "roms" : {
   },
   "isMame" : false,
-  "system" : "Sinclair ZX Spectrum",
-  "lastFolder" : "/media/valerino/CDROM/Roms/ZX Spectrum - Games - [Z80]",
-  "emuBinary" : "/usr/bin/fuse-sdl",
+  "system" : "sinclair zx spectrum",
+  "lastFolder" : "",
+  "emuBinary" : "",
   "emuParams" : "--tape %rom%",
   "stripPath" : false,
   "noCheckReturn" : false

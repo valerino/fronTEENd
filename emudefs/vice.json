@@ -4,8 +4,8 @@
   },
   "isMame" : false,
   "system" : "c64",
-  "lastFolder" : "/media/valerino/C64",
-  "emuBinary" : "/usr/bin/x64",
+  "lastFolder" : "",
+  "emuBinary" : "",
   "emuParams" : "%rom%",
   "stripPath" : false,
   "noCheckReturn" : false

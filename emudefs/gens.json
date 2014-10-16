@@ -4,8 +4,8 @@
   },
   "isMame" : false,
   "system" : "sega genesis",
-  "lastFolder" : "/media/valerino/GENESIS",
-  "emuBinary" : "/usr/bin/gens",
+  "lastFolder" : "",
+  "emuBinary" : "",
   "emuParams" : "--rompath %pathsep% --game %rom%",
   "stripPath" : true,
   "noCheckReturn" : true

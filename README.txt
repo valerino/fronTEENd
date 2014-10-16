@@ -93,10 +93,12 @@ Q: may i improve/fork it ?
 A: sure, just quote me for the original idea/author :)
 
 Q: emulator <name> seems to not work with fronTEENd. WTF?!
-A: solution 1: check the emulator from plain commandline first, some emulators (i.e. mame) needs some configuration files to be set before running for the first time.
+A: solution 1: check the emulator from plain commandline first, read its documentation (some emulators (i.e. mame) needs some configuration files to be set before running for the first time).
 solution 2: improve it yourself and contribute to the project!
 
-Q: paths in the emulator definitions refers to your folders, and obviously do not work on my setup
-A: i know. just replace the strings with "" and rerun the frontend: you will be asked for your paths
+Q: params in the emulator definitions do not work
+A: probably they need to be edited with your paths (i.e. for daphne, -homedir must be set to your daphne folder).
 
+Q: not all roms are working with emu <name>
+A: sometimes an emulator needs specific parameters for different roms, try to use the custom parameters checkbox (i.e. daphne needs a different framefile for each rom, read its documentation)
 

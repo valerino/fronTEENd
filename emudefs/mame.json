@@ -5,8 +5,8 @@
   "isMame" : true,
   "system" : "arcade mame",
   "lastFolder" : "",
-  "emuBinary" : "/home/valerino/Downloads/mame64",
-  "emuParams" : "-rompath /media/valerino/mame0154_roms %rom%",
+  "emuBinary" : "",
+  "emuParams" : "-rompath <path> %rom%",
   "stripPath" : false,
   "noCheckReturn" : false
 }

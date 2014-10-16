@@ -4,8 +4,8 @@
   },
   "isMame" : false,
   "system" : "snes",
-  "lastFolder" : "/media/valerino/snes",
-  "emuBinary" : "/usr/games/snes9x-gtk",
+  "lastFolder" : "",
+  "emuBinary" : "",
   "emuParams" : "%rom%",
   "stripPath" : false,
   "noCheckReturn" : false
