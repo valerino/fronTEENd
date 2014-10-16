@@ -31,6 +31,12 @@
                         <Label prefHeight="10.0" prefWidth="227.0" text="Info" BorderPane.alignment="CENTER" />
                      </left>
                   </BorderPane>
+                  <HBox prefHeight="0.0" prefWidth="495.0">
+                     <children>
+                        <Button fx:id="backButton" mnemonicParsing="false" text="&lt;&lt;" />
+                        <Button fx:id="fwdButton" mnemonicParsing="false" text="&gt;&gt;" />
+                     </children>
+                  </HBox>
                   <WebView fx:id="infoWeb" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>

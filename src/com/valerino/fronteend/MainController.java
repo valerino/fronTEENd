@@ -14,6 +14,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
 import javafx.stage.*;
 
@@ -55,6 +56,12 @@ public class MainController {
 
     @FXML
     private Label selectRomLabel;
+
+    @FXML
+    private Button backButton;
+
+    @FXML
+    private Button fwdButton;
 
     private Stage _rootStage;
 
@@ -629,6 +636,37 @@ public class MainController {
             }
         });
 
+        // back webview button
+        backButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getButton() == MouseButton.PRIMARY) {
+                    WebHistory h = infoWeb.getEngine().getHistory();
+                    try {
+                        h.go(-1);
+                    }
+                    catch (IndexOutOfBoundsException e) {
+
+                    }
+                }
+            }
+        });
+
+        // forward webview button
+        fwdButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getButton() == MouseButton.PRIMARY) {
+                    WebHistory h = infoWeb.getEngine().getHistory();
+                    try {
+                        h.go(+1);
+                    }
+                    catch (IndexOutOfBoundsException e) {
+
+                    }
+                }
+            }
+        });
         // simple search
         romsTree.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
