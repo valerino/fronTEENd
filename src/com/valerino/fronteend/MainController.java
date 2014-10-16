@@ -4,11 +4,12 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * controller for the main dialog
@@ -130,54 +132,6 @@ public class MainController {
     }
 
     /**
-     * run a process
-     * @param cmdLine the commandline to be run
-     * @param noCheckReturn true to not check for exitcode
-     * @return
-     */
-    private int runProcess(String[] cmdLine, boolean noCheckReturn) {
-        try {
-            Process p = Runtime.getRuntime().exec(cmdLine, null, new File(cmdLine[0]).getParentFile());
-            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            while ((reader.readLine()) != null) {}
-            int res = p.waitFor();
-            reader.close();
-
-            if (res != 0 && !noCheckReturn) {
-                String cmd = "";
-                for (final String s : cmdLine) {
-                    cmd += (s + " ");
-                }
-                cmd.trim();
-                Alert al = new Alert(Alert.AlertType.ERROR, "exitcode: " + p.exitValue() + "\ncommandline:\n" + cmd);
-                al.setResizable(true);
-                al.setWidth(320);
-                al.showAndWait();
-                return p.exitValue();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            Alert al = new Alert(Alert.AlertType.ERROR,e.getMessage());
-            al.showAndWait();
-            return 1;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        finally {
-        }
-        return 0;
-    }
-
-    /**
-     * run a process
-     * @param cmdLine the commandline to be run
-     * @return
-     */
-    private int runProcess(String[] cmdLine) {
-        return runProcess(cmdLine, false);
-    }
-
-    /**
      * load the selected set
      * @param emu the Emulator
      * @param item the rom
@@ -233,7 +187,7 @@ public class MainController {
         cmdLine = ar.toArray(cmdLine);
 
         // run
-        runProcess(cmdLine, emu.noCheckReturn());
+        Utils.runProcess(cmdLine, emu.noCheckReturn());
         customParamsCheckBox.setSelected(false);
     }
 
@@ -264,10 +218,9 @@ public class MainController {
                         if (rom.parent() == null) {
                             // plain
                             l.add(s);
-                        }
-                        else {
+                        } else {
                             // with parent (from compressed sets, i.e. /tmp/.../xxx.bin)
-                            File f = new File (rom.parent(),s);
+                            File f = new File(rom.parent(), s);
                             l.add(f.getAbsolutePath());
                         }
                         st.close();
@@ -280,14 +233,6 @@ public class MainController {
                         });
                     }
                 }
-            }
-        });
-
-        // disable close button
-        st.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                event.consume();
             }
         });
 
@@ -307,7 +252,7 @@ public class MainController {
      * clear the temporary folder and return a reference
      * @return
      */
-    private File clearTmpFolder() {
+    public File clearTmpFolder() {
         File tempFolder = new File (System.getProperty("java.io.tmpdir"),"fnttmp");
         File[] t = tempFolder.listFiles();
         if (t != null) {
@@ -326,13 +271,13 @@ public class MainController {
      */
     private void runEmulator(Emulator emu, RomTreeItem rom) throws IOException {
         // check if the file is compressed
-        if (rom.romFile() != null && (rom.romFile().getAbsolutePath().endsWith(".7z") || rom.romFile().getAbsolutePath().endsWith(".zip")
-                || rom.romFile().getAbsolutePath().endsWith(".rar"))) {
-
+        if (Utils.isCompressed(rom.romFile())) {
             // decompress to a temp folder (clear it first)
             File tempFolder = clearTmpFolder();
             String[] cmdLine = new String[] { Settings.getInstance().sevenZipPath(), "x", rom.romFile().getAbsolutePath(), "-o" + tempFolder.getAbsolutePath()};
-            int r = runProcess(cmdLine);
+            Utils.changeCursor(_rootStage, true);
+            int r = Utils.runProcess(cmdLine);
+            Utils.changeCursor(_rootStage, false);
             if (r != 0) {
                 // error occurred
                 return;
@@ -352,7 +297,11 @@ public class MainController {
             showSelectRomset(emu, rom);
         }
         else {
-            // load directly
+            // decompressed and only 1 set, or direct load
+            if (rom.parent() != null) {
+                File f = new File (rom.parent(), rom.sets().get(0));
+                rom = new RomTreeItem(f);
+            }
             loadSet(emu, rom);
         }
     }
@@ -504,6 +453,7 @@ public class MainController {
      */
     private void addRoms(Emulator emu) {
         // clear
+        Utils.changeCursor(_rootStage, true);
         RomTreeItem root = (RomTreeItem) romsTree.getRoot();
         ObservableList<RomTreeItem> c = root.getChildren();
         c.clear();
@@ -529,8 +479,8 @@ public class MainController {
                 return o1.name().compareTo(o2.name());
             }
         });
-        _rootStage.getScene().setCursor(Cursor.DEFAULT);
         selectRomLabel.setText("Select romset (" + ((RomTreeItem) romsTree.getRoot()).getChildren().size() + ")");
+        Utils.changeCursor(_rootStage, false);
     }
 
     /**
@@ -579,13 +529,11 @@ public class MainController {
                 customParamsCheckBox.setSelected(false);
 
                 // fill the roms tree
-                _rootStage.getScene().setCursor(Cursor.WAIT);
                 final Emulator emu = newValue;
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
                         addRoms(emu);
-                        _rootStage.getScene().setCursor(Cursor.DEFAULT);
                     }
                 });
             }
@@ -664,15 +612,40 @@ public class MainController {
             @Override
             public void handle(MouseEvent event) {
                 if (event.getClickCount() == 2) {
-                    RomTreeItem item = (RomTreeItem) romsTree.getSelectionModel().getSelectedItem();
+                    final RomTreeItem item = (RomTreeItem) romsTree.getSelectionModel().getSelectedItem();
                     if (item != null) {
-                        try {
-                            runEmulator(emuCombo.getValue(), item);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    runEmulator(emuCombo.getValue(), item);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
                     }
+                }
+            }
+        });
+
+        // simple search
+        romsTree.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(final KeyEvent event) {
+                ObservableList<TreeItem<RomTreeItem>> l = romsTree.getRoot().getChildren();
+                FilteredList<TreeItem<RomTreeItem>> f = new FilteredList<TreeItem<RomTreeItem>>(l,new Predicate<TreeItem<RomTreeItem>>() {
+                    @Override
+                    public boolean test(TreeItem<RomTreeItem> romTreeItemTreeItem) {
+                        if (((RomTreeItem)romTreeItemTreeItem).name().toLowerCase().startsWith(event.getText())) {
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+                if (!f.isEmpty()) {
+                    // select item
+                    romsTree.scrollTo(f.getSourceIndex(0));
                 }
             }
         });

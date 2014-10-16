@@ -79,7 +79,7 @@ public class Emulator {
         final String normalized = tokens[0].trim();
 
         try {
-            return URLDecoder.decode(google + "\"" + normalized + "\" " + _emulator.system, "UTF-8");
+            return URLDecoder.decode(google + "\"" + normalized + " " + _emulator.system + "\"", "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return "";

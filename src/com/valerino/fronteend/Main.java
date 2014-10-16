@@ -29,6 +29,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
         Parent root = loader.load();
+        final MainController mc = ((MainController)loader.getController());
         Scene s = new Scene(root);
         primaryStage.setTitle(APP_NAME);
         primaryStage.setMaximized(true);
@@ -42,12 +43,16 @@ public class Main extends Application {
                     // avoid closing
                     event.consume();
                 }
+                else {
+                    // proper cleanup of the temporary folder
+                    mc.clearTmpFolder();
+                }
             }
         });
         primaryStage.show();
 
         // init
-        int res = ((MainController)loader.getController()).initController(primaryStage);
+        int res = mc.initController(primaryStage);
         if (res != 0) {
             Platform.exit();
         }
