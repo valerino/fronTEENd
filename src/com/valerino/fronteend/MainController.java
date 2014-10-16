@@ -394,7 +394,6 @@ public class MainController {
 
                     // add item
                     RomTreeItem item = new RomTreeItem(name, l);
-
                     list.add(item);
                 }
                 count++;
@@ -635,10 +634,10 @@ public class MainController {
             @Override
             public void handle(final KeyEvent event) {
                 ObservableList<TreeItem<RomTreeItem>> l = romsTree.getRoot().getChildren();
-                FilteredList<TreeItem<RomTreeItem>> f = new FilteredList<TreeItem<RomTreeItem>>(l,new Predicate<TreeItem<RomTreeItem>>() {
+                FilteredList<TreeItem<RomTreeItem>> f = new FilteredList<TreeItem<RomTreeItem>>(l, new Predicate<TreeItem<RomTreeItem>>() {
                     @Override
                     public boolean test(TreeItem<RomTreeItem> romTreeItemTreeItem) {
-                        if (((RomTreeItem)romTreeItemTreeItem).name().toLowerCase().startsWith(event.getText())) {
+                        if (((RomTreeItem) romTreeItemTreeItem).name().toLowerCase().startsWith(event.getText())) {
                             return true;
                         }
                         return false;
