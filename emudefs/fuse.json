@@ -1,0 +1,12 @@
+{
+  "name" : "Fuse (ZX Spectrum Emulator)",
+  "roms" : {
+  },
+  "isMame" : false,
+  "system" : "Sinclair ZX Spectrum",
+  "lastFolder" : "/media/valerino/CDROM/Roms/ZX Spectrum - Games - [Z80]",
+  "emuBinary" : "/usr/bin/fuse-sdl",
+  "emuParams" : "--tape %rom%",
+  "stripPath" : false,
+  "noCheckReturn" : false
+}

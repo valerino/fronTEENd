@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="fronTEENd:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/fronTEENd_jar</output-path>
+    <root id="archive" name="fronTEENd.jar">
+      <element id="module-output" name="fronTEENd" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/com.springsource.com.fasterxml.jackson.core.jackson-core-2.0.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/com.springsource.com.fasterxml.jackson.core.jackson-databind-2.0.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/com.springsource.com.fasterxml.jackson.core.jackson-annotations-2.0.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/openjfx-dialogs-1.0.2.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
