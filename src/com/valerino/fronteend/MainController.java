@@ -440,7 +440,7 @@ public class MainController {
     private void addRomsDefined(Emulator emu, ObservableList<RomTreeItem> list) {
         HashMap<String,List<String>> roms = emu.roms();
         boolean isMame = emu.isMame();
-        if (isMame && roms.isEmpty()) {
+        if (isMame && roms.isEmpty() && !emu.emuBinary().isEmpty()) {
             // extract sets from mame
             addRomsMame(emu, list);
         }
@@ -742,10 +742,7 @@ public class MainController {
 
         // check if there's a last selected emulator
         final String last = Settings.getInstance().lastSelectedEmu();
-        if (last.isEmpty()) {
-            emuCombo.getSelectionModel().selectFirst();
-        }
-        else {
+        if (!last.isEmpty()) {
             ObservableList<Emulator> items = emuCombo.getItems();
             for (Emulator e : items) {
                 if (e.name().equals(last)) {
