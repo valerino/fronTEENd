@@ -191,8 +191,8 @@
       <file leaf-file-name="README.txt" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="2.2802198" vertical-offset="0" max-vertical-offset="1890">
-              <caret line="83" column="102" selection-start-line="83" selection-start-column="102" selection-end-line="83" selection-end-column="102" />
+            <state vertical-scroll-proportion="0.82417583" vertical-offset="0" max-vertical-offset="1890">
+              <caret line="30" column="26" selection-start-line="30" selection-start-column="26" selection-end-line="30" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -682,7 +682,7 @@
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/src/com/valerino/fronteend" />
     <property name="FullScreen" value="false" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="options.searchVisible" value="true" />
@@ -1544,8 +1544,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/README.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.2802198" vertical-offset="0" max-vertical-offset="1890">
-          <caret line="83" column="102" selection-start-line="83" selection-start-column="102" selection-end-line="83" selection-end-column="102" />
+        <state vertical-scroll-proportion="0.82417583" vertical-offset="0" max-vertical-offset="1890">
+          <caret line="30" column="26" selection-start-line="30" selection-start-column="26" selection-end-line="30" selection-end-column="26" />
           <folding />
         </state>
       </provider>
@@ -1633,7 +1633,7 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.10735589" />
+                <option value="0.2" />
               </list>
             </option>
           </splitter-proportions>
