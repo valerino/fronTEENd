@@ -12,17 +12,13 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
 import javafx.stage.*;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
 
 /**
@@ -62,6 +58,18 @@ public class MainController {
 
     @FXML
     private Button fwdButton;
+
+    @FXML
+    private Button refreshTreeButton;
+
+    @FXML
+    private Button clearRwButton;
+
+    @FXML
+    private CheckBox rwCheckBox;
+
+    @FXML
+    private Accordion cfgAccordion;
 
     private Stage _rootStage;
 
@@ -148,6 +156,7 @@ public class MainController {
         String params;
         if (customParamsCheckBox.isSelected()) {
             // we must show the custom parameters box
+            customParamsCheckBox.setSelected(false);
             params = showCustomParameters(emu.emuParams());
         }
         else {
@@ -159,26 +168,89 @@ public class MainController {
         String path = "";
         if (emu.stripPath()) {
             if (item.sets() != null) {
-                // toLoad is a full path
+                // there's defined sets, toLoad is the name and path is the parent folder
                 File f = new File (item.sets().get(0));
                 path = f.getParent();
                 toLoad = f.getName();
             }
             else {
-                // use file
+                // get path and name from the item's File
                 path = item.romFile().getParent();
                 toLoad = item.romFile().getName();
             }
         }
         else {
             if (item.sets() != null) {
-                // toLoad is a full path
+                // toLoad is a full path already
                 toLoad = item.sets().get(0);
             }
             else {
                 // use file
                 toLoad = item.romFile().getAbsolutePath();
             }
+        }
+
+        // check if the rom must be copied to/loaded from the rw folder before loading
+        final String oldToLoad = toLoad;
+        final String oldPath = path;
+        if (emu.supportRw() || rwCheckBox.isSelected()) {
+            // load rom from %home%/fronteend/%emuname%
+            File dstFolder = new File (Settings.getInstance().baseFolder(), emu.name());
+            dstFolder.mkdirs();
+
+            // change paths
+            File dst;
+            File src;
+            if (path.isEmpty()) {
+                src = new File (toLoad);
+                dst = new File (dstFolder,new File (toLoad).getName());
+                toLoad = dst.getAbsolutePath(); // new toLoad path
+            }
+            else {
+                src = new File (path, toLoad);
+                dst = new File (dstFolder, toLoad);
+                path = dstFolder.getAbsolutePath(); // toLoad is already a bare name
+            }
+
+            boolean useRw = rwCheckBox.isSelected();
+            if (dst.exists() && !useRw) {
+                // already found, ask to load it instead
+                Alert al = new Alert(Alert.AlertType.CONFIRMATION, dst.getName() + " found in the r/w folder. Load it instead ?");
+                Optional<ButtonType> res = al.showAndWait();
+                if (res.get() == ButtonType.OK) {
+                    useRw = true;
+                }
+                else {
+                    al = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + dst.getName() + " from the r/w folder ?");
+                    res = al.showAndWait();
+                    if (res.get() == ButtonType.OK) {
+                        dst.delete();
+                    }
+                }
+            }
+
+            if (useRw) {
+                try {
+                    // do not overwrite if it's already present
+                    Utils.copyFile(src,dst,false);
+                } catch (IOException e) {
+                    Alert al = new Alert(Alert.AlertType.ERROR, "Error copying " + src.getAbsolutePath() + " to\n" + dst.getAbsolutePath() + "\n" + e.getMessage());
+                    al.showAndWait();
+                    return;
+                }
+            }
+            else {
+                toLoad = oldToLoad;
+                path = oldPath;
+            }
+        }
+
+        // hide rw button if the folder has been emptied
+        if (emu.supportRw() && !Utils.isFolderEmpty(new File (Settings.getInstance().baseFolder(), emu.name()))) {
+            clearRwButton.setVisible(true);
+        }
+        else {
+            clearRwButton.setVisible(false);
         }
 
         // build commandline
@@ -196,11 +268,11 @@ public class MainController {
 
         // run
         Utils.runProcess(cmdLine, emu.noCheckReturn());
-        customParamsCheckBox.setSelected(false);
     }
 
     /**
      * show the set selection box for multiple sets
+     * e sets
      * @param emu the Emulator
      * @param rom the choosen rom
      */
@@ -257,21 +329,6 @@ public class MainController {
     }
 
     /**
-     * clear the temporary folder and return a reference
-     * @return
-     */
-    public File clearTmpFolder() {
-        File tempFolder = new File (System.getProperty("java.io.tmpdir"),"fnttmp");
-        File[] t = tempFolder.listFiles();
-        if (t != null) {
-            for (File f : t) {
-                f.delete();
-            }
-        }
-        return tempFolder;
-    }
-
-    /**
      * load emulator with the choosen rom/set
      * @param emu the emulator
      * @param rom the choosen rom
@@ -281,7 +338,8 @@ public class MainController {
         // check if the file is compressed
         if (Utils.isCompressed(rom.romFile())) {
             // decompress to a temp folder (clear it first)
-            File tempFolder = clearTmpFolder();
+            File tempFolder = Settings.getInstance().tmpFolder();
+            Utils.clearFolder(tempFolder);
             String[] cmdLine = new String[] { Settings.getInstance().sevenZipPath(), "x", rom.romFile().getAbsolutePath(), "-o" + tempFolder.getAbsolutePath()};
             Utils.changeCursor(_rootStage, true);
             int r = Utils.runProcess(cmdLine);
@@ -293,11 +351,13 @@ public class MainController {
 
             // create a new dummy romtreeitem with the new sets
             File[] sets = tempFolder.listFiles();
-            List<String> l = new ArrayList<String>();
-            for (File s : sets) {
-                l.add(s.getName());
+            if (sets != null && sets.length != 0) {
+                List<String> l = new ArrayList<String>();
+                for (File s : sets) {
+                    l.add(s.getName());
+                }
+                rom = new RomTreeItem(null, l, tempFolder); // we set a parent folder here, the rom will be run here
             }
-            rom = new RomTreeItem(null, l, tempFolder); // we set a parent folder here (temp)
         }
 
         // check if there's defined rom sets (pre-defined or from decompression)
@@ -363,7 +423,7 @@ public class MainController {
                 return true;
             }
         });
-        if (files == null) {
+        if (files == null || files.length == 0) {
             return;
         }
 
@@ -471,11 +531,9 @@ public class MainController {
 
         if (!roms.isEmpty() || emu.isMame()) {
             // there's a predefined romset
-            browseFolderButton.setVisible(false);
             addRomsDefined(emu, c);
         } else {
             // scan filesystem
-            browseFolderButton.setVisible(true);
             addRomsFs(emu, c);
         }
 
@@ -491,19 +549,6 @@ public class MainController {
     }
 
     /**
-     * select emulator binary
-     * @param emu the Emulator
-     */
-    private void browseForEmulatorBinary(Emulator emu) {
-        FileChooser fc = new FileChooser();
-        fc.setTitle("Choose emulator binary");
-        File bin = fc.showOpenDialog(_rootStage.getOwner());
-        if (bin != null) {
-            emuBinText.setText(bin.getAbsolutePath());
-        }
-    }
-
-    /**
      * initialize application
      * @param root the root stage
      * @return 0 on success
@@ -511,7 +556,60 @@ public class MainController {
     public int initController(Stage root) {
         _rootStage = root;
 
-        // setup handlers, handle combo selection
+        // setup handlers
+
+        // handle refresh roms button
+        refreshTreeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getButton().compareTo(MouseButton.PRIMARY) == 0) {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            Emulator emu = emuCombo.getValue();
+                            addRoms(emu);
+                        }
+                    });
+                }
+            }
+        });
+
+        // handle clear rw button
+        clearRwButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getButton().compareTo(MouseButton.PRIMARY) == 0) {
+                    Alert al = new Alert(Alert.AlertType.CONFIRMATION, "Clear r/w folder for " + emuCombo.getValue().name() + " ?");
+                    Optional<ButtonType> res = al.showAndWait();
+                    if (res.get() == ButtonType.OK) {
+                        File rwFolder = new File (Settings.getInstance().baseFolder(), emuCombo.getValue().name());
+                        Utils.clearFolder(rwFolder);
+                    }
+                    al = new Alert(Alert.AlertType.INFORMATION, "Successfully cleared r/w folder for " + emuCombo.getValue().name());
+                    al.showAndWait();
+                    clearRwButton.setVisible(false);
+                }
+            }
+        });
+
+        // handle browse for emulator binary click / change text
+        browseEmuBinaryButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getButton().compareTo(MouseButton.PRIMARY) == 0) {
+                    // choose emulator binary
+                    Emulator emu = emuCombo.getValue();
+                    FileChooser fc = new FileChooser();
+                    fc.setTitle("Choose emulator binary for " + emu.name());
+                    File bin = fc.showOpenDialog(_rootStage.getOwner());
+                    if (bin != null) {
+                        emuBinText.setText(bin.getAbsolutePath());
+                    }
+                }
+            }
+        });
+
+        // handle combo selection
         emuCombo.valueProperty().addListener(new ChangeListener<Emulator>() {
             @Override
             public void changed(ObservableValue<? extends Emulator> observable, Emulator oldValue, Emulator newValue) {
@@ -525,38 +623,54 @@ public class MainController {
                     }
                 }
 
-                // if there's no emu binary set, choose it
-                if (newValue.emuBinary().isEmpty()) {
-                    browseForEmulatorBinary(newValue);
-                }
-
                 // setup ui elements
                 emuBinText.setText(newValue.emuBinary());
                 emuParamsText.setText(newValue.emuParams());
                 customParamsCheckBox.setSelected(false);
+                if (!newValue.roms().isEmpty() || newValue.isMame()) {
+                    browseFolderButton.setVisible(false);
+                }
+                else {
+                    browseFolderButton.setVisible(true);
+                }
+
+                if (!newValue.roms().isEmpty()) {
+                    refreshTreeButton.setVisible(false);
+                }
+                else {
+                    refreshTreeButton.setVisible(true);
+                }
+
+                // check for r/w support
+                if (newValue.supportRw()) {
+                    rwCheckBox.setVisible(true);
+                    // rw folder is empty ?
+                    File rwFolder = new File (Settings.getInstance().baseFolder(), newValue.name());
+                    boolean rwFolderEmpty = Utils.isFolderEmpty(rwFolder);
+                    if (!rwFolderEmpty) {
+                        clearRwButton.setVisible(true);
+                    }
+                    else {
+                        clearRwButton.setVisible(false);
+                    }
+                }
+                else {
+                    rwCheckBox.setVisible(false);
+                    clearRwButton.setVisible(false);
+                }
+
+                if (newValue.isMame() && newValue.emuBinary().isEmpty()) {
+                    // mame and no binary set -> we can't query the emulator for roms
+                    browseEmuBinaryButton.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0,
+                            MouseButton.PRIMARY, 1, false, false, false, false, true, false, false, false, false, false, null));
+                }
 
                 // fill the roms tree
-                final Emulator emu = newValue;
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        addRoms(emu);
-                    }
-                });
+                refreshTreeButton.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0,
+                        MouseButton.PRIMARY, 1, false, false, false, false, true, false, false, false, false, false, null));
             }
         });
 
-        // handle browse for emulator binary click / change text
-        browseEmuBinaryButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.getButton().compareTo(MouseButton.PRIMARY) == 0) {
-                    // choose emulator binary
-                    Emulator emu = emuCombo.getValue();
-                    browseForEmulatorBinary(emu);
-                }
-            }
-        });
         emuBinText.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -619,13 +733,29 @@ public class MainController {
             @Override
             public void handle(MouseEvent event) {
                 if (event.getClickCount() == 2) {
+                    final Emulator emu = emuCombo.getValue();
+                    if (emu.emuBinary().isEmpty()) {
+                        Alert al = new Alert(Alert.AlertType.WARNING, "Please select an emulator binary first");
+                        al.showAndWait();
+                        cfgAccordion.setExpandedPane(cfgAccordion.getPanes().get(0));
+                        browseEmuBinaryButton.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0,
+                                MouseButton.PRIMARY, 1, false, false, false, false, true, false, false, false, false, false, null));
+                        return;
+                    }
+                    if (emu.emuParams().isEmpty()) {
+                        Alert al = new Alert(Alert.AlertType.WARNING, "Please fill emulator parameters first");
+                        al.showAndWait();
+                        cfgAccordion.setExpandedPane(cfgAccordion.getPanes().get(0));
+                        return;
+                    }
+
                     final RomTreeItem item = (RomTreeItem) romsTree.getSelectionModel().getSelectedItem();
                     if (item != null) {
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
                                 try {
-                                    runEmulator(emuCombo.getValue(), item);
+                                    runEmulator(emu, item);
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -667,6 +797,7 @@ public class MainController {
                 }
             }
         });
+
         // simple search
         romsTree.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
@@ -691,7 +822,7 @@ public class MainController {
         // init tree
         romsTree.setRoot(new RomTreeItem());
         romsTree.setShowRoot(false);
-        GridPane p;
+
         // load settings
         try {
             Settings.getInstance().initialize();
@@ -701,15 +832,7 @@ public class MainController {
             return 1;
         }
 
-        // scan available emulators
-        File defsFolder = new File ("./emudefs");
-        if (!defsFolder.exists()) {
-            Alert al = new Alert (Alert.AlertType.ERROR, "'emudefs' folder not found, can't continue");
-            al.showAndWait();
-            return 1;
-        }
-
-        File[] defs = defsFolder.listFiles(new FileFilter() {
+        File[] defs = Settings.getInstance().defsFolder().listFiles(new FileFilter() {
             @Override
             public boolean accept(File pathname) {
                 if (pathname.getAbsolutePath().endsWith(".json")) {
@@ -719,7 +842,7 @@ public class MainController {
             }
         });
         if (defs == null || defs.length == 0) {
-            Alert al = new Alert (Alert.AlertType.ERROR, "no emulators in 'emudefs', can't continue");
+            Alert al = new Alert (Alert.AlertType.ERROR, "Can't continue, no emulators in\n" + Settings.getInstance().defsFolder().getAbsolutePath());
             al.showAndWait();
             return 1;
         }
@@ -751,5 +874,12 @@ public class MainController {
             }
         }
         return 0;
+    }
+
+    /**
+     * cleanup
+     */
+    public void cleanupController() {
+        Utils.clearFolder(Settings.getInstance().tmpFolder());
     }
 }

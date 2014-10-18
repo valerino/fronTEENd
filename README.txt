@@ -14,18 +14,27 @@ A: it's portable, and who knows ..... one day it could run on android, if they p
 
 Q: how do i use it ?
 A: recompile (you need the Java8 JDK and IntelliJ IDEA) or just download the jar.
-run with [%path_to_java8%]/bin/java -jar ./fronTEENd.jar. the "emudefs" folder with json emulator definitions must be in the same path as the jar.
+run with [%path_to_java8%]/bin/java -jar ./fronTEENd.jar
 on first run, you need to specify path to the 7zip binary (not included, www.7zip.org or apt get install 7z)
 
 Q: what's the 'Use custom parameters' checkbox for ?
 A: some emulators (i.e. daphne) need customized parameters different for each romset. When such box is checked, you can edit the parameters before running the rom
 without it to affect the original stored settings.
 
+Q: what's the 'Read/Write support' checkbox for ?
+A: if the emulator uses r/w images (i.e. c64/amiga/... emulators which uses floppy images), you may want them to be read/write.
+To not touch the original image, fronTEENd copies the selected rom/set to its private (%HOME%/fronteend/%EMUNAME%) folder
+and uses the copied image to run the emulator. If an emulator is run with 'Read/Write support' enabled, the image is not
+deleted at emulator's exit, so the next time you will run the same image the copied one will be used instead. Use the
+'Clear Read/Write folder' button to delete the copy.
+
 Q: may i improve/fork it ?
 A: sure! just quote me as the original author/idea :)
 
 Q: how do i add my own emulator definitions ?
-A: here is a sample json, fronTEENd should work with almost any emulator supporting execution from the commandline
+A: here is a sample json, fronTEENd should work with almost any emulator supporting execution from the commandline.
+Once you have the json for your emulator of choice, simply copy it in your %home%/.fronteend/emudefs folder
+
 ----cut here----
 {
   // this is the display name for the emulator
@@ -85,7 +94,14 @@ A: here is a sample json, fronTEENd should work with almost any emulator support
 
   // true to not check for exitcode when executing the emulator (may hide parameter errors, doublecheck executing
   // from commandline)
-  "noCheckReturn" : false
+  "noCheckReturn" : false,
+
+  // true to enable r/w support : if the emulator uses r/w images (i.e. c64/amiga/... emulators which uses floppy images),
+  // you may want them to be read/write.to not touch the original image, fronTEENd copies the selected rom/set to its
+  // private (%HOME%/fronteend/%EMUNAME%) folder and uses the copied image in the emulator.
+  // if an emulator is run with 'Read/Write support' checkbox enabled and its rwSupport is true, the image is not
+  // deleted at emulator's exit and will be available at next run.
+  "rwSupport": false
 }
 ----cut here---
 

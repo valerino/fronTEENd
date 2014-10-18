@@ -44,8 +44,8 @@ public class Main extends Application {
                     event.consume();
                 }
                 else {
-                    // proper cleanup of the temporary folder
-                    mc.clearTmpFolder();
+                    // cleanup
+                    mc.cleanupController();
                 }
             }
         });

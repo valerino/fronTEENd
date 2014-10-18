@@ -31,6 +31,8 @@ public class Emulator {
         public boolean stripPath = false;
 
         public boolean noCheckReturn = false;
+
+        public boolean supportRw = false;
     }
 
     private EmulatorInternal _emulator;
@@ -121,6 +123,14 @@ public class Emulator {
      */
     public boolean stripPath() {
         return _emulator.stripPath;
+    }
+
+    /**
+     * tell if the emulator uses rw media images
+     * @return
+     */
+    public boolean supportRw() {
+        return _emulator.supportRw;
     }
 
     /**

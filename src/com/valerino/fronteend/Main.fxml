@@ -1,24 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.web.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="479.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.valerino.fronteend.MainController">
+<VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="554.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.valerino.fronteend.MainController">
    <children>
-      <ComboBox fx:id="emuCombo" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="852.0" promptText="Select emulator..." />
+      <ComboBox fx:id="emuCombo" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="852.0" promptText="Select emulator...">
+         <VBox.margin>
+            <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+         </VBox.margin></ComboBox>
       <SplitPane dividerPositions="0.41294117647058826" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <items>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
                   <BorderPane prefHeight="35.0" prefWidth="395.0">
                      <left>
-                        <Label fx:id="selectRomLabel" prefHeight="10.0" prefWidth="227.0" text="Select romset" BorderPane.alignment="CENTER" />
+                        <Label fx:id="selectRomLabel" prefHeight="10.0" prefWidth="227.0" text="Select image/set" BorderPane.alignment="CENTER">
+                           <padding>
+                              <Insets left="4.0" />
+                           </padding>
+                           <BorderPane.margin>
+                              <Insets left="4.0" right="4.0" />
+                           </BorderPane.margin></Label>
                      </left>
                      <right>
-                        <Button fx:id="browseFolderButton" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Change folder" visible="false" BorderPane.alignment="CENTER" />
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="4.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Button fx:id="browseFolderButton" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Change folder" visible="false" />
+                              <Button fx:id="refreshTreeButton" mnemonicParsing="false" text="Refresh" visible="false" />
+                           </children>
+                        </HBox>
                      </right>
                   </BorderPane>
                   <TreeView fx:id="romsTree" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
@@ -28,38 +43,105 @@
                <children>
                   <BorderPane prefHeight="35.0" prefWidth="395.0">
                      <left>
-                        <Label prefHeight="10.0" prefWidth="227.0" text="Info" BorderPane.alignment="CENTER" />
+                        <Label prefHeight="10.0" prefWidth="227.0" text="Info" BorderPane.alignment="CENTER">
+                           <BorderPane.margin>
+                              <Insets left="4.0" right="4.0" />
+                           </BorderPane.margin></Label>
                      </left>
+                     <VBox.margin>
+                        <Insets left="4.0" right="4.0" />
+                     </VBox.margin>
                   </BorderPane>
-                  <HBox prefHeight="0.0" prefWidth="495.0">
+                  <HBox prefHeight="0.0" prefWidth="495.0" spacing="4.0">
                      <children>
                         <Button fx:id="backButton" mnemonicParsing="false" text="&lt;&lt;" />
                         <Button fx:id="fwdButton" mnemonicParsing="false" text="&gt;&gt;" />
                      </children>
+                     <VBox.margin>
+                        <Insets left="4.0" right="4.0" />
+                     </VBox.margin>
                   </HBox>
-                  <WebView fx:id="infoWeb" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                  <WebView fx:id="infoWeb" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                     </VBox.margin></WebView>
                </children>
             </VBox>
          </items>
+         <VBox.margin>
+            <Insets left="4.0" right="4.0" />
+         </VBox.margin>
       </SplitPane>
-      <GridPane>
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <CheckBox fx:id="customParamsCheckBox" mnemonicParsing="false" text="Use custom parameters" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Button fx:id="browseEmuBinaryButton" mnemonicParsing="false" text="..." GridPane.columnIndex="2" />
-            <TextField fx:id="emuBinText" GridPane.columnIndex="1" />
-            <Label text="Emulator binary" />
-            <Label text="Parameters" GridPane.rowIndex="1" />
-            <TextField fx:id="emuParamsText" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-         </children>
-      </GridPane>
+      <Accordion fx:id="cfgAccordion">
+        <panes>
+          <TitledPane expanded="false" text="Configure emulator">
+               <content>
+                  <GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="4.0" GridPane.columnIndex="1">
+                           <children>
+                              <CheckBox fx:id="customParamsCheckBox" mnemonicParsing="false" text="Use custom parameters" />
+                           </children>
+                           <GridPane.margin>
+                              <Insets left="4.0" right="4.0" />
+                           </GridPane.margin>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="4.0">
+                           <children>
+                              <Label text="Emulator binary">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField fx:id="emuBinText" HBox.hgrow="ALWAYS" />
+                              <Button fx:id="browseEmuBinaryButton" mnemonicParsing="false" text="...">
+                                 <HBox.margin>
+                                    <Insets right="2.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                           <GridPane.margin>
+                              <Insets left="4.0" right="4.0" />
+                           </GridPane.margin>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="4.0" GridPane.rowIndex="1">
+                           <children>
+                              <Label text="Parameters" />
+                              <TextField fx:id="emuParamsText" HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </TextField>
+                           </children>
+                           <GridPane.margin>
+                              <Insets left="4.0" right="4.0" />
+                           </GridPane.margin>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <children>
+                              <CheckBox fx:id="rwCheckBox" mnemonicParsing="false" text="Enable r/w support" visible="false" />
+                              <Button fx:id="clearRwButton" mnemonicParsing="false" text="Clear r/w folder" visible="false" />
+                           </children>
+                           <GridPane.margin>
+                              <Insets left="4.0" right="4.0" />
+                           </GridPane.margin>
+                        </HBox>
+                     </children>
+                  </GridPane>
+               </content>
+          </TitledPane>
+        </panes>
+         <VBox.margin>
+            <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+         </VBox.margin>
+      </Accordion>
    </children>
 </VBox>

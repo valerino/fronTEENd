@@ -5,10 +5,7 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 
 /**
  * generic utilities
@@ -49,6 +46,65 @@ public class Utils {
         });
     }
 
+    /**
+     * copy file from source to destination (will be overwritten)
+     * @param src the source file
+     * @param dst the destination file
+     * @param overwrite true to overwrite
+     * @return boolean
+     * @throws java.io.IOException
+     */
+    public static boolean copyFile (File src, File dst, boolean overwrite) throws IOException {
+        if (!overwrite) {
+            if (dst.exists()) {
+                return false;
+            }
+        }
+        dst.delete();
+
+        FileInputStream fIn = new FileInputStream(src);
+        FileOutputStream fOut = new FileOutputStream(dst);
+        while (true) {
+            int b = fIn.read();
+            if (b == -1) {
+                break;
+            }
+            fOut.write(b);
+        }
+        return true;
+    }
+
+    /**
+     * clear a folder (without deleting it)
+     * @param folder a folder File
+     */
+    public static void clearFolder(File folder) {
+        if (folder.exists()) {
+            File[] t = folder.listFiles();
+            if (t != null && t.length != 0) {
+                for (File f : t) {
+                    f.delete();
+                }
+            }
+        }
+    }
+
+    /**
+     * check if a folder is empty
+     * @param folder a folder File
+     * @return
+     */
+    public static boolean isFolderEmpty (File folder) {
+        if (!folder.exists()) {
+            return true;
+        }
+
+        File[] t = folder.listFiles();
+        if (t == null || t.length == 0) {
+            return true;
+        }
+        return false;
+    }
     /**
      * run a process
      * @param cmdLine the commandline to be run

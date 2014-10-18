@@ -15,7 +15,15 @@ import java.io.IOException;
 public class Settings {
     private static Settings _instance = null;
 
-    private static String SETTINGS_FILE = "./fronteend.json";
+    private File _settingsFile = null;
+
+    private File _emuDefsFolder = null;
+
+    private File _baseFolder = null;
+
+    private File _tmpFolder = null;
+
+    private SettingsInternal _settings = null;
 
     private static class SettingsInternal {
         public SettingsInternal() {
@@ -27,10 +35,17 @@ public class Settings {
         public String lastSelectedEmu = "";
     }
 
-    private SettingsInternal _settings = null;
-
     protected Settings () {
         _settings = new SettingsInternal();
+        // create settings dir
+        final String home = System.getProperty("user.home");
+        _baseFolder = new File (home,".fronteend");
+        _baseFolder.mkdirs();
+        _settingsFile = new File (_baseFolder, "cfg.json");
+        _emuDefsFolder = new File (_settingsFile.getParentFile(), "emudefs");
+        _tmpFolder = new File (_baseFolder, "tmp");
+        _emuDefsFolder.mkdirs();
+        _tmpFolder.mkdirs();
     }
 
     /**
@@ -39,6 +54,30 @@ public class Settings {
      */
     public String sevenZipPath() {
         return _settings.sevenZipPath;
+    }
+
+    /**
+     * the emulator definitions folder (~/.fronteend/emudefs)
+     * @return
+     */
+    public File defsFolder() {
+        return _emuDefsFolder;
+    }
+
+    /**
+     * the temporary folder (~/.fronteend/tmp)
+     * @return
+     */
+    public File tmpFolder() {
+        return _tmpFolder;
+    }
+
+    /**
+     * the settings base folder (~/.fronteend)
+     * @return
+     */
+    public File baseFolder() {
+        return _baseFolder;
     }
 
     /**
@@ -59,11 +98,9 @@ public class Settings {
      */
     public void serialize() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        File f = new File (SETTINGS_FILE);
 
         // create json file
-        mapper.writer(new DefaultPrettyPrinter()).writeValue(f, _settings);
-//        mapper.writeValue(f, _settings);
+        mapper.writer(new DefaultPrettyPrinter()).writeValue(_settingsFile, _settings);
     }
 
     /**
@@ -72,28 +109,18 @@ public class Settings {
      */
     public void deserialize() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        File f = new File ("./fronteend.json");
-        _settings = mapper.readValue(f, SettingsInternal.class);
+        _settings = mapper.readValue(_settingsFile, SettingsInternal.class);
     }
 
     /**
      * initialize settings
-     * @return 0 on success
      * @throws IOException
      */
-    public int initialize() throws IOException {
+    public void initialize() throws IOException {
         try {
             // read settings
             deserialize();
         } catch (IOException e) {
-            // settings not found/error
-            File f = new File ("./fronteend.json");
-            if (f.exists()) {
-                // error, exit
-                e.printStackTrace();
-                return 1;
-            }
-
             // 1st run, create the configuration file
             Alert al = new Alert(Alert.AlertType.INFORMATION,"First run, navigate to 7z binary");
             al.showAndWait();
@@ -109,8 +136,15 @@ public class Settings {
 
             // write to file
             serialize();
+
+            // dump emulator definitions aswell in the home folder
+            File srcFolder = new File (this.getClass().getResource("emudefs").getFile());
+            File[] emus = srcFolder.listFiles();
+            for (File f : emus) {
+                File n = new File (_emuDefsFolder, f.getName());
+                Utils.copyFile(f,n,false);
+            }
         }
-        return 0;
     }
 
     /**
