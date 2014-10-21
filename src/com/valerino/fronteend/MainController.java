@@ -10,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -172,6 +173,7 @@ public class MainController {
         }
 
         final List<RomTreeItem> returnList = new ArrayList<RomTreeItem>();
+
         // handle doubleclicks
         lv.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -183,6 +185,19 @@ public class MainController {
                         returnList.add(i);
                     }
                     st.close();
+                }
+            }
+        });
+
+        // handle keypress
+        lv.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE) {
+                    // run emulator
+                    lv.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0,
+                            MouseButton.PRIMARY, 2, false, false, false, false, true, false, false, false, false, false, null));
+                    return;
                 }
             }
         });
@@ -229,7 +244,9 @@ public class MainController {
                 // dump to rw folder
                 if (Utils.isCompressed(it.file())) {
                     // decompress
+                    Utils.changeCursor(_rootStage,true);
                     int r = Utils.decompress(Settings.getInstance().sevenZipPath(),it.file(),dstFolder);
+                    Utils.changeCursor(_rootStage,false);
                     if (r != 0) {
                         return null;
                     }
@@ -393,7 +410,9 @@ public class MainController {
         cmdLine = ar.toArray(cmdLine);
 
         // run emulator
+        Utils.changeCursor(_rootStage,true);
         Utils.runProcess(cmdLine, emu.noCheckReturn());
+        Utils.changeCursor(_rootStage,false);
     }
 
     /**
@@ -790,24 +809,28 @@ public class MainController {
      * @param event the KeyEvent
      */
     private void romsTreeKeyPressed(final KeyEvent event) {
-        if (event.isShiftDown() || event.isControlDown() || event.isAltDown()) {
+        if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE) {
+            // run emulator
+            romsTree.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0,
+                    MouseButton.PRIMARY, 2, false, false, false, false, true, false, false, false, false, false, null));
             return;
         }
-        ObservableList<TreeItem<RomTreeItem>> l = romsTree.getRoot().getChildren();
-
-        // search for an item starting with the pressed key
-        FilteredList<TreeItem<RomTreeItem>> f = new FilteredList<TreeItem<RomTreeItem>>(l, new Predicate<TreeItem<RomTreeItem>>() {
-            @Override
-            public boolean test(TreeItem<RomTreeItem> romTreeItemTreeItem) {
-                if (romTreeItemTreeItem.getValue().name().toLowerCase().startsWith(event.getText())) {
-                    return true;
+        else if (event.getCode().isLetterKey()) {
+            // search for an item starting with the pressed key
+            ObservableList<TreeItem<RomTreeItem>> l = romsTree.getRoot().getChildren();
+            FilteredList<TreeItem<RomTreeItem>> f = new FilteredList<TreeItem<RomTreeItem>>(l, new Predicate<TreeItem<RomTreeItem>>() {
+                @Override
+                public boolean test(TreeItem<RomTreeItem> romTreeItemTreeItem) {
+                    if (romTreeItemTreeItem.getValue().name().toLowerCase().startsWith(event.getText())) {
+                        return true;
+                    }
+                    return false;
                 }
-                return false;
+            });
+            if (!f.isEmpty()) {
+                // scroll to the first found item
+                romsTree.scrollTo(f.getSourceIndex(0));
             }
-        });
-        if (!f.isEmpty()) {
-            // scroll to the first found item
-            romsTree.scrollTo(f.getSourceIndex(0));
         }
     }
 
