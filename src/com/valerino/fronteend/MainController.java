@@ -3,6 +3,7 @@ package com.valerino.fronteend;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.EventHandler;
@@ -94,7 +95,7 @@ public class MainController {
      * @param params the current emulator parameters
      * @return
      */
-    private String showCustomParameters(final String params) {
+    private String getCustomParameters(final String params) {
         final Stage st = new Stage(StageStyle.UNIFIED);
 
         // build ui
@@ -148,170 +149,40 @@ public class MainController {
     }
 
     /**
-     * load the selected set
-     * @param emu the Emulator
-     * @param item the rom
+     * show the set selection box
+     * @param list list to be shown
+     * @return
      */
-    private void loadSet(Emulator emu, RomTreeItem item) {
-        String params;
-        if (customParamsCheckBox.isSelected()) {
-            // we must show the custom parameters box
-            customParamsCheckBox.setSelected(false);
-            params = showCustomParameters(emu.emuParams());
-        }
-        else {
-            params = emu.emuParams();
-        }
-
-        // get rom path and parent path if needed
-        String toLoad = "";
-        String path = "";
-        if (emu.stripPath()) {
-            if (item.sets() != null) {
-                // there's defined sets, toLoad is the name and path is the parent folder
-                File f = new File (item.sets().get(0));
-                path = f.getParent();
-                toLoad = f.getName();
-            }
-            else {
-                // get path and name from the item's File
-                path = item.romFile().getParent();
-                toLoad = item.romFile().getName();
-            }
-        }
-        else {
-            if (item.sets() != null) {
-                // toLoad is a full path already
-                toLoad = item.sets().get(0);
-            }
-            else {
-                // use file
-                toLoad = item.romFile().getAbsolutePath();
-            }
-        }
-
-        // check if the rom must be copied to/loaded from the rw folder before loading
-        final String oldToLoad = toLoad;
-        final String oldPath = path;
-        if (emu.supportRw() || rwCheckBox.isSelected()) {
-            // load rom from %home%/fronteend/%emuname%
-            File dstFolder = new File (Settings.getInstance().baseFolder(), emu.name());
-            dstFolder.mkdirs();
-
-            // change paths
-            File dst;
-            File src;
-            if (path.isEmpty()) {
-                src = new File (toLoad);
-                dst = new File (dstFolder,new File (toLoad).getName());
-                toLoad = dst.getAbsolutePath(); // new toLoad path
-            }
-            else {
-                src = new File (path, toLoad);
-                dst = new File (dstFolder, toLoad);
-                path = dstFolder.getAbsolutePath(); // toLoad is already a bare name
-            }
-
-            boolean useRw = rwCheckBox.isSelected();
-            if (dst.exists() && !useRw) {
-                // already found, ask to load it instead
-                Alert al = new Alert(Alert.AlertType.CONFIRMATION, dst.getName() + " found in the r/w folder. Load it instead ?");
-                Optional<ButtonType> res = al.showAndWait();
-                if (res.get() == ButtonType.OK) {
-                    useRw = true;
-                }
-                else {
-                    al = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + dst.getName() + " from the r/w folder ?");
-                    res = al.showAndWait();
-                    if (res.get() == ButtonType.OK) {
-                        dst.delete();
-                    }
-                }
-            }
-
-            if (useRw) {
-                try {
-                    // do not overwrite if it's already present
-                    Utils.copyFile(src,dst,false);
-                } catch (IOException e) {
-                    Alert al = new Alert(Alert.AlertType.ERROR, "Error copying " + src.getAbsolutePath() + " to\n" + dst.getAbsolutePath() + "\n" + e.getMessage());
-                    al.showAndWait();
-                    return;
-                }
-            }
-            else {
-                toLoad = oldToLoad;
-                path = oldPath;
-            }
-        }
-
-        // hide rw button if the folder has been emptied
-        if (emu.supportRw() && !Utils.isFolderEmpty(new File (Settings.getInstance().baseFolder(), emu.name()))) {
-            clearRwButton.setVisible(true);
-        }
-        else {
-            clearRwButton.setVisible(false);
-        }
-
-        // build commandline
-        List<String> ar = new ArrayList<String>();
-        ar.add(emu.emuBinary());
-        String[] tokens = params.split(" ");
-        for (String s : tokens) {
-            s = s.replace("%rom%",toLoad);
-            s = s.replace("%path%", path);
-            s = s.replace("%pathsep%", path + File.separator);
-            ar.add(s);
-        }
-        String[] cmdLine = { };
-        cmdLine = ar.toArray(cmdLine);
-
-        // run
-        Utils.runProcess(cmdLine, emu.noCheckReturn());
-    }
-
-    /**
-     * show the set selection box for multiple sets
-     * e sets
-     * @param emu the Emulator
-     * @param rom the choosen rom
-     */
-    private void showSelectRomset(final Emulator emu, final RomTreeItem rom) {
+    private List<RomTreeItem> getSetBoxSelection(final List<RomTreeItem> list) {
         final Stage st = new Stage(StageStyle.UNIFIED);
         st.setWidth(640);
-        final ListView<String> lv = new ListView<String>();
+        final ListView<RomTreeItem> lv = new ListView<RomTreeItem>();
+        if (emuCombo.getValue().allowMultiSelect()) {
+            lv.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        }
+        else {
+            lv.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        }
         lv.getStylesheets().add(this.getClass().getResource("hide_empty.css").toExternalForm());
 
         // add sets
-        lv.getItems().addAll(rom.sets());
+        for (final RomTreeItem r : list) {
+            lv.getItems().add(r);
+        }
 
+        final List<RomTreeItem> returnList = new ArrayList<RomTreeItem>();
         // handle doubleclicks
         lv.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if (event.getClickCount() == 2) {
-                    // on doubleclick, load emulator with the selected set
-                    final String s = lv.getSelectionModel().getSelectedItem();
-                    if (s != null) {
-                        final List<String> l = new ArrayList<String>();
-
-                        if (rom.parent() == null) {
-                            // plain
-                            l.add(s);
-                        } else {
-                            // with parent (from compressed sets, i.e. /tmp/.../xxx.bin)
-                            File f = new File(rom.parent(), s);
-                            l.add(f.getAbsolutePath());
-                        }
-                        st.close();
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                RomTreeItem r = new RomTreeItem(null, l); // use a dummy RomTreeItem here
-                                loadSet(emu, r);
-                            }
-                        });
+                    // on doubleclick, add items to list
+                    ObservableList<RomTreeItem> l = lv.getSelectionModel().getSelectedItems();
+                    for (final RomTreeItem i : l) {
+                        returnList.add(i);
                     }
+                    st.close();
                 }
             }
         });
@@ -325,53 +196,204 @@ public class MainController {
         st.initModality(Modality.WINDOW_MODAL);
         st.initOwner(_rootStage.getScene().getWindow());
         st.centerOnScreen();
-        st.show();
+        st.showAndWait();
+        return returnList;
+    }
+
+    /**
+     * get the romstree selection, decompress if needed and return an array of the found sets
+     * @return
+     */
+    private List<RomTreeItem> getRomsTreeSelection() {
+        Emulator emu = emuCombo.getValue();
+        List<RomTreeItem> selection = new ArrayList<RomTreeItem>();
+        ObservableList<TreeItem<RomTreeItem>> l = romsTree.getSelectionModel().getSelectedItems();
+
+        // check if the emulator has a predefined romset
+        if (!emu.roms().isEmpty() || emu.isMame()) {
+            // emulator has a predefined set, multiselection is not allowed.
+            // we just get the sets into the selection list
+            RomTreeItem it = l.get(0).getValue();
+            for (final String s : it.sets()) {
+                RomTreeItem i = new RomTreeItem(s);
+                selection.add(i);
+            }
+        }
+        else {
+            // check each selection File and copy them to the temporary folder
+            File dstFolder = Settings.getInstance().tmpFolder();
+            Utils.clearFolder(dstFolder);
+            for (TreeItem<RomTreeItem> item : l) {
+                RomTreeItem it = item.getValue();
+
+                // dump to rw folder
+                if (Utils.isCompressed(it.file())) {
+                    // decompress
+                    int r = Utils.decompress(Settings.getInstance().sevenZipPath(),it.file(),dstFolder);
+                    if (r != 0) {
+                        return null;
+                    }
+                }
+                else {
+                    // just copy
+                    try {
+                        Utils.copyFile(it.file(),new File (dstFolder,it.file().getName()),false);
+                    } catch (IOException e) {
+                        return null;
+                    }
+                }
+            }
+
+            // list the files in the tmp folder
+            File[] files = dstFolder.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) {
+                    final String s = name.toLowerCase();
+                    final String[] skipExts = { ".txt", ".diz", ".nfo" };
+                    for (final String ext : skipExts) {
+                        if (s.endsWith(ext)) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            });
+            if (files != null && files.length > 0) {
+                for (File f : files) {
+                    RomTreeItem i = new RomTreeItem(f);
+                    selection.add(i);
+                }
+            }
+        }
+
+        // sort the selection
+        selection.sort(new Comparator<RomTreeItem>() {
+            @Override
+            public int compare(RomTreeItem o1, RomTreeItem o2) {
+                return o1.name().toLowerCase().compareTo(o2.name().toLowerCase());
+            }
+        });
+
+        // for more than 1 set, show the selection box
+        if (selection.size() > 1) {
+            // show set selection box
+            selection = getSetBoxSelection(selection);
+        }
+
+        return selection;
     }
 
     /**
      * load emulator with the choosen rom/set
      * @param emu the emulator
-     * @param rom the choosen rom
      * @throws IOException
      */
-    private void runEmulator(Emulator emu, RomTreeItem rom) throws IOException {
-        // check if the file is compressed
-        if (Utils.isCompressed(rom.romFile())) {
-            // decompress to a temp folder (clear it first)
-            File tempFolder = Settings.getInstance().tmpFolder();
-            Utils.clearFolder(tempFolder);
-            String[] cmdLine = new String[] { Settings.getInstance().sevenZipPath(), "x", rom.romFile().getAbsolutePath(), "-o" + tempFolder.getAbsolutePath()};
-            Utils.changeCursor(_rootStage, true);
-            int r = Utils.runProcess(cmdLine);
-            Utils.changeCursor(_rootStage, false);
-            if (r != 0) {
-                // error occurred
-                return;
-            }
+    private void runEmulator(Emulator emu) throws IOException {
+        // get the selected items
+        List<RomTreeItem> l = getRomsTreeSelection();
+        if (l == null || l.isEmpty()) {
+            return;
+        }
 
-            // create a new dummy romtreeitem with the new sets
-            File[] sets = tempFolder.listFiles();
-            if (sets != null && sets.length != 0) {
-                List<String> l = new ArrayList<String>();
-                for (File s : sets) {
-                    l.add(s.getName());
+        if (emu.supportRw()) {
+            // handle r/w support
+            for (RomTreeItem i : l) {
+                File f = new File (emu.rwFolder(), i.file().getName());
+                boolean overwrite = true;
+                if (f.exists()) {
+                    // already found, ask to load it instead
+                    Alert al = new Alert(Alert.AlertType.CONFIRMATION, f.getName() + " found in the r/w folder. Use it ?");
+                    Optional<ButtonType> res = al.showAndWait();
+                    if (res.get() == ButtonType.OK) {
+                        i.setFile(f);
+                        overwrite = false;
+                    }
+                    else {
+                        // ask to delete (only if checkbox is not selected)
+                        if (!rwCheckBox.isSelected()) {
+                            al = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + f.getName() + "\nfrom the r/w folder ?");
+                            res = al.showAndWait();
+                            if (res.get() == ButtonType.OK) {
+                                // delete file and update clear button status
+                                f.delete();
+                                if (Utils.isFolderEmpty(f.getParentFile())) {
+                                    clearRwButton.setVisible(false);
+                                }
+                                else {
+                                    clearRwButton.setVisible(true);
+                                }
+                            }
+                        }
+                    }
                 }
-                rom = new RomTreeItem(null, l, tempFolder); // we set a parent folder here, the rom will be run here
+                if (overwrite && rwCheckBox.isSelected()) {
+                    // copy to r/w folder
+                    boolean r = Utils.copyFile(i.file(),f,true);
+                    if (r == false) {
+                        Alert al = new Alert(Alert.AlertType.ERROR, "Error copying to rw folder:\n" + i.file().getAbsolutePath());
+                        Optional<ButtonType> res = al.showAndWait();
+                        return;
+                    }
+
+                    // change path to the rw folder one
+                    i.setFile(f);
+                }
             }
         }
 
-        // check if there's defined rom sets (pre-defined or from decompression)
-        if (rom.sets() != null && rom.sets().size() > 1) {
-            showSelectRomset(emu, rom);
+        // show custom parameters box if needed
+        String params;
+        if (customParamsCheckBox.isSelected()) {
+            // we must show the custom parameters box
+            customParamsCheckBox.setSelected(false);
+            params = getCustomParameters(emu.emuParams());
         }
         else {
-            // decompressed and only 1 set, or direct load
-            if (rom.parent() != null) {
-                File f = new File (rom.parent(), rom.sets().get(0));
-                rom = new RomTreeItem(f);
-            }
-            loadSet(emu, rom);
+            params = emu.emuParams();
         }
+
+        // build commandline
+        String path = "";
+        if (emu.stripPath()) {
+            // path is always set to the first selection's path
+            path = l.get(0).file().getParent();
+        }
+        List<String> ar = new ArrayList<String>();
+        ar.add(emu.emuBinary());
+        String[] tokens = params.split(" ");
+        int num = l.size();
+        for (String s : tokens) {
+            s = s.replace("%path%", path);
+            s = s.replace("%pathsep%", path + File.separator);
+            for (int i=0; i < num; i++) {
+                final String placeHolder = "%" + (i+1) + "%";
+                if (emu.isMame() || !emu.roms().isEmpty()) {
+                    s = s.replace(placeHolder, l.get(i).name());
+                }
+                else {
+                    if (emu.stripPath()) {
+                        s = s.replace(placeHolder, l.get(i).file().getName());
+                    }
+                    else {
+                        s = s.replace(placeHolder, l.get(i).file().getAbsolutePath());
+                    }
+                }
+            }
+            ar.add(s);
+        }
+
+        // check if there's more roms placeholder than the ones we selected
+        for (final String s : ar) {
+            if (s.startsWith("%") && s.endsWith("%")) {
+                ar.remove(s);
+            }
+        }
+
+        String[] cmdLine = { };
+        cmdLine = ar.toArray(cmdLine);
+
+        // run emulator
+        Utils.runProcess(cmdLine, emu.noCheckReturn());
     }
 
     /**
@@ -400,9 +422,11 @@ public class MainController {
     /**
      * add roms to the tree (from filesystem)
      * @param emu the Emulator
-     * @list the tree root's children
      */
-    private void addRomsFs(Emulator emu, ObservableList<RomTreeItem> list) {
+    private void addRomsFs(Emulator emu) {
+        ObservableList<TreeItem<RomTreeItem>> c = romsTree.getRoot().getChildren();
+        c.clear();
+
         if (emu.lastFolder().isEmpty()) {
             // we have to set lastfolder first
             showSetFolderDialog(emu);
@@ -429,17 +453,19 @@ public class MainController {
 
         // fill tree
         for (File rom : files) {
-            RomTreeItem item = new RomTreeItem(rom);
-            list.add(item);
+            TreeItem<RomTreeItem> item = new TreeItem<RomTreeItem>(new RomTreeItem(rom));
+            c.add(item);
         }
     }
 
     /**
      * add roms from mame
      * @param emu the Emulator
-     * @param list the tree root's children
      */
-    private void addRomsMame(Emulator emu, ObservableList<RomTreeItem> list) {
+    private void addRomsMame(Emulator emu) {
+        ObservableList<TreeItem<RomTreeItem>> c = romsTree.getRoot().getChildren();
+        c.clear();
+
         // execute mame -listfull
         BufferedReader output = null;
         try {
@@ -460,8 +486,8 @@ public class MainController {
                     l.add(set);
 
                     // add item
-                    RomTreeItem item = new RomTreeItem(name, l);
-                    list.add(item);
+                    TreeItem<RomTreeItem> item = new TreeItem<RomTreeItem>(new RomTreeItem(name,l));
+                    c.add(item);
                 }
                 count++;
             }
@@ -495,22 +521,23 @@ public class MainController {
     /**
      * add roms to the tree (from defined sets)
      * @param emu the Emulator
-     * @param list the tree root's children
      */
-    private void addRomsDefined(Emulator emu, ObservableList<RomTreeItem> list) {
+    private void addRomsDefined(Emulator emu) {
+        ObservableList<TreeItem<RomTreeItem>> c = romsTree.getRoot().getChildren();
+        c.clear();
+
         HashMap<String,List<String>> roms = emu.roms();
         boolean isMame = emu.isMame();
         if (isMame && roms.isEmpty() && !emu.emuBinary().isEmpty()) {
             // extract sets from mame
-            addRomsMame(emu, list);
+            addRomsMame(emu);
         }
         else {
             // add sets to list
             for (final String s : roms.keySet()) {
-                RomTreeItem item = new RomTreeItem(s, roms.get(s));
-                list.add(item);
-
-}
+                TreeItem<RomTreeItem> item = new TreeItem<RomTreeItem>(new RomTreeItem(s, roms.get(s)));
+                c.add(item);
+            }
         }
     }
 
@@ -519,33 +546,307 @@ public class MainController {
      * @param emu the Emulator
      */
     private void addRoms(Emulator emu) {
-        // clear
         Utils.changeCursor(_rootStage, true);
-        RomTreeItem root = (RomTreeItem) romsTree.getRoot();
-        ObservableList<RomTreeItem> c = root.getChildren();
-        c.clear();
-        root.setExpanded(true);
 
         // add items
         HashMap<String, List<String>> roms = emu.roms();
 
         if (!roms.isEmpty() || emu.isMame()) {
             // there's a predefined romset
-            addRomsDefined(emu, c);
+            addRomsDefined(emu);
         } else {
             // scan filesystem
-            addRomsFs(emu, c);
+            addRomsFs(emu);
         }
 
         // finally sort the list
-        c.sort(new Comparator<RomTreeItem>() {
+        romsTree.getRoot().getChildren().sort(new Comparator<TreeItem<RomTreeItem>>() {
             @Override
-            public int compare(RomTreeItem o1, RomTreeItem o2) {
-                return o1.name().compareTo(o2.name());
+            public int compare(TreeItem<RomTreeItem> o1, TreeItem<RomTreeItem> o2) {
+                return o1.getValue().name().toLowerCase().compareTo(o2.getValue().name().toLowerCase());
             }
         });
-        selectRomLabel.setText("Select romset (" + ((RomTreeItem) romsTree.getRoot()).getChildren().size() + ")");
+
+        selectRomLabel.setText("Select romset (" + romsTree.getRoot().getChildren().size() + ")");
+        romsTree.getRoot().setExpanded(true);
         Utils.changeCursor(_rootStage, false);
+    }
+
+    /**
+     * refresh romset list
+     * @param event the MouseEvent
+     */
+    private void refreshRomsClick(MouseEvent event) {
+        if (event.getButton().compareTo(MouseButton.PRIMARY) == 0) {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    Emulator emu = emuCombo.getValue();
+                    addRoms(emu);
+                }
+            });
+        }
+    }
+
+    /**
+     * clear rw folder
+     * @param event the MouseEvent
+     */
+    private void clearRwClick(MouseEvent event) {
+        if (event.getButton().compareTo(MouseButton.PRIMARY) == 0) {
+            Alert al = new Alert(Alert.AlertType.CONFIRMATION, "Clear r/w folder for " + emuCombo.getValue().name() + " ?");
+            Optional<ButtonType> res = al.showAndWait();
+            if (res.get() == ButtonType.OK) {
+                File rwFolder = new File (Settings.getInstance().baseFolder(), emuCombo.getValue().name());
+                Utils.clearFolder(rwFolder);
+            }
+            al = new Alert(Alert.AlertType.INFORMATION, "Successfully cleared r/w folder for " + emuCombo.getValue().name());
+            al.showAndWait();
+            clearRwButton.setVisible(false);
+        }
+    }
+
+    /**
+     * browser forward click
+     * @param event the MouseEvent
+     */
+    private void browseNextClick(MouseEvent event) {
+        if (event.getButton() == MouseButton.PRIMARY) {
+            WebHistory h = infoWeb.getEngine().getHistory();
+            try {
+                h.go(+1);
+            }
+            catch (IndexOutOfBoundsException e) {
+
+            }
+        }
+    }
+
+    /**
+     * browser back click
+     * @param event the MouseEvent
+     */
+    private void browsePrevClick(MouseEvent event) {
+        if (event.getButton() == MouseButton.PRIMARY) {
+            WebHistory h = infoWeb.getEngine().getHistory();
+            try {
+                h.go(-1);
+            }
+            catch (IndexOutOfBoundsException e) {
+
+            }
+        }
+    }
+
+    /**
+     * browse for emulator binary
+     * @param event the MouseEvent
+     */
+    private void browseEmuBinaryClick(MouseEvent event) {
+        if (event.getButton().compareTo(MouseButton.PRIMARY) == 0) {
+            // choose emulator binary
+            Emulator emu = emuCombo.getValue();
+            FileChooser fc = new FileChooser();
+            fc.setTitle("Choose emulator binary for " + emu.name());
+            File bin = fc.showOpenDialog(_rootStage.getOwner());
+            if (bin != null) {
+                emuBinText.setText(bin.getAbsolutePath());
+            }
+        }
+    }
+
+    /**
+     * browse for roms
+     * @param event the MouseEvent
+     */
+    private void browseRomsClick(MouseEvent event) {
+        if (event.getButton().compareTo(MouseButton.PRIMARY) == 0) {
+            // browse for roms and update tree
+            showSetFolderDialog(emuCombo.getValue());
+            addRoms(emuCombo.getValue());
+        }
+    }
+
+    /**
+     * handle emu combobox change
+     * @param oldValue the old Emulator value selected
+     * @param newValue the new Emulator value selected
+     */
+    private void emuComboChange(Emulator oldValue, Emulator newValue) {
+        if (oldValue == newValue) {
+            return;
+        }
+
+        // write the new value to configuration
+        Settings.getInstance().setLastSelectedEmu(newValue.name());
+        try {
+            Settings.getInstance().serialize();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // setup ui elements
+        if (newValue.allowMultiSelect()) {
+            romsTree.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        }
+        else {
+            romsTree.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        }
+        emuBinText.setText(newValue.emuBinary());
+        emuParamsText.setText(newValue.emuParams());
+        customParamsCheckBox.setSelected(false);
+        if (!newValue.roms().isEmpty() || newValue.isMame()) {
+            browseFolderButton.setVisible(false);
+        }
+        else {
+            browseFolderButton.setVisible(true);
+        }
+
+        if (!newValue.roms().isEmpty()) {
+            refreshTreeButton.setVisible(false);
+        }
+        else {
+            refreshTreeButton.setVisible(true);
+        }
+
+        // check for r/w support
+        if (newValue.supportRw()) {
+            rwCheckBox.setVisible(true);
+            // rw folder is empty ?
+            if (Utils.isFolderEmpty(newValue.rwFolder())) {
+                clearRwButton.setVisible(false);
+            }
+            else {
+                clearRwButton.setVisible(true);
+            }
+        }
+        else {
+            rwCheckBox.setVisible(false);
+            clearRwButton.setVisible(false);
+        }
+
+        if (newValue.isMame() && newValue.emuBinary().isEmpty()) {
+            // mame and no binary set -> we can't query the emulator for roms
+            browseEmuBinaryButton.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0,
+                    MouseButton.PRIMARY, 1, false, false, false, false, true, false, false, false, false, false, null));
+        }
+
+        // fill the roms tree
+        refreshTreeButton.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0,
+                MouseButton.PRIMARY, 1, false, false, false, false, true, false, false, false, false, false, null));
+    }
+
+    /**
+     * handle emu binary text change
+     * @param oldValue the old text
+     * @param newValue the new text
+     */
+    private void emuBinTextChange(final String oldValue, final String newValue) {
+        if (newValue.compareTo(oldValue) != 0) {
+            Emulator emu = emuCombo.getValue();
+            emu.setEmuBinary(newValue);
+            emuBinText.setTooltip(new Tooltip(newValue));
+            try {
+                emu.serialize();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * handle emulator parameters text change
+     * @param oldValue the old text
+     * @param newValue the new text
+     */
+    private void emuParamsTextChange(final String oldValue, final String newValue) {
+        if (newValue.compareTo(oldValue) != 0) {
+            Emulator emu = emuCombo.getValue();
+            emu.setEmuParams(newValue);
+            emuParamsText.setTooltip(new Tooltip(newValue));
+            try {
+                emu.serialize();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * handle roms tree selection
+     * @param c selections list
+     */
+    private void romsTreeIndexChange(ListChangeListener.Change<? extends Integer> c) {
+        // consider the first selected item only
+        TreeItem<RomTreeItem> item = romsTree.getSelectionModel().getSelectedItems().get(0);
+        if (item != null) {
+            searchInfo(item.getValue().name());
+        }
+    }
+
+    /**
+     * handle roms tree keypress (search)
+     * @param event the KeyEvent
+     */
+    private void romsTreeKeyPressed(final KeyEvent event) {
+        if (event.isShiftDown() || event.isControlDown() || event.isAltDown()) {
+            return;
+        }
+        ObservableList<TreeItem<RomTreeItem>> l = romsTree.getRoot().getChildren();
+
+        // search for an item starting with the pressed key
+        FilteredList<TreeItem<RomTreeItem>> f = new FilteredList<TreeItem<RomTreeItem>>(l, new Predicate<TreeItem<RomTreeItem>>() {
+            @Override
+            public boolean test(TreeItem<RomTreeItem> romTreeItemTreeItem) {
+                if (romTreeItemTreeItem.getValue().name().toLowerCase().startsWith(event.getText())) {
+                    return true;
+                }
+                return false;
+            }
+        });
+        if (!f.isEmpty()) {
+            // scroll to the first found item
+            romsTree.scrollTo(f.getSourceIndex(0));
+        }
+    }
+
+    /**
+     * handle romstree clicks (doubleclick only, to run emulator)
+     * @param event the MouseEvent
+     */
+    private void romsTreeClick(MouseEvent event) {
+        if (event.getClickCount() != 2) {
+            return;
+        }
+
+        final Emulator emu = emuCombo.getValue();
+        if (emu.emuBinary().isEmpty()) {
+            Alert al = new Alert(Alert.AlertType.WARNING, "Please select an emulator binary first");
+            al.showAndWait();
+            cfgAccordion.setExpandedPane(cfgAccordion.getPanes().get(0));
+            browseEmuBinaryButton.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0,
+                    MouseButton.PRIMARY, 1, false, false, false, false, true, false, false, false, false, false, null));
+            return;
+        }
+        if (emu.emuParams().isEmpty()) {
+            Alert al = new Alert(Alert.AlertType.WARNING, "Please fill emulator parameters first");
+            al.showAndWait();
+            cfgAccordion.setExpandedPane(cfgAccordion.getPanes().get(0));
+            return;
+        }
+
+        // run emulator
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    runEmulator(emu);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -556,21 +857,11 @@ public class MainController {
     public int initController(Stage root) {
         _rootStage = root;
 
-        // setup handlers
-
         // handle refresh roms button
         refreshTreeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (event.getButton().compareTo(MouseButton.PRIMARY) == 0) {
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            Emulator emu = emuCombo.getValue();
-                            addRoms(emu);
-                        }
-                    });
-                }
+                refreshRomsClick(event);
             }
         });
 
@@ -578,17 +869,7 @@ public class MainController {
         clearRwButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (event.getButton().compareTo(MouseButton.PRIMARY) == 0) {
-                    Alert al = new Alert(Alert.AlertType.CONFIRMATION, "Clear r/w folder for " + emuCombo.getValue().name() + " ?");
-                    Optional<ButtonType> res = al.showAndWait();
-                    if (res.get() == ButtonType.OK) {
-                        File rwFolder = new File (Settings.getInstance().baseFolder(), emuCombo.getValue().name());
-                        Utils.clearFolder(rwFolder);
-                    }
-                    al = new Alert(Alert.AlertType.INFORMATION, "Successfully cleared r/w folder for " + emuCombo.getValue().name());
-                    al.showAndWait();
-                    clearRwButton.setVisible(false);
-                }
+                clearRwClick(event);
             }
         });
 
@@ -596,16 +877,7 @@ public class MainController {
         browseEmuBinaryButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (event.getButton().compareTo(MouseButton.PRIMARY) == 0) {
-                    // choose emulator binary
-                    Emulator emu = emuCombo.getValue();
-                    FileChooser fc = new FileChooser();
-                    fc.setTitle("Choose emulator binary for " + emu.name());
-                    File bin = fc.showOpenDialog(_rootStage.getOwner());
-                    if (bin != null) {
-                        emuBinText.setText(bin.getAbsolutePath());
-                    }
-                }
+                browseEmuBinaryClick(event);
             }
         });
 
@@ -613,77 +885,14 @@ public class MainController {
         emuCombo.valueProperty().addListener(new ChangeListener<Emulator>() {
             @Override
             public void changed(ObservableValue<? extends Emulator> observable, Emulator oldValue, Emulator newValue) {
-                if (newValue != null) {
-                    // write the new value to configuration
-                    Settings.getInstance().setLastSelectedEmu(newValue.name());
-                    try {
-                        Settings.getInstance().serialize();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                // setup ui elements
-                emuBinText.setText(newValue.emuBinary());
-                emuParamsText.setText(newValue.emuParams());
-                customParamsCheckBox.setSelected(false);
-                if (!newValue.roms().isEmpty() || newValue.isMame()) {
-                    browseFolderButton.setVisible(false);
-                }
-                else {
-                    browseFolderButton.setVisible(true);
-                }
-
-                if (!newValue.roms().isEmpty()) {
-                    refreshTreeButton.setVisible(false);
-                }
-                else {
-                    refreshTreeButton.setVisible(true);
-                }
-
-                // check for r/w support
-                if (newValue.supportRw()) {
-                    rwCheckBox.setVisible(true);
-                    // rw folder is empty ?
-                    File rwFolder = new File (Settings.getInstance().baseFolder(), newValue.name());
-                    boolean rwFolderEmpty = Utils.isFolderEmpty(rwFolder);
-                    if (!rwFolderEmpty) {
-                        clearRwButton.setVisible(true);
-                    }
-                    else {
-                        clearRwButton.setVisible(false);
-                    }
-                }
-                else {
-                    rwCheckBox.setVisible(false);
-                    clearRwButton.setVisible(false);
-                }
-
-                if (newValue.isMame() && newValue.emuBinary().isEmpty()) {
-                    // mame and no binary set -> we can't query the emulator for roms
-                    browseEmuBinaryButton.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0,
-                            MouseButton.PRIMARY, 1, false, false, false, false, true, false, false, false, false, false, null));
-                }
-
-                // fill the roms tree
-                refreshTreeButton.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0,
-                        MouseButton.PRIMARY, 1, false, false, false, false, true, false, false, false, false, false, null));
+                emuComboChange(oldValue, newValue);
             }
         });
 
         emuBinText.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (newValue.compareTo(oldValue) != 0) {
-                    Emulator emu = emuCombo.getValue();
-                    emu.setEmuBinary(newValue);
-                    emuBinText.setTooltip(new Tooltip(newValue));
-                    try {
-                        emu.serialize();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+                emuBinTextChange(oldValue, newValue);
             }
         });
 
@@ -691,11 +900,7 @@ public class MainController {
         browseFolderButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (event.getButton().compareTo(MouseButton.PRIMARY) == 0) {
-                    // browse for roms and update tree
-                    showSetFolderDialog(emuCombo.getValue());
-                    addRoms(emuCombo.getValue());
-                }
+                browseRomsClick(event);
             }
         });
 
@@ -703,28 +908,14 @@ public class MainController {
         emuParamsText.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (newValue.compareTo(oldValue) != 0) {
-                    Emulator emu = emuCombo.getValue();
-                    emu.setEmuParams(newValue);
-                    emuParamsText.setTooltip(new Tooltip(newValue));
-                    try {
-                        emu.serialize();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+                emuParamsTextChange(oldValue, newValue);
             }
         });
 
-        // handle roms tree selection
-        romsTree.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<RomTreeItem>>() {
+        romsTree.getSelectionModel().getSelectedIndices().addListener(new ListChangeListener<Integer>() {
             @Override
-            public void changed(ObservableValue<? extends TreeItem<RomTreeItem>> observable, TreeItem<RomTreeItem> oldValue, TreeItem<RomTreeItem> newValue) {
-                if (newValue != null) {
-                    // search for rom name (google) in webview
-                    RomTreeItem item = (RomTreeItem)newValue;
-                    searchInfo(item.name());
-                }
+            public void onChanged(Change<? extends Integer> c) {
+                romsTreeIndexChange(c);
             }
         });
 
@@ -732,69 +923,7 @@ public class MainController {
         romsTree.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (event.getClickCount() == 2) {
-                    final Emulator emu = emuCombo.getValue();
-                    if (emu.emuBinary().isEmpty()) {
-                        Alert al = new Alert(Alert.AlertType.WARNING, "Please select an emulator binary first");
-                        al.showAndWait();
-                        cfgAccordion.setExpandedPane(cfgAccordion.getPanes().get(0));
-                        browseEmuBinaryButton.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0,
-                                MouseButton.PRIMARY, 1, false, false, false, false, true, false, false, false, false, false, null));
-                        return;
-                    }
-                    if (emu.emuParams().isEmpty()) {
-                        Alert al = new Alert(Alert.AlertType.WARNING, "Please fill emulator parameters first");
-                        al.showAndWait();
-                        cfgAccordion.setExpandedPane(cfgAccordion.getPanes().get(0));
-                        return;
-                    }
-
-                    final RomTreeItem item = (RomTreeItem) romsTree.getSelectionModel().getSelectedItem();
-                    if (item != null) {
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    runEmulator(emu, item);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                    }
-                }
-            }
-        });
-
-        // back webview button
-        backButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.getButton() == MouseButton.PRIMARY) {
-                    WebHistory h = infoWeb.getEngine().getHistory();
-                    try {
-                        h.go(-1);
-                    }
-                    catch (IndexOutOfBoundsException e) {
-
-                    }
-                }
-            }
-        });
-
-        // forward webview button
-        fwdButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.getButton() == MouseButton.PRIMARY) {
-                    WebHistory h = infoWeb.getEngine().getHistory();
-                    try {
-                        h.go(+1);
-                    }
-                    catch (IndexOutOfBoundsException e) {
-
-                    }
-                }
+                romsTreeClick(event);
             }
         });
 
@@ -802,25 +931,28 @@ public class MainController {
         romsTree.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(final KeyEvent event) {
-                ObservableList<TreeItem<RomTreeItem>> l = romsTree.getRoot().getChildren();
-                FilteredList<TreeItem<RomTreeItem>> f = new FilteredList<TreeItem<RomTreeItem>>(l, new Predicate<TreeItem<RomTreeItem>>() {
-                    @Override
-                    public boolean test(TreeItem<RomTreeItem> romTreeItemTreeItem) {
-                        if (((RomTreeItem) romTreeItemTreeItem).name().toLowerCase().startsWith(event.getText())) {
-                            return true;
-                        }
-                        return false;
-                    }
-                });
-                if (!f.isEmpty()) {
-                    // select item
-                    romsTree.scrollTo(f.getSourceIndex(0));
-                }
+                romsTreeKeyPressed(event);
+            }
+        });
+
+        // back webview button
+        backButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                browsePrevClick(event);
+            }
+        });
+
+        // forward webview button
+        fwdButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                browseNextClick(event);
             }
         });
 
         // init tree
-        romsTree.setRoot(new RomTreeItem());
+        romsTree.setRoot(new TreeItem<RomTreeItem>());
         romsTree.setShowRoot(false);
 
         // load settings

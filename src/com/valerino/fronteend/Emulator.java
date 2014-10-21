@@ -33,11 +33,15 @@ public class Emulator {
         public boolean noCheckReturn = false;
 
         public boolean supportRw = false;
+
+        public boolean allowMultiSelect = false;
     }
 
     private EmulatorInternal _emulator;
 
     private File _defFile = null;
+
+    private File _rwFolder = null;
 
     /**
      * get emulator configuration file
@@ -134,11 +138,27 @@ public class Emulator {
     }
 
     /**
+     * get the rw folder for this emulator (%home%/fronteend/defname)
+     * @return
+     */
+    public File rwFolder() {
+        return _rwFolder;
+    }
+
+    /**
      * tell if the emulator do not correctly return when closed (exitcode != 0)
      * @return
      */
     public boolean noCheckReturn() {
         return _emulator.noCheckReturn;
+    }
+
+    /**
+     * tell if the emulator allow multiple selection (i.e. amiga)
+     * @return
+     */
+    public boolean allowMultiSelect() {
+        return _emulator.allowMultiSelect;
     }
 
     /**
@@ -182,7 +202,7 @@ public class Emulator {
     }
 
     /**
-     * parameters to be used on commandline (use %rom for rom to be loaded)
+     * parameters to be used on commandline (use %n for rom to be loaded)
      * @return
      */
     public String emuParams() {
@@ -199,6 +219,11 @@ public class Emulator {
 
     public Emulator(File emuDef) throws IOException {
         _defFile = emuDef;
+
+        // initialize the rw folder aswell
+        String[] tokens = emuDef.getName().split("\\.");
+        _rwFolder = new File (_defFile.getParentFile().getParentFile(),tokens[0]);
+        _rwFolder.mkdirs();
 
         // read from json file
         deserialize();

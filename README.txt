@@ -85,11 +85,11 @@ Once you have the json for your emulator of choice, simply copy it in your %home
   // which sets the needed environment and run the emulator, and use that for emuBinary)
   "emuBinary" : "/home/valerino/Downloads/daphne/daphnebin.sh",
 
-  // parameters to launch the emulator with. use %rom% for the rom name/absolute path(automatically choosen) and
-  // %rompath% (or %rompathslash for it to be os-dependent-slash-terminated) for the rom folder path
-  "emuParams" : "%rom% vldp -framefile /media/valerino/daphne/vldp_dl/lair/lair.txt -homedir /media/valerino/daphne -ignore_aspect_ratio -blank_searches -min_seek_delay 1000 -seek_frames_per_ms 20 -fastboot -bank 0 11011001 -bank 1 00100111 -sound_buffer 2048",
+  // parameters to launch the emulator with. use %1%, %2%,... for the rom names/absolute paths and
+  // %path% (or %pathsep% for it to be os-dependent-slash-terminated) for the roms folder path
+  "emuParams" : "%1% vldp -framefile /media/valerino/daphne/vldp_dl/lair/lair.txt -homedir /media/valerino/daphne -ignore_aspect_ratio -blank_searches -min_seek_delay 1000 -seek_frames_per_ms 20 -fastboot -bank 0 11011001 -bank 1 00100111 -sound_buffer 2048",
 
-  // true to strip path from the %rom% above (%rompath% should be specified aswell)
+  // true to strip path from the rom path (%path% should be specified aswell)
   "stripPath": false,
 
   // true to not check for exitcode when executing the emulator (may hide parameter errors, doublecheck executing
@@ -97,11 +97,16 @@ Once you have the json for your emulator of choice, simply copy it in your %home
   "noCheckReturn" : false,
 
   // true to enable r/w support : if the emulator uses r/w images (i.e. c64/amiga/... emulators which uses floppy images),
-  // you may want them to be read/write.to not touch the original image, fronTEENd copies the selected rom/set to its
-  // private (%HOME%/fronteend/%EMUNAME%) folder and uses the copied image in the emulator.
-  // if an emulator is run with 'Read/Write support' checkbox enabled and its rwSupport is true, the image is not
+  // you may want them to be read/write.to not touch the original images, fronTEENd copies the selected roms/sets to its
+  // private (%HOME%/.fronteend/%EMUNAME%) folder and uses the copied image in the emulator.
+  // if an emulator is run with 'Read/Write support' checkbox enabled and its rwSupport is true, the image/ss is/are not
   // deleted at emulator's exit and will be available at next run.
-  "rwSupport": false
+  "rwSupport": false,
+
+  // true to allow multiple selection in emulators allowing i.e. more than one disk to be loaded
+  // at the same time (amiga, multiple drives). you can use %1%, %2%, ... in the params string to represent
+  // the rom/sets.
+  "allowMultiSelect": false
 }
 ----cut here---
 

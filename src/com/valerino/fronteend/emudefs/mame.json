@@ -1,0 +1,12 @@
+{
+  "name" : "MAME (Multiple Arcade Machine Emulator)",
+  "roms" : {
+  },
+  "isMame" : true,
+  "system" : "arcade mame",
+  "lastFolder" : "",
+  "emuBinary" : "",
+  "emuParams" : "-rompath <path> %1%",
+  "stripPath" : false,
+  "noCheckReturn" : false
+}

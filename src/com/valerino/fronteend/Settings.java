@@ -113,6 +113,23 @@ public class Settings {
     }
 
     /**
+     * dump emulator definitions to home folder
+     */
+    private void dumpEmuDefs() {
+        File srcFolder = new File (this.getClass().getResource("emudefs").getFile());
+        File[] emus = srcFolder.listFiles();
+        for (File f : emus) {
+            File n = new File (_emuDefsFolder, f.getName());
+            try {
+                // dump definitions (without overwriting)
+                Utils.copyFile(f,n,false);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
      * initialize settings
      * @throws IOException
      */
@@ -120,6 +137,9 @@ public class Settings {
         try {
             // read settings
             deserialize();
+
+            // dump any missing emulator defs from the internal package
+            dumpEmuDefs();
         } catch (IOException e) {
             // 1st run, create the configuration file
             Alert al = new Alert(Alert.AlertType.INFORMATION,"First run, navigate to 7z binary");
@@ -138,12 +158,7 @@ public class Settings {
             serialize();
 
             // dump emulator definitions aswell in the home folder
-            File srcFolder = new File (this.getClass().getResource("emudefs").getFile());
-            File[] emus = srcFolder.listFiles();
-            for (File f : emus) {
-                File n = new File (_emuDefsFolder, f.getName());
-                Utils.copyFile(f,n,false);
-            }
+            dumpEmuDefs();
         }
     }
 

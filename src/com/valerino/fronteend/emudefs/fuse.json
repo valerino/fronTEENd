@@ -1,0 +1,13 @@
+{
+  "name" : "Fuse (ZX Spectrum Emulator)",
+  "roms" : {
+  },
+  "isMame" : false,
+  "system" : "sinclair zx spectrum",
+  "lastFolder" : "",
+  "emuBinary" : "",
+  "emuParams" : "--tape %1%",
+  "stripPath" : false,
+  "noCheckReturn" : false,
+  "supportRw": true
+}

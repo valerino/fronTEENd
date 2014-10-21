@@ -1,0 +1,14 @@
+{
+  "name" : "FS-Uae (Amiga emulator)",
+  "roms" : {
+  },
+  "isMame" : false,
+  "system" : "amiga",
+  "lastFolder" : "",
+  "emuBinary" : "",
+  "emuParams" : "--floppy-drive-0=%1% --floppy-drive-1=%2%",
+  "stripPath" : false,
+  "noCheckReturn" : false,
+  "supportRw": true,
+  "allowMultiSelect": true
+}

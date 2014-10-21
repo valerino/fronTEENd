@@ -13,6 +13,19 @@ import java.io.*;
  */
 public class Utils {
     /**
+     * decompress file
+     * @param sevenZipPath path to 7z binary
+     * @param what what to decompress
+     * @param to destination folder
+     * @return
+     */
+    public static int decompress(final String sevenZipPath, final File what, final File to) {
+        String[] cmdLine = new String[] { sevenZipPath, "x", what.getAbsolutePath(), "-o" + to.getAbsolutePath()};
+        int r = Utils.runProcess(cmdLine);
+        return r;
+    }
+
+    /**
      * check if a file is compressed, based on extension
      * @param f the File
      * @return

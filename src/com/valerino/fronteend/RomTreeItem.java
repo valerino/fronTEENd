@@ -1,7 +1,5 @@
 package com.valerino.fronteend;
 
-import javafx.scene.control.TreeItem;
-
 import java.io.File;
 import java.util.List;
 
@@ -9,14 +7,12 @@ import java.util.List;
  * a tree item in the roms treeview
  * Created by valerino on 09/10/14.
  */
-public class RomTreeItem extends TreeItem {
+public class RomTreeItem {
     private List<String> _sets = null;
 
     private String _name = "";
 
     private File _file = null;
-
-    private File _parent = null;
 
     /**
      * get display name
@@ -38,38 +34,44 @@ public class RomTreeItem extends TreeItem {
      * get the rom File
      * @return
      */
-    public File romFile() {
+    public File file() {
         return _file;
     }
 
-    public RomTreeItem(final String rom, final List<String> sets) {
-        _name = rom;
+    @Override
+    public String toString() {
+        if (_file == null) {
+            return _name;
+        }
+        else {
+            return _file.getName();
+        }
+    }
+
+    public RomTreeItem(final String name, final List<String> sets) {
+        _name = name;
         _sets = sets;
-        setValue(rom);
     }
 
     /**
-     * get the parent folder
-     * @return
+     * set the rom file
+     * @param f the File
      */
-    public File parent() {
-        return _parent;
+    public void setFile(File f) {
+        _file = f;
     }
 
-    public RomTreeItem(final String rom, final List<String> sets, File parent) {
-        _name = rom;
-        _sets = sets;
-        _parent = parent;
-        setValue(rom);
+    public RomTreeItem(File path) {
+        _name = path.getName();
+        _file = path;
     }
 
-    public RomTreeItem(File rom) {
-        _name = rom.getName();
-        setValue(_name);
-        _file = rom;
+    public RomTreeItem(final String name, final File file) {
+        _name = name;
+        _file = file;
     }
 
-    public RomTreeItem() {
-
+    public RomTreeItem(final String name) {
+        _name = name;
     }
 }
