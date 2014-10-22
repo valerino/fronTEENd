@@ -1,0 +1,12 @@
+{
+  "name" : "Stella (Atari2600 Emulator)",
+  "roms" : {
+  },
+  "isMame" : false,
+  "system" : "atari2600",
+  "lastFolder" : "",
+  "emuBinary" : "",
+  "emuParams" : "%1%",
+  "stripPath" : false,
+  "noCheckReturn" : false
+}

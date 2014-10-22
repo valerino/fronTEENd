@@ -1,0 +1,12 @@
+{
+  "name" : "FCEUx (Nintendo NES/Famicom Emulator)",
+  "roms" : {
+  },
+  "isMame" : false,
+  "system" : "nes",
+  "lastFolder" : "",
+  "emuBinary" : "",
+  "emuParams" : "%1%",
+  "stripPath" : false,
+  "noCheckReturn" : false
+}

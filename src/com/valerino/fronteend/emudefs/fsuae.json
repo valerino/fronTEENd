@@ -6,7 +6,7 @@
   "system" : "amiga",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "--floppy-drive-0=%1% --floppy-drive-1=%2%",
+  "emuParams" : "<path_to_configuration> --floppy-drive-0=%1% --floppy-drive-1=%2%",
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw": true,

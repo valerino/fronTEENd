@@ -77,6 +77,8 @@ public class MainController {
 
     private Stage _rootStage;
 
+    private String _keyBuffer = "";
+
     /**
      * search info for a rom and display in the webview
      * @param rom the rom name (without extension)
@@ -472,8 +474,8 @@ public class MainController {
                 if (pathname.isDirectory()) {
                     return false;
                 }
-                final String p = pathname.getAbsolutePath();
-                if (p.endsWith(".txt")) {
+                final String p = pathname.getAbsolutePath().toLowerCase();
+                if (p.endsWith(".txt") || p.endsWith(".log")) {
                     return false;
                 }
                 return true;
@@ -823,19 +825,31 @@ public class MainController {
      * @param event the KeyEvent
      */
     private void romsTreeKeyPressed(final KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE) {
+        if (event.getCode() == KeyCode.ENTER) {
             // run emulator
             romsTree.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0,
                     MouseButton.PRIMARY, 2, false, false, false, false, true, false, false, false, false, false, null));
             return;
         }
         else if (event.getCode().isLetterKey()) {
+            if (_keyBuffer.isEmpty()) {
+                // run a timer which will reset after 2 secs
+                Timer t = new java.util.Timer();
+                t.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                      _keyBuffer = "";
+                    }
+                }, 2000);
+            }
+            _keyBuffer += event.getText();
+
             // search for an item starting with the pressed key
             ObservableList<TreeItem<RomTreeItem>> l = romsTree.getRoot().getChildren();
             FilteredList<TreeItem<RomTreeItem>> f = new FilteredList<TreeItem<RomTreeItem>>(l, new Predicate<TreeItem<RomTreeItem>>() {
                 @Override
                 public boolean test(TreeItem<RomTreeItem> romTreeItemTreeItem) {
-                    if (romTreeItemTreeItem.getValue().name().toLowerCase().startsWith(event.getText())) {
+                    if (romTreeItemTreeItem.getValue().name().toLowerCase().startsWith(_keyBuffer.toLowerCase())) {
                         return true;
                     }
                     return false;

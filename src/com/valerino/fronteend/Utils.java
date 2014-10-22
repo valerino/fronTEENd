@@ -38,7 +38,7 @@ public class Utils {
         }
 
         String exts[] = {".7z", ".rar", ".zip"};
-        final String path = f.getAbsolutePath();
+        final String path = f.getAbsolutePath().toLowerCase();
         for (String s : exts) {
             if (path.endsWith(s)) {
                 return true;
