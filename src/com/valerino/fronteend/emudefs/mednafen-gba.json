@@ -3,7 +3,7 @@
   "roms" : {
   },
   "isMame" : false,
-  "system" : "nintendo gba",
+  "system" : "gba nintendo",
   "lastFolder" : "",
   "emuBinary" : "",
   "emuParams" : "%1%",
