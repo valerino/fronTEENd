@@ -31,6 +31,7 @@ public class Main extends Application {
         Parent root = loader.load();
         final MainController mc = ((MainController)loader.getController());
         Scene s = new Scene(root);
+
         primaryStage.setTitle(APP_NAME);
         primaryStage.setMaximized(true);
         primaryStage.setScene(s);
@@ -42,8 +43,7 @@ public class Main extends Application {
                 if (res.get() != ButtonType.OK) {
                     // avoid closing
                     event.consume();
-                }
-                else {
+                } else {
                     // cleanup
                     mc.cleanupController();
                 }

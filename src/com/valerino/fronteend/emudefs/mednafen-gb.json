@@ -1,0 +1,12 @@
+{
+  "name" : "Mednafen GB (Nintendo Gameboy Emulator)",
+  "roms" : {
+  },
+  "isMame" : false,
+  "system" : "nintendo gameboy",
+  "lastFolder" : "",
+  "emuBinary" : "",
+  "emuParams" : "%1%",
+  "stripPath" : false,
+  "noCheckReturn" : false
+}

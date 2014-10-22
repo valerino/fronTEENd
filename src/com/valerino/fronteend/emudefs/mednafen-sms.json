@@ -1,0 +1,12 @@
+{
+  "name" : "Mednafen SMS (Sega Master System emulator)",
+  "roms" : {
+  },
+  "isMame" : false,
+  "system" : "sega sms",
+  "lastFolder" : "",
+  "emuBinary" : "",
+  "emuParams" : "%1%",
+  "stripPath" : false,
+  "noCheckReturn" : false
+}

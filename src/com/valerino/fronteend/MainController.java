@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -75,6 +76,9 @@ public class MainController {
     @FXML
     private Accordion cfgAccordion;
 
+    @FXML
+    private Button rescanButton;
+
     private Stage _rootStage;
 
     private String _keyBuffer = "";
@@ -112,13 +116,17 @@ public class MainController {
         customParams.setTooltip(new Tooltip(params));
         final Button okButton = new Button("Ok");
         vb.getChildren().add(customParams);
+        vb.setMargin(customParams, new Insets(4, 4, 4, 4));
         vb.getChildren().add(okButton);
+        vb.setMargin(okButton, new Insets(4, 4, 4, 4));
 
         // set button to close dialog
+        final String[] newParams = {params};
         okButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if (event.getButton() == MouseButton.PRIMARY) {
+                    newParams[0] = customParams.getText();
                     st.close();
                 }
             }
@@ -134,14 +142,6 @@ public class MainController {
             }
         });
 
-        // disable close button
-        st.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                event.consume();
-            }
-        });
-
         st.setScene(new Scene(vb));
         st.setResizable(false);
         st.setTitle("Custom parameters");
@@ -151,7 +151,7 @@ public class MainController {
         st.showAndWait();
 
         // return parameters
-        return customParams.getText();
+        return newParams[0];
     }
 
     /**
@@ -170,7 +170,6 @@ public class MainController {
         else {
             lv.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         }
-        lv.getStylesheets().add(this.getClass().getResource("hide_empty.css").toExternalForm());
 
         // add sets
         for (final RomTreeItem r : list) {
@@ -437,7 +436,7 @@ public class MainController {
      * show the browse for folder dialog
      * @param emu the Emulator
      */
-    private void showSetFolderDialog(Emulator emu) {
+    private void getRomsFolder(Emulator emu) {
         FileChooser fc = new FileChooser();
         DirectoryChooser dc = new DirectoryChooser();
         if (!emu.lastFolder().isEmpty()) {
@@ -463,7 +462,7 @@ public class MainController {
     private void addRomsFs(Emulator emu) {
         if (emu.lastFolder().isEmpty()) {
             // we have to set lastfolder first
-            showSetFolderDialog(emu);
+            getRomsFolder(emu);
         }
         final String folder = emu.lastFolder();
         File f = new File (folder);
@@ -624,6 +623,56 @@ public class MainController {
     }
 
     /**
+     * rescan emulators
+     * @param event the MouseEvent
+     */
+    private void rescanButtonClick(MouseEvent event) {
+        if (event.getButton().compareTo(MouseButton.PRIMARY) == 0) {
+            emuCombo.getItems().clear();
+            File[] defs = Settings.getInstance().defsFolder().listFiles(new FileFilter() {
+                @Override
+                public boolean accept(File pathname) {
+                    if (pathname.getAbsolutePath().endsWith(".json")) {
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            if (defs == null || defs.length == 0) {
+                Alert al = new Alert (Alert.AlertType.ERROR, "Can't continue, no emulators in\n" + Settings.getInstance().defsFolder().getAbsolutePath());
+                al.showAndWait();
+            }
+
+            // fill combo with emulators
+            for (File f : defs) {
+                try {
+                    Emulator emu = new Emulator(f);
+                    emuCombo.getItems().add(emu);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            emuCombo.getItems().sort(new Comparator<Emulator>() {
+                @Override
+                public int compare(Emulator o1, Emulator o2) {
+                    return o1.name().compareTo(o2.name());
+                }
+            });
+
+            // check if there's a last selected emulator
+            final String last = Settings.getInstance().lastSelectedEmu();
+            if (!last.isEmpty()) {
+                ObservableList<Emulator> items = emuCombo.getItems();
+                for (Emulator e : items) {
+                    if (e.name().equals(last)) {
+                        emuCombo.getSelectionModel().select(e);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * clear rw folder
      * @param event the MouseEvent
      */
@@ -632,8 +681,7 @@ public class MainController {
             Alert al = new Alert(Alert.AlertType.CONFIRMATION, "Clear r/w folder for " + emuCombo.getValue().name() + " ?");
             Optional<ButtonType> res = al.showAndWait();
             if (res.get() == ButtonType.OK) {
-                File rwFolder = new File (Settings.getInstance().baseFolder(), emuCombo.getValue().name());
-                Utils.clearFolder(rwFolder);
+                Utils.clearFolder(emuCombo.getValue().rwFolder());
             }
             al = new Alert(Alert.AlertType.INFORMATION, "Successfully cleared r/w folder for " + emuCombo.getValue().name());
             al.showAndWait();
@@ -697,7 +745,7 @@ public class MainController {
     private void browseRomsClick(MouseEvent event) {
         if (event.getButton().compareTo(MouseButton.PRIMARY) == 0) {
             // browse for roms and update tree
-            showSetFolderDialog(emuCombo.getValue());
+            getRomsFolder(emuCombo.getValue());
             addRoms(emuCombo.getValue());
         }
     }
@@ -708,7 +756,7 @@ public class MainController {
      * @param newValue the new Emulator value selected
      */
     private void emuComboChange(Emulator oldValue, Emulator newValue) {
-        if (oldValue == newValue) {
+        if (oldValue == newValue || newValue == null) {
             return;
         }
 
@@ -966,6 +1014,14 @@ public class MainController {
             }
         });
 
+        // handle rescan button clicks
+        rescanButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                rescanButtonClick(event);
+            }
+        });
+
         // handle tree clicks
         romsTree.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -1011,47 +1067,10 @@ public class MainController {
             return 1;
         }
 
-        File[] defs = Settings.getInstance().defsFolder().listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                if (pathname.getAbsolutePath().endsWith(".json")) {
-                    return true;
-                }
-                return false;
-            }
-        });
-        if (defs == null || defs.length == 0) {
-            Alert al = new Alert (Alert.AlertType.ERROR, "Can't continue, no emulators in\n" + Settings.getInstance().defsFolder().getAbsolutePath());
-            al.showAndWait();
-            return 1;
-        }
+        // scan emulators
+        rescanButton.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0,
+                MouseButton.PRIMARY, 1, false, false, false, false, true, false, false, false, false, false, null));
 
-        // fill combo with emulators
-        for (File f : defs) {
-            try {
-                Emulator emu = new Emulator(f);
-                emuCombo.getItems().add(emu);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        emuCombo.getItems().sort(new Comparator<Emulator>() {
-            @Override
-            public int compare(Emulator o1, Emulator o2) {
-                return o1.name().compareTo(o2.name());
-            }
-        });
-
-        // check if there's a last selected emulator
-        final String last = Settings.getInstance().lastSelectedEmu();
-        if (!last.isEmpty()) {
-            ObservableList<Emulator> items = emuCombo.getItems();
-            for (Emulator e : items) {
-                if (e.name().equals(last)) {
-                    emuCombo.getSelectionModel().select(e);
-                }
-            }
-        }
         return 0;
     }
 

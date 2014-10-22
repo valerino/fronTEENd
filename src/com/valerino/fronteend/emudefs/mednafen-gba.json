@@ -1,0 +1,12 @@
+{
+  "name" : "Mednafen GBA (Nintendo Gameboy Advance Emulator)",
+  "roms" : {
+  },
+  "isMame" : false,
+  "system" : "nintendo gba",
+  "lastFolder" : "",
+  "emuBinary" : "",
+  "emuParams" : "%1%",
+  "stripPath" : false,
+  "noCheckReturn" : false
+}
