@@ -1,11 +1,13 @@
 package com.valerino.fronteend;
 
 import javafx.application.Platform;
-import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
-import javafx.stage.Stage;
 
 import java.io.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * generic utilities
@@ -46,17 +48,50 @@ public class Utils {
     }
 
     /**
-     * change the cursor shape
-     * @param stage the target Stage
-     * @param busy true to show the wait cursor, false for the default cursor
+     * runs in the ui thread and wait for completion
+     * @param run the Runnable
+     * @throws InterruptedException
+     * @throws ExecutionException
      */
-    public static void changeCursor(final Stage stage, final boolean busy) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                stage.getScene().setCursor(busy ? Cursor.WAIT : Cursor.DEFAULT);
+    public static void runAndWait(final Runnable run) throws InterruptedException, ExecutionException {
+        if (Platform.isFxApplicationThread()) {
+            try {
+                run.run();
+            } catch (Exception e) {
+                throw new ExecutionException(e);
             }
-        });
+        } else {
+            final Lock lock = new ReentrantLock();
+            final Condition condition = lock.newCondition();
+            final Throwable[] t = {null};
+            lock.lock();
+            try {
+                Platform.runLater(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        lock.lock();
+                        try {
+                            run.run();
+                        } catch (Throwable e) {
+                            t[0] = e;
+                        } finally {
+                            try {
+                                condition.signal();
+                            } finally {
+                                lock.unlock();
+                            }
+                        }
+                    }
+                });
+                condition.await();
+                if (t[0] != null) {
+                    throw new ExecutionException(t[0]);
+                }
+            } finally {
+                lock.unlock();
+            }
+        }
     }
 
     /**

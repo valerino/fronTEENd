@@ -3,7 +3,7 @@
   "roms" : {
   },
   "isMame" : false,
-  "system" : "sega genesis",
+  "system" : "genesis",
   "lastFolder" : "",
   "emuBinary" : "",
   "emuParams" : "--rompath %pathsep% --game %1%",

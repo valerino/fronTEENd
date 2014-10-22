@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -21,6 +22,7 @@ import javafx.stage.*;
 
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.function.Predicate;
 
 /**
@@ -237,19 +239,34 @@ public class MainController {
         }
         else {
             // check each selection File and copy them to the temporary folder
-            File dstFolder = Settings.getInstance().tmpFolder();
+            final File dstFolder = Settings.getInstance().tmpFolder();
             Utils.clearFolder(dstFolder);
             for (TreeItem<RomTreeItem> item : l) {
-                RomTreeItem it = item.getValue();
+                final RomTreeItem it = item.getValue();
 
                 // dump to rw folder
                 if (Utils.isCompressed(it.file())) {
                     // decompress
-                    Utils.changeCursor(_rootStage,true);
-                    int r = Utils.decompress(Settings.getInstance().sevenZipPath(),it.file(),dstFolder);
-                    Utils.changeCursor(_rootStage,false);
-                    if (r != 0) {
-                        return null;
+                    _rootStage.getScene().setCursor(Cursor.WAIT);
+                    final int[] res = {0};
+                    Runnable r = new Runnable() {
+                        @Override
+                        public void run() {
+                            res[0] = Utils.decompress(Settings.getInstance().sevenZipPath(), it.file(), dstFolder);
+                            _rootStage.getScene().setCursor(Cursor.DEFAULT);
+                        }
+                    };
+                    try {
+                        Utils.runAndWait(r);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                    finally {
+                        if (res[0] != 0) {
+                            return null;
+                        }
                     }
                 }
                 else {
@@ -306,7 +323,7 @@ public class MainController {
      * @param emu the emulator
      * @throws IOException
      */
-    private void runEmulator(Emulator emu) throws IOException {
+    private void runEmulator(final Emulator emu) throws IOException {
         // get the selected items
         List<RomTreeItem> l = getRomsTreeSelection();
         if (l == null || l.isEmpty()) {
@@ -411,9 +428,7 @@ public class MainController {
         cmdLine = ar.toArray(cmdLine);
 
         // run emulator
-        Utils.changeCursor(_rootStage,true);
         Utils.runProcess(cmdLine, emu.noCheckReturn());
-        Utils.changeCursor(_rootStage,false);
     }
 
     /**
@@ -444,9 +459,6 @@ public class MainController {
      * @param emu the Emulator
      */
     private void addRomsFs(Emulator emu) {
-        ObservableList<TreeItem<RomTreeItem>> c = romsTree.getRoot().getChildren();
-        c.clear();
-
         if (emu.lastFolder().isEmpty()) {
             // we have to set lastfolder first
             showSetFolderDialog(emu);
@@ -472,6 +484,7 @@ public class MainController {
         }
 
         // fill tree
+        ObservableList<TreeItem<RomTreeItem>> c = romsTree.getRoot().getChildren();
         for (File rom : files) {
             TreeItem<RomTreeItem> item = new TreeItem<RomTreeItem>(new RomTreeItem(rom));
             c.add(item);
@@ -543,9 +556,6 @@ public class MainController {
      * @param emu the Emulator
      */
     private void addRomsDefined(Emulator emu) {
-        ObservableList<TreeItem<RomTreeItem>> c = romsTree.getRoot().getChildren();
-        c.clear();
-
         HashMap<String,List<String>> roms = emu.roms();
         boolean isMame = emu.isMame();
         if (isMame && roms.isEmpty() && !emu.emuBinary().isEmpty()) {
@@ -554,6 +564,7 @@ public class MainController {
         }
         else {
             // add sets to list
+            ObservableList<TreeItem<RomTreeItem>> c = romsTree.getRoot().getChildren();
             for (final String s : roms.keySet()) {
                 TreeItem<RomTreeItem> item = new TreeItem<RomTreeItem>(new RomTreeItem(s, roms.get(s)));
                 c.add(item);
@@ -565,31 +576,38 @@ public class MainController {
      * add roms to the tree
      * @param emu the Emulator
      */
-    private void addRoms(Emulator emu) {
-        Utils.changeCursor(_rootStage, true);
-
-        // add items
-        HashMap<String, List<String>> roms = emu.roms();
-
-        if (!roms.isEmpty() || emu.isMame()) {
-            // there's a predefined romset
-            addRomsDefined(emu);
-        } else {
-            // scan filesystem
-            addRomsFs(emu);
-        }
-
-        // finally sort the list
-        romsTree.getRoot().getChildren().sort(new Comparator<TreeItem<RomTreeItem>>() {
+    private void addRoms(final Emulator emu) {
+        _rootStage.getScene().setCursor(Cursor.WAIT);
+        final ObservableList<TreeItem<RomTreeItem>> c = romsTree.getRoot().getChildren();
+        c.clear();
+        romsTree.getSelectionModel().clearSelection();
+        Platform.runLater(new Runnable() {
             @Override
-            public int compare(TreeItem<RomTreeItem> o1, TreeItem<RomTreeItem> o2) {
-                return o1.getValue().name().toLowerCase().compareTo(o2.getValue().name().toLowerCase());
+            public void run() {
+                // add items
+                HashMap<String, List<String>> roms = emu.roms();
+
+                if (!roms.isEmpty() || emu.isMame()) {
+                    // there's a predefined romset
+                    addRomsDefined(emu);
+                } else {
+                    // scan filesystem
+                    addRomsFs(emu);
+                }
+
+                // finally sort the list
+                c.sort(new Comparator<TreeItem<RomTreeItem>>() {
+                    @Override
+                    public int compare(TreeItem<RomTreeItem> o1, TreeItem<RomTreeItem> o2) {
+                        return o1.getValue().name().toLowerCase().compareTo(o2.getValue().name().toLowerCase());
+                    }
+                });
+
+                selectRomLabel.setText("Select romset (" + romsTree.getRoot().getChildren().size() + ")");
+                romsTree.getRoot().setExpanded(true);
+                _rootStage.getScene().setCursor(Cursor.DEFAULT);
             }
         });
-
-        selectRomLabel.setText("Select romset (" + romsTree.getRoot().getChildren().size() + ")");
-        romsTree.getRoot().setExpanded(true);
-        Utils.changeCursor(_rootStage, false);
     }
 
     /**
@@ -598,13 +616,8 @@ public class MainController {
      */
     private void refreshRomsClick(MouseEvent event) {
         if (event.getButton().compareTo(MouseButton.PRIMARY) == 0) {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    Emulator emu = emuCombo.getValue();
-                    addRoms(emu);
-                }
-            });
+            Emulator emu = emuCombo.getValue();
+            addRoms(emu);
         }
     }
 
@@ -831,6 +844,7 @@ public class MainController {
             if (!f.isEmpty()) {
                 // scroll to the first found item
                 romsTree.scrollTo(f.getSourceIndex(0));
+                romsTree.getSelectionModel().select(f.getSourceIndex(0));
             }
         }
     }
@@ -844,7 +858,7 @@ public class MainController {
             return;
         }
 
-        final Emulator emu = emuCombo.getValue();
+        Emulator emu = emuCombo.getValue();
         if (emu.emuBinary().isEmpty()) {
             Alert al = new Alert(Alert.AlertType.WARNING, "Please select an emulator binary first");
             al.showAndWait();
@@ -861,16 +875,11 @@ public class MainController {
         }
 
         // run emulator
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    runEmulator(emu);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        try {
+            runEmulator(emu);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
