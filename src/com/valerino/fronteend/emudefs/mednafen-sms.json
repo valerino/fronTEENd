@@ -3,7 +3,7 @@
   "roms" : {
   },
   "isMame" : false,
-  "system" : "sms sega",
+  "system" : "mastersystem",
   "lastFolder" : "",
   "emuBinary" : "",
   "emuParams" : "%1%",

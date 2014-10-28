@@ -16,6 +16,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
@@ -79,9 +80,31 @@ public class MainController {
     @FXML
     private Button rescanButton;
 
+    @FXML
+    private Button romSearchButton;
+
+    @FXML
+    private TextField systemText;
+
+    @FXML
+    private Button romSearchNextButton;
+
+    @FXML
+    private TextField romSearchText;
+
     private Stage _rootStage;
 
     private String _keyBuffer = "";
+
+    private FilteredList<TreeItem<RomTreeItem>> _searchList = null;
+
+    private int _searchCurrentIndex = 0;
+
+    @FXML
+    private HBox rwSupportHBox;
+
+    @FXML
+    private VBox romsTreeVBox;
 
     /**
      * search info for a rom and display in the webview
@@ -751,6 +774,72 @@ public class MainController {
     }
 
     /**
+     * search for rom containing text
+     * @param event the MouseEvent
+     */
+    private void searchRomClick(MouseEvent event) {
+        if (event.getButton().compareTo(MouseButton.PRIMARY) == 0 && !romSearchText.getText().isEmpty()) {
+            // search for items containing the given text
+            ObservableList<TreeItem<RomTreeItem>> l = romsTree.getRoot().getChildren();
+            _searchList = new FilteredList<TreeItem<RomTreeItem>>(l, new Predicate<TreeItem<RomTreeItem>>() {
+                @Override
+                public boolean test(TreeItem<RomTreeItem> romTreeItemTreeItem) {
+                    if (romTreeItemTreeItem.getValue().name().toLowerCase().contains(romSearchText.getText().toLowerCase())) {
+                        return true;
+                    }
+                    return false;
+                }
+            });
+
+            if (_searchList.isEmpty()) {
+                // no roms found
+                Alert al = new Alert(Alert.AlertType.WARNING, romSearchText.getText() + "\nnot found");
+                al.showAndWait();
+                return;
+            }
+
+            // go to the first found item
+            _searchCurrentIndex = 0;
+            if (_searchList.size() > 1) {
+                // show the next button
+                romSearchNextButton.setVisible(true);
+            }
+            else {
+                // we don't need the next button
+                romSearchNextButton.setVisible(false);
+            }
+            searchRomInternal(_searchCurrentIndex);
+        }
+    }
+
+    /**
+     * search for the next rom containing text
+     * @param event the MouseEvent
+     */
+    private void searchNextClick(MouseEvent event) {
+        if (event.getButton().compareTo(MouseButton.PRIMARY) == 0) {
+            // go to the next item if it exists, or overlap
+            _searchCurrentIndex++;
+            searchRomInternal(_searchCurrentIndex);
+        }
+    }
+
+    /**
+     * internal search routine (for advanced rom search)
+     * @param index index in the search list
+     */
+    private void searchRomInternal (int index) {
+        // scroll to the item index, or revert to 0
+        int idx = index;
+        if (index >= _searchList.size()) {
+            idx = 0;
+            _searchCurrentIndex = idx;
+        }
+        romsTree.scrollTo(_searchList.getSourceIndex(idx));
+        romsTree.getSelectionModel().select(_searchList.getSourceIndex(idx));
+    }
+
+    /**
      * handle emu combobox change
      * @param oldValue the old Emulator value selected
      * @param newValue the new Emulator value selected
@@ -779,6 +868,8 @@ public class MainController {
         emuBinText.setText(newValue.emuBinary());
         emuParamsText.setText(newValue.emuParams());
         customParamsCheckBox.setSelected(false);
+        systemText.setText(newValue.system());
+
         if (!newValue.roms().isEmpty() || newValue.isMame()) {
             browseFolderButton.setVisible(false);
         }
@@ -803,10 +894,14 @@ public class MainController {
             else {
                 clearRwButton.setVisible(true);
             }
+            // check if it's already there
+            if (rwSupportHBox.getParent() != romsTreeVBox) {
+                romsTreeVBox.getChildren().add(rwSupportHBox);
+            }
         }
         else {
-            rwCheckBox.setVisible(false);
-            clearRwButton.setVisible(false);
+            // remove the hbox completely
+            romsTreeVBox.getChildren().remove(rwSupportHBox);
         }
 
         if (newValue.isMame() && newValue.emuBinary().isEmpty()) {
@@ -848,6 +943,23 @@ public class MainController {
             Emulator emu = emuCombo.getValue();
             emu.setEmuParams(newValue);
             emuParamsText.setTooltip(new Tooltip(newValue));
+            try {
+                emu.serialize();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * handle system search string text change
+     * @param oldValue the old text
+     * @param newValue the new text
+     */
+    private void systemTextChange(final String oldValue, final String newValue) {
+        if (newValue.compareTo(oldValue) != 0) {
+            Emulator emu = emuCombo.getValue();
+            emu.setSystemSearchString(newValue);
             try {
                 emu.serialize();
             } catch (IOException e) {
@@ -952,6 +1064,8 @@ public class MainController {
     public int initController(Stage root) {
         _rootStage = root;
 
+        romsTreeVBox.getChildren().remove(rwSupportHBox);
+
         // handle refresh roms button
         refreshTreeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -984,10 +1098,19 @@ public class MainController {
             }
         });
 
+        // emulator binary path change
         emuBinText.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 emuBinTextChange(oldValue, newValue);
+            }
+        });
+
+        // emulator system search string change
+        systemText.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                systemTextChange(oldValue, newValue);
             }
         });
 
@@ -1007,6 +1130,7 @@ public class MainController {
             }
         });
 
+        // handle websearch on selection
         romsTree.getSelectionModel().getSelectedIndices().addListener(new ListChangeListener<Integer>() {
             @Override
             public void onChanged(Change<? extends Integer> c) {
@@ -1019,6 +1143,20 @@ public class MainController {
             @Override
             public void handle(MouseEvent event) {
                 rescanButtonClick(event);
+            }
+        });
+
+        // handle search rom clicks
+        romSearchButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                searchRomClick(event);
+            }
+        });
+        romSearchNextButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                searchNextClick(event);
             }
         });
 

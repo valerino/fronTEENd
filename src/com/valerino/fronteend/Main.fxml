@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.web.*?>
@@ -7,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="554.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.valerino.fronteend.MainController">
+<VBox minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.valerino.fronteend.MainController">
    <children>
       <HBox prefHeight="31.0" prefWidth="940.0" spacing="4.0">
          <children>
@@ -18,16 +19,16 @@
             <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
          </VBox.margin>
       </HBox>
-      <SplitPane dividerPositions="0.41294117647058826" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+      <SplitPane dividerPositions="0.41294117647058826" VBox.vgrow="ALWAYS">
          <items>
-            <VBox prefHeight="200.0" prefWidth="100.0">
+            <VBox fx:id="romsTreeVBox" maxHeight="1.7976931348623157E308">
                <children>
-                  <BorderPane prefHeight="35.0" prefWidth="395.0">
-                     <left>
-                        <Label fx:id="selectRomLabel" prefHeight="10.0" prefWidth="227.0" text="Select image/set" BorderPane.alignment="CENTER" />
-                     </left>
+                  <BorderPane prefHeight="0.0" prefWidth="462.0">
+                     <VBox.margin>
+                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                     </VBox.margin>
                      <right>
-                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="4.0" BorderPane.alignment="CENTER">
+                        <HBox alignment="CENTER_RIGHT" prefHeight="51.0" prefWidth="235.0" spacing="4.0" BorderPane.alignment="CENTER">
                            <children>
                               <Button fx:id="browseFolderButton" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Change folder" visible="false" />
                               <Button fx:id="refreshTreeButton" mnemonicParsing="false" text="Refresh" visible="false" />
@@ -37,16 +38,28 @@
                            </BorderPane.margin>
                         </HBox>
                      </right>
+                     <left>
+                        <Label fx:id="selectRomLabel" prefHeight="10.0" prefWidth="227.0" text="Select ROM image or set" BorderPane.alignment="CENTER" />
+                     </left>
+                  </BorderPane>
+                  <TreeView fx:id="romsTree" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                     </VBox.margin></TreeView>
+                  <HBox fx:id="rwSupportHBox" alignment="CENTER_RIGHT" spacing="4.0">
+                     <children>
+                        <CheckBox fx:id="rwCheckBox" mnemonicParsing="false" text="Enable r/w support" visible="false" />
+                        <Button fx:id="clearRwButton" mnemonicParsing="false" text="Clear r/w folder" visible="false" />
+                     </children>
                      <VBox.margin>
                         <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                      </VBox.margin>
-                  </BorderPane>
-                  <TreeView fx:id="romsTree" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                  </HBox>
                </children>
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <BorderPane prefHeight="35.0" prefWidth="395.0">
+                  <BorderPane prefHeight="0.0" prefWidth="444.0">
                      <left>
                         <Label prefHeight="10.0" prefWidth="227.0" text="Info" BorderPane.alignment="CENTER" />
                      </left>
@@ -65,7 +78,7 @@
                         <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                      </VBox.margin>
                   </BorderPane>
-                  <WebView fx:id="infoWeb" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                  <WebView fx:id="infoWeb" prefHeight="734.0" prefWidth="452.0" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
          </items>
@@ -75,6 +88,17 @@
       </SplitPane>
       <Accordion fx:id="cfgAccordion">
         <panes>
+          <TitledPane animated="false" text="Advanced ROM search">
+               <content>
+                  <HBox prefHeight="0.0" prefWidth="938.0" spacing="4.0">
+                     <children>
+                        <TextField fx:id="romSearchText" prefHeight="25.0" prefWidth="230.0" />
+                        <Button fx:id="romSearchButton" mnemonicParsing="false" text="Search" />
+                        <Button fx:id="romSearchNextButton" mnemonicParsing="false" text="Next" visible="false" />
+                     </children>
+                  </HBox>
+               </content>
+          </TitledPane>
           <TitledPane expanded="false" text="Configure emulator">
                <content>
                   <GridPane>
@@ -123,13 +147,13 @@
                            </GridPane.margin>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                           <children>
-                              <CheckBox fx:id="rwCheckBox" mnemonicParsing="false" text="Enable r/w support" visible="false" />
-                              <Button fx:id="clearRwButton" mnemonicParsing="false" text="Clear r/w folder" visible="false" />
-                           </children>
                            <GridPane.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </GridPane.margin>
+                           <children>
+                              <Label text="System search string" />
+                              <TextField fx:id="systemText" HBox.hgrow="ALWAYS" />
+                           </children>
                         </HBox>
                      </children>
                   </GridPane>

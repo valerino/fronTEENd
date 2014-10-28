@@ -3,7 +3,7 @@
   "roms" : {
   },
   "isMame" : false,
-  "system" : "gameboy nintendo",
+  "system" : "gameboy",
   "lastFolder" : "",
   "emuBinary" : "",
   "emuParams" : "%1%",

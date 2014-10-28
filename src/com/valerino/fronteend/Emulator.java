@@ -210,6 +210,14 @@ public class Emulator {
     }
 
     /**
+     * set the google search string for the system (i.e. gameboy)
+     * @param s the string
+     */
+    public void setSystemSearchString(final String s) {
+        _emulator.system = s;
+    }
+
+    /**
      * set emulator parameters
      * @param s parameters string
      */
