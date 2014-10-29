@@ -148,6 +148,19 @@ public class MainController {
             }
         });
 
+        // do the same with the enter key pressed on button
+        okButton.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER) {
+                    // run emulator
+                    okButton.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0,
+                            MouseButton.PRIMARY, 1, false, false, false, false, true, false, false, false, false, false, null));
+                    return;
+                }
+            }
+        });
+
         // add a tooltip
         customParams.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -213,7 +226,7 @@ public class MainController {
         lv.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE) {
+                if (event.getCode() == KeyCode.ENTER) {
                     // run emulator
                     lv.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0,
                             MouseButton.PRIMARY, 2, false, false, false, false, true, false, false, false, false, false, null));
