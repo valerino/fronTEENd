@@ -67,34 +67,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MainController.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="MainController.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/MainController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="12017" max-vertical-offset="16080">
-              <caret line="884" column="46" selection-start-line="884" selection-start-column="46" selection-end-line="884" selection-end-column="46" />
+            <state vertical-scroll-proportion="0.6756757" vertical-offset="5940" max-vertical-offset="16275">
+              <caret line="466" column="7" selection-start-line="466" selection-start-column="7" selection-end-line="466" selection-end-column="7" />
               <folding>
                 <element signature="e#4962#4975#0" expanded="true" />
-                <element signature="e#34289#34312#0" expanded="true" />
+                <element signature="e#34512#34535#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README.txt" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/README.txt">
+      <file leaf-file-name="Emulator.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/Emulator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.83114445" vertical-offset="1882" max-vertical-offset="2415">
-              <caret line="155" column="0" selection-start-line="155" selection-start-column="0" selection-end-line="155" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="mednafen-gba.json" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/emudefs/mednafen-gba.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
-              <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3150">
+              <caret line="68" column="16" selection-start-line="68" selection-start-column="16" selection-end-line="68" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -127,7 +117,17 @@
         <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/emudefs/daphne.json">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="127" max-vertical-offset="660">
-              <caret line="34" column="19" selection-start-line="34" selection-start-column="19" selection-end-line="34" selection-end-column="19" />
+              <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Settings.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/Settings.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="2379" max-vertical-offset="2925">
+              <caret line="45" column="60" selection-start-line="45" selection-start-column="28" selection-end-line="45" selection-end-column="60" />
               <folding />
             </state>
           </provider>
@@ -143,35 +143,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="vice.json" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/emudefs/vice.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="285">
-              <caret line="10" column="26" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Main.fxml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/Main.fxml">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="2460">
               <caret line="26" column="34" selection-start-line="26" selection-start-column="34" selection-end-line="26" selection-end-column="34" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Utils.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/Utils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1215" max-vertical-offset="2985">
-              <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-              <folding>
-                <element signature="e#5935#5936#0" expanded="true" />
-                <element signature="e#5984#5985#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -224,8 +201,8 @@
         <option value="$PROJECT_DIR$/src/com/valerino/fronteend/Emulator.java" />
         <option value="$PROJECT_DIR$/src/com/valerino/fronteend/Utils.java" />
         <option value="$PROJECT_DIR$/src/com/valerino/fronteend/Main.fxml" />
-        <option value="$PROJECT_DIR$/src/com/valerino/fronteend/MainController.java" />
         <option value="$PROJECT_DIR$/README.txt" />
+        <option value="$PROJECT_DIR$/src/com/valerino/fronteend/MainController.java" />
       </list>
     </option>
   </component>
@@ -380,6 +357,10 @@
               <option name="myItemId" value="fronteend" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Settings" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ClassTreeNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -423,6 +404,24 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="MainController" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ClassTreeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="fronTEENd" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="fronTEENd" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="fronteend" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -814,10 +813,18 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/valerino/fronteend/MainController.java</url>
+          <line>364</line>
+          <properties />
+          <option name="timeStamp" value="111" />
+        </line-breakpoint>
+      </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="111" />
+      <option name="time" value="112" />
     </breakpoint-manager>
   </component>
   <component name="antWorkspaceConfiguration">
@@ -838,7 +845,7 @@
           <caret line="227" column="42" selection-start-line="227" selection-start-column="42" selection-end-line="227" selection-end-column="42" />
           <folding>
             <element signature="e#4962#4975#0" expanded="true" />
-            <element signature="e#34289#34312#0" expanded="true" />
+            <element signature="e#34512#34535#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -849,7 +856,7 @@
           <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
           <folding>
             <element signature="e#4962#4975#0" expanded="true" />
-            <element signature="e#34289#34312#0" expanded="true" />
+            <element signature="e#34512#34535#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -884,10 +891,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1545">
           <caret line="97" column="0" selection-start-line="97" selection-start-column="0" selection-end-line="97" selection-end-column="0" />
-          <folding>
-            <element signature="e#5181#5182#0" expanded="true" />
-            <element signature="e#5217#5218#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1079,14 +1083,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/Settings.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1303" max-vertical-offset="2925">
-          <caret line="123" column="0" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///opt/jdk1.8.0_20/javafx-src.zip!/javafx/event/Event.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="2144" max-vertical-offset="2535">
@@ -1100,17 +1096,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
           <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/Emulator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="864" max-vertical-offset="3180">
-          <caret line="213" column="26" selection-start-line="213" selection-start-column="26" selection-end-line="213" selection-end-column="26" />
-          <folding>
-            <element signature="e#5181#5182#0" expanded="true" />
-            <element signature="e#5217#5218#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1154,25 +1139,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/emudefs/daphne.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="127" max-vertical-offset="660">
-          <caret line="34" column="19" selection-start-line="34" selection-start-column="19" selection-end-line="34" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/RomTreeItem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="194" max-vertical-offset="1110">
-          <caret line="28" column="24" selection-start-line="28" selection-start-column="24" selection-end-line="28" selection-end-column="24" />
-          <folding>
-            <element signature="e#486#487#0" expanded="true" />
-            <element signature="e#514#515#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/emudefs/vice.json">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="285">
@@ -1211,6 +1177,25 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/emudefs/daphne.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="127" max-vertical-offset="660">
+          <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/RomTreeItem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="194" max-vertical-offset="1110">
+          <caret line="28" column="24" selection-start-line="28" selection-start-column="24" selection-end-line="28" selection-end-column="24" />
+          <folding>
+            <element signature="e#486#487#0" expanded="true" />
+            <element signature="e#514#515#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/emudefs/mednafen-sms.json">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
@@ -1219,30 +1204,46 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/Settings.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2379" max-vertical-offset="2925">
+          <caret line="45" column="60" selection-start-line="45" selection-start-column="28" selection-end-line="45" selection-end-column="60" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/emudefs/mednafen-gba.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
+        <state vertical-scroll-proportion="0.13736264" vertical-offset="0" max-vertical-offset="546">
           <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.1688555" vertical-offset="1702" max-vertical-offset="2415">
+          <caret line="155" column="0" selection-start-line="155" selection-start-column="0" selection-end-line="155" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/Emulator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3150">
+          <caret line="68" column="16" selection-start-line="68" selection-start-column="16" selection-end-line="68" selection-end-column="16" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/MainController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="12017" max-vertical-offset="16080">
-          <caret line="884" column="46" selection-start-line="884" selection-start-column="46" selection-end-line="884" selection-end-column="46" />
+        <state vertical-scroll-proportion="0.6756757" vertical-offset="5940" max-vertical-offset="16275">
+          <caret line="466" column="7" selection-start-line="466" selection-start-column="7" selection-end-line="466" selection-end-column="7" />
           <folding>
             <element signature="e#4962#4975#0" expanded="true" />
-            <element signature="e#34289#34312#0" expanded="true" />
+            <element signature="e#34512#34535#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.83114445" vertical-offset="1882" max-vertical-offset="2415">
-          <caret line="155" column="0" selection-start-line="155" selection-start-column="0" selection-end-line="155" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>

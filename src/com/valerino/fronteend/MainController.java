@@ -336,6 +336,21 @@ public class MainController {
     }
 
     /**
+     * enable/disable the clear rw folder button
+     * @param emu the currently selected emulator
+     */
+    private void evaluateRwFolder(Emulator emu) {
+        if (emu.rwFolder() != null) {
+            if (Utils.isFolderEmpty(emu.rwFolder())) {
+                clearRwButton.setVisible(false);
+            }
+            else {
+                clearRwButton.setVisible(true);
+            }
+        }
+    }
+
+    /**
      * load emulator with the choosen rom/set
      * @param emu the emulator
      * @throws IOException
@@ -368,12 +383,7 @@ public class MainController {
                             if (res.get() == ButtonType.OK) {
                                 // delete file and update clear button status
                                 f.delete();
-                                if (Utils.isFolderEmpty(f.getParentFile())) {
-                                    clearRwButton.setVisible(false);
-                                }
-                                else {
-                                    clearRwButton.setVisible(true);
-                                }
+                                evaluateRwFolder(emu);
                             }
                         }
                     }
@@ -446,6 +456,9 @@ public class MainController {
 
         // run emulator
         Utils.runProcess(cmdLine, emu.noCheckReturn());
+
+        // evaluate the rwfolder again
+        evaluateRwFolder(emu);
     }
 
     /**
