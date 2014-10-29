@@ -16,7 +16,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
@@ -99,12 +98,6 @@ public class MainController {
     private FilteredList<TreeItem<RomTreeItem>> _searchList = null;
 
     private int _searchCurrentIndex = 0;
-
-    @FXML
-    private HBox rwSupportHBox;
-
-    @FXML
-    private VBox romsTreeVBox;
 
     /**
      * search info for a rom and display in the webview
@@ -894,14 +887,9 @@ public class MainController {
             else {
                 clearRwButton.setVisible(true);
             }
-            // check if it's already there
-            if (rwSupportHBox.getParent() != romsTreeVBox) {
-                romsTreeVBox.getChildren().add(rwSupportHBox);
-            }
         }
         else {
-            // remove the hbox completely
-            romsTreeVBox.getChildren().remove(rwSupportHBox);
+            rwCheckBox.setVisible(false);
         }
 
         if (newValue.isMame() && newValue.emuBinary().isEmpty()) {
@@ -1063,8 +1051,6 @@ public class MainController {
      */
     public int initController(Stage root) {
         _rootStage = root;
-
-        romsTreeVBox.getChildren().remove(rwSupportHBox);
 
         // handle refresh roms button
         refreshTreeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {

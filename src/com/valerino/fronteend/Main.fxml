@@ -21,7 +21,7 @@
       </HBox>
       <SplitPane dividerPositions="0.41294117647058826" VBox.vgrow="ALWAYS">
          <items>
-            <VBox fx:id="romsTreeVBox" maxHeight="1.7976931348623157E308">
+            <VBox maxHeight="1.7976931348623157E308">
                <children>
                   <BorderPane prefHeight="0.0" prefWidth="462.0">
                      <VBox.margin>
@@ -46,10 +46,11 @@
                      <VBox.margin>
                         <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                      </VBox.margin></TreeView>
-                  <HBox fx:id="rwSupportHBox" alignment="CENTER_RIGHT" spacing="4.0">
+                  <HBox alignment="CENTER_LEFT" spacing="4.0">
                      <children>
-                        <CheckBox fx:id="rwCheckBox" mnemonicParsing="false" text="Enable r/w support" visible="false" />
-                        <Button fx:id="clearRwButton" mnemonicParsing="false" text="Clear r/w folder" visible="false" />
+                        <CheckBox fx:id="customParamsCheckBox" mnemonicParsing="false" text="Use custom parameters" />
+                        <CheckBox fx:id="rwCheckBox" mnemonicParsing="false" text="R/W support" visible="false" />
+                        <Button fx:id="clearRwButton" mnemonicParsing="false" text="Clear R/W folder" visible="false" />
                      </children>
                      <VBox.margin>
                         <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
@@ -111,14 +112,6 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="4.0" GridPane.columnIndex="1">
-                           <children>
-                              <CheckBox fx:id="customParamsCheckBox" mnemonicParsing="false" text="Use custom parameters" />
-                           </children>
-                           <GridPane.margin>
-                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                           </GridPane.margin>
-                        </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="4.0">
                            <children>
                               <Label text="Emulator binary">
@@ -146,7 +139,7 @@
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </GridPane.margin>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="4.0" GridPane.columnIndex="1">
                            <GridPane.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </GridPane.margin>
