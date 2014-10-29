@@ -24,12 +24,10 @@ without it to affect the original stored settings.
 Q: what's the 'Read/Write support' checkbox for ?
 A: if the emulator uses r/w images (i.e. c64/amiga/... emulators which uses floppy images), you may want them to be read/write.
 To not touch the original image, fronTEENd copies the selected rom/set to its private (%HOME%/fronteend/%EMUNAME%) folder
-and uses the copied image to run the emulator. If an emulator is run with 'Read/Write support' enabled, the image is not
-deleted at emulator's exit, so the next time you will run the same image the copied one will be used instead. Use the
-'Clear Read/Write folder' button to delete the copy.
-
-Q: may i improve/fork it ?
-A: sure! just quote me as the original author/idea :)
+and uses the copied image to run the emulator.
+If an emulator has been run once with 'Read/Write support' enabled, the image is not deleted at emulator's exit, 
+so the next time you will run the same image you will be asked to use the copied one instead, or to delete it and use the original one.
+You may also use the 'Clear Read/Write folder' button to delete all the stored copies for the current emulator.
 
 Q: how do i add my own emulator definitions ?
 A: here is a sample json, fronTEENd should work with almost any emulator supporting execution from the commandline.
