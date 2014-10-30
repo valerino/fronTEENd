@@ -70,8 +70,8 @@
       <file leaf-file-name="MainController.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/MainController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.9230769" vertical-offset="6948" max-vertical-offset="18975">
-              <caret line="496" column="7" selection-start-line="496" selection-start-column="7" selection-end-line="496" selection-end-column="7" />
+            <state vertical-scroll-proportion="0.8592871" vertical-offset="16162" max-vertical-offset="19515">
+              <caret line="1108" column="36" selection-start-line="1108" selection-start-column="36" selection-end-line="1108" selection-end-column="36" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#3545#3847#0" expanded="true" />
@@ -117,40 +117,40 @@
                 <element signature="e#36464#36487#0" expanded="true" />
                 <element signature="e#36491#36879#0" expanded="true" />
                 <element signature="e#36864#36865#0" expanded="true" />
-                <element signature="e#38602#38772#0" expanded="true" />
-                <element signature="e#38761#38762#0" expanded="true" />
-                <element signature="e#38850#39016#0" expanded="true" />
-                <element signature="e#39005#39006#0" expanded="true" />
-                <element signature="e#39133#39307#0" expanded="true" />
-                <element signature="e#39296#39297#0" expanded="true" />
-                <element signature="e#39390#39640#0" expanded="true" />
-                <element signature="e#39629#39630#0" expanded="true" />
-                <element signature="e#39729#39973#0" expanded="true" />
-                <element signature="e#39962#39963#0" expanded="true" />
-                <element signature="e#40071#40315#0" expanded="true" />
-                <element signature="e#40304#40305#0" expanded="true" />
-                <element signature="e#40408#40577#0" expanded="true" />
-                <element signature="e#40566#40567#0" expanded="true" />
-                <element signature="e#40663#40910#0" expanded="true" />
-                <element signature="e#40899#40900#0" expanded="true" />
-                <element signature="e#41025#41211#0" expanded="true" />
-                <element signature="e#41200#41201#0" expanded="true" />
-                <element signature="e#41293#41464#0" expanded="true" />
-                <element signature="e#41453#41454#0" expanded="true" />
-                <element signature="e#41546#41714#0" expanded="true" />
-                <element signature="e#41703#41704#0" expanded="true" />
-                <element signature="e#41763#41932#0" expanded="true" />
-                <element signature="e#41921#41922#0" expanded="true" />
-                <element signature="e#42001#42174#0" expanded="true" />
-                <element signature="e#42163#42164#0" expanded="true" />
-                <element signature="e#42236#42410#0" expanded="true" />
-                <element signature="e#42399#42400#0" expanded="true" />
-                <element signature="e#42482#42651#0" expanded="true" />
-                <element signature="e#42640#42641#0" expanded="true" />
-                <element signature="e#42725#42894#0" expanded="true" />
-                <element signature="e#42883#42884#0" expanded="true" />
-                <element signature="e#43528#43529#0" expanded="true" />
-                <element signature="e#43597#43598#0" expanded="true" />
+                <element signature="e#39798#39964#0" expanded="true" />
+                <element signature="e#39953#39954#0" expanded="true" />
+                <element signature="e#40050#40220#0" expanded="true" />
+                <element signature="e#40209#40210#0" expanded="true" />
+                <element signature="e#40298#40464#0" expanded="true" />
+                <element signature="e#40453#40454#0" expanded="true" />
+                <element signature="e#40581#40755#0" expanded="true" />
+                <element signature="e#40744#40745#0" expanded="true" />
+                <element signature="e#40838#41088#0" expanded="true" />
+                <element signature="e#41077#41078#0" expanded="true" />
+                <element signature="e#41177#41421#0" expanded="true" />
+                <element signature="e#41410#41411#0" expanded="true" />
+                <element signature="e#41519#41763#0" expanded="true" />
+                <element signature="e#41752#41753#0" expanded="true" />
+                <element signature="e#41856#42025#0" expanded="true" />
+                <element signature="e#42014#42015#0" expanded="true" />
+                <element signature="e#42111#42358#0" expanded="true" />
+                <element signature="e#42347#42348#0" expanded="true" />
+                <element signature="e#42473#42659#0" expanded="true" />
+                <element signature="e#42648#42649#0" expanded="true" />
+                <element signature="e#42741#42912#0" expanded="true" />
+                <element signature="e#42901#42902#0" expanded="true" />
+                <element signature="e#42994#43162#0" expanded="true" />
+                <element signature="e#43151#43152#0" expanded="true" />
+                <element signature="e#43211#43380#0" expanded="true" />
+                <element signature="e#43369#43370#0" expanded="true" />
+                <element signature="e#43449#43622#0" expanded="true" />
+                <element signature="e#43611#43612#0" expanded="true" />
+                <element signature="e#43684#43858#0" expanded="true" />
+                <element signature="e#43847#43848#0" expanded="true" />
+                <element signature="e#43930#44099#0" expanded="true" />
+                <element signature="e#44088#44089#0" expanded="true" />
+                <element signature="e#44173#44342#0" expanded="true" />
+                <element signature="e#44331#44332#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -171,10 +171,15 @@
       <file leaf-file-name="Settings.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/Settings.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="578" max-vertical-offset="2955">
-              <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="870" max-vertical-offset="3225">
+              <caret line="98" column="8" selection-start-line="98" selection-start-column="8" selection-end-line="98" selection-end-column="8" />
               <folding>
-                <element signature="e#1585#1586#0" expanded="true" />
+                <element signature="e#1593#1594#0" expanded="true" />
+                <element signature="e#1638#1639#0" expanded="true" />
+                <element signature="e#2203#2204#0" expanded="true" />
+                <element signature="e#2256#2257#0" expanded="true" />
+                <element signature="e#2417#2418#0" expanded="true" />
+                <element signature="e#2470#2471#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -200,22 +205,15 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="vice-pet.json" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/emudefs/vice-pet.json">
+      <file leaf-file-name="Main.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="300">
-              <caret line="12" column="27" selection-start-line="12" selection-start-column="27" selection-end-line="12" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="vice-c128.json" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/emudefs/vice-c128.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="300">
-              <caret line="12" column="27" selection-start-line="12" selection-start-column="27" selection-end-line="12" selection-end-column="27" />
-              <folding />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="600">
+              <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+              <folding>
+                <element signature="e#429#430#0" expanded="true" />
+                <element signature="e#457#458#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -229,16 +227,6 @@
                 <element signature="e#4405#4406#0" expanded="true" />
                 <element signature="e#4454#4455#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="vice-64.json" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/emudefs/vice-64.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="285">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -273,7 +261,6 @@
         <option value="$PROJECT_DIR$/src/com/valerino/fronteend/emudefs/snes9x.json" />
         <option value="$PROJECT_DIR$/src/com/valerino/fronteend/RomTreeItem.java" />
         <option value="$PROJECT_DIR$/src/com/valerino/fronteend/emudefs/vice.json" />
-        <option value="$PROJECT_DIR$/src/com/valerino/fronteend/Settings.java" />
         <option value="$PROJECT_DIR$/src/com/valerino/fronteend/emudefs/fuse.json" />
         <option value="$PROJECT_DIR$/src/com/valerino/fronteend/emudefs/gens.json" />
         <option value="$PROJECT_DIR$/src/com/valerino/fronteend/emudefs/mame.json" />
@@ -282,7 +269,6 @@
         <option value="$PROJECT_DIR$/src/com/valerino/fronteend/emudefs/fceux.json" />
         <option value="$PROJECT_DIR$/src/com/valerino/fronteend/hide_empty.css" />
         <option value="$PROJECT_DIR$/src/com/valerino/fronteend/style.css" />
-        <option value="$PROJECT_DIR$/src/com/valerino/fronteend/Main.java" />
         <option value="$PROJECT_DIR$/src/com/valerino/fronteend/emudefs/mednafen.json" />
         <option value="$PROJECT_DIR$/src/com/valerino/fronteend/emudefs/mednafen-vba.json" />
         <option value="$PROJECT_DIR$/src/com/valerino/fronteend/emudefs/mednafen-gba.json" />
@@ -297,6 +283,8 @@
         <option value="$PROJECT_DIR$/src/com/valerino/fronteend/emudefs/vice-c128.json" />
         <option value="$PROJECT_DIR$/src/com/valerino/fronteend/fronteend.css" />
         <option value="$PROJECT_DIR$/src/com/valerino/fronteend/Utils.java" />
+        <option value="$PROJECT_DIR$/src/com/valerino/fronteend/Settings.java" />
+        <option value="$PROJECT_DIR$/src/com/valerino/fronteend/Main.java" />
         <option value="$PROJECT_DIR$/src/com/valerino/fronteend/MainController.java" />
       </list>
     </option>
@@ -392,106 +380,6 @@
               <option name="myItemId" value="External Libraries" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; 1.8 &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="fronTEENd" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; 1.8 &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jfxrt.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="fronTEENd" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; 1.8 &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jfxrt.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="javafx" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="fronTEENd" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; 1.8 &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jfxrt.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="javafx" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scene" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="fronTEENd" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; 1.8 &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jfxrt.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="javafx" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scene" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Scene" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ClassTreeNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -578,10 +466,6 @@
               <option name="myItemId" value="fronteend" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="RomTreeItem" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ClassTreeNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -622,6 +506,10 @@
               <option name="myItemId" value="fronteend" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ClassTreeNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -634,6 +522,46 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="lib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="fronTEENd" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="fronTEENd" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="openjfx-dialogs-1.0.2.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="fronTEENd" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="fronTEENd" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="openjfx-dialogs-1.0.2.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="control" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -897,7 +825,7 @@
     <frame x="1679" y="0" width="1682" height="1025" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15873016" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="1780" y="100" width="1480" height="825" />
+      <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23137973" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="1780" y="100" width="1480" height="825" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -957,29 +885,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/emudefs/daphne.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1710">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/Emulator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1545">
-          <caret line="97" column="0" selection-start-line="97" selection-start-column="0" selection-end-line="97" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="360">
-          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/Main.fxml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="510">
@@ -992,7 +897,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="360">
           <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#429#430#0" expanded="true" />
+            <element signature="e#457#458#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1227,14 +1135,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="735">
-          <caret line="23" column="23" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/emudefs/daphne.json">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="127" max-vertical-offset="660">
@@ -1323,16 +1223,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/Settings.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="578" max-vertical-offset="2955">
-          <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
-          <folding>
-            <element signature="e#1585#1586#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/RomTreeItem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="323" max-vertical-offset="1110">
@@ -1354,10 +1244,60 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/openjfx-dialogs-1.0.2.jar!/javafx/scene/control/DialogPane.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="8.4" vertical-offset="360" max-vertical-offset="1860">
+          <caret line="11" column="36" selection-start-line="11" selection-start-column="36" selection-end-line="11" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/openjfx-dialogs-1.0.2.jar!/javafx/scene/control/Dialog.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.0" vertical-offset="0" max-vertical-offset="2325">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/openjfx-dialogs-1.0.2.jar!/javafx/scene/control/HeavyweightDialog.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.0" vertical-offset="0" max-vertical-offset="1095">
+          <caret line="6" column="6" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/Settings.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="870" max-vertical-offset="3225">
+          <caret line="98" column="8" selection-start-line="98" selection-start-column="8" selection-end-line="98" selection-end-column="8" />
+          <folding>
+            <element signature="e#1593#1594#0" expanded="true" />
+            <element signature="e#1638#1639#0" expanded="true" />
+            <element signature="e#2203#2204#0" expanded="true" />
+            <element signature="e#2256#2257#0" expanded="true" />
+            <element signature="e#2417#2418#0" expanded="true" />
+            <element signature="e#2470#2471#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="600">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding>
+            <element signature="e#429#430#0" expanded="true" />
+            <element signature="e#457#458#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/valerino/fronteend/MainController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9230769" vertical-offset="6948" max-vertical-offset="18975">
-          <caret line="496" column="7" selection-start-line="496" selection-start-column="7" selection-end-line="496" selection-end-column="7" />
+        <state vertical-scroll-proportion="0.8592871" vertical-offset="16162" max-vertical-offset="19515">
+          <caret line="1108" column="36" selection-start-line="1108" selection-start-column="36" selection-end-line="1108" selection-end-column="36" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#3545#3847#0" expanded="true" />
@@ -1403,40 +1343,40 @@
             <element signature="e#36464#36487#0" expanded="true" />
             <element signature="e#36491#36879#0" expanded="true" />
             <element signature="e#36864#36865#0" expanded="true" />
-            <element signature="e#38602#38772#0" expanded="true" />
-            <element signature="e#38761#38762#0" expanded="true" />
-            <element signature="e#38850#39016#0" expanded="true" />
-            <element signature="e#39005#39006#0" expanded="true" />
-            <element signature="e#39133#39307#0" expanded="true" />
-            <element signature="e#39296#39297#0" expanded="true" />
-            <element signature="e#39390#39640#0" expanded="true" />
-            <element signature="e#39629#39630#0" expanded="true" />
-            <element signature="e#39729#39973#0" expanded="true" />
-            <element signature="e#39962#39963#0" expanded="true" />
-            <element signature="e#40071#40315#0" expanded="true" />
-            <element signature="e#40304#40305#0" expanded="true" />
-            <element signature="e#40408#40577#0" expanded="true" />
-            <element signature="e#40566#40567#0" expanded="true" />
-            <element signature="e#40663#40910#0" expanded="true" />
-            <element signature="e#40899#40900#0" expanded="true" />
-            <element signature="e#41025#41211#0" expanded="true" />
-            <element signature="e#41200#41201#0" expanded="true" />
-            <element signature="e#41293#41464#0" expanded="true" />
-            <element signature="e#41453#41454#0" expanded="true" />
-            <element signature="e#41546#41714#0" expanded="true" />
-            <element signature="e#41703#41704#0" expanded="true" />
-            <element signature="e#41763#41932#0" expanded="true" />
-            <element signature="e#41921#41922#0" expanded="true" />
-            <element signature="e#42001#42174#0" expanded="true" />
-            <element signature="e#42163#42164#0" expanded="true" />
-            <element signature="e#42236#42410#0" expanded="true" />
-            <element signature="e#42399#42400#0" expanded="true" />
-            <element signature="e#42482#42651#0" expanded="true" />
-            <element signature="e#42640#42641#0" expanded="true" />
-            <element signature="e#42725#42894#0" expanded="true" />
-            <element signature="e#42883#42884#0" expanded="true" />
-            <element signature="e#43528#43529#0" expanded="true" />
-            <element signature="e#43597#43598#0" expanded="true" />
+            <element signature="e#39798#39964#0" expanded="true" />
+            <element signature="e#39953#39954#0" expanded="true" />
+            <element signature="e#40050#40220#0" expanded="true" />
+            <element signature="e#40209#40210#0" expanded="true" />
+            <element signature="e#40298#40464#0" expanded="true" />
+            <element signature="e#40453#40454#0" expanded="true" />
+            <element signature="e#40581#40755#0" expanded="true" />
+            <element signature="e#40744#40745#0" expanded="true" />
+            <element signature="e#40838#41088#0" expanded="true" />
+            <element signature="e#41077#41078#0" expanded="true" />
+            <element signature="e#41177#41421#0" expanded="true" />
+            <element signature="e#41410#41411#0" expanded="true" />
+            <element signature="e#41519#41763#0" expanded="true" />
+            <element signature="e#41752#41753#0" expanded="true" />
+            <element signature="e#41856#42025#0" expanded="true" />
+            <element signature="e#42014#42015#0" expanded="true" />
+            <element signature="e#42111#42358#0" expanded="true" />
+            <element signature="e#42347#42348#0" expanded="true" />
+            <element signature="e#42473#42659#0" expanded="true" />
+            <element signature="e#42648#42649#0" expanded="true" />
+            <element signature="e#42741#42912#0" expanded="true" />
+            <element signature="e#42901#42902#0" expanded="true" />
+            <element signature="e#42994#43162#0" expanded="true" />
+            <element signature="e#43151#43152#0" expanded="true" />
+            <element signature="e#43211#43380#0" expanded="true" />
+            <element signature="e#43369#43370#0" expanded="true" />
+            <element signature="e#43449#43622#0" expanded="true" />
+            <element signature="e#43611#43612#0" expanded="true" />
+            <element signature="e#43684#43858#0" expanded="true" />
+            <element signature="e#43847#43848#0" expanded="true" />
+            <element signature="e#43930#44099#0" expanded="true" />
+            <element signature="e#44088#44089#0" expanded="true" />
+            <element signature="e#44173#44342#0" expanded="true" />
+            <element signature="e#44331#44332#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1520,7 +1460,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>com.fasterxml.jackson.core:com.springsource.com.fasterxml.jackson.core.jackson-databind:2.0.2</last-edited>
+          <last-edited>org.controlsfx:openjfx-dialogs:1.0.2</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

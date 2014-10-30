@@ -38,6 +38,8 @@ public class Settings {
         public String sevenZipPath = "";
 
         public String lastSelectedEmu = "";
+
+        public boolean showExitConfirmation = true;
     }
 
     protected Settings () {
@@ -83,6 +85,22 @@ public class Settings {
      */
     public File baseFolder() {
         return _baseFolder;
+    }
+
+    /**
+     * show the exit confirmation box ?
+     * @return
+     */
+    public boolean showExitConfirmation () {
+        return _settings.showExitConfirmation;
+    }
+
+    /**
+     * wether to show the exit confirmation box or not
+     * @param show true to show
+     */
+    public void setShowExitConfirmation (boolean show) {
+        _settings.showExitConfirmation = show;
     }
 
     /**

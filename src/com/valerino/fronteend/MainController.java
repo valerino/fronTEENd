@@ -1097,12 +1097,55 @@ public class MainController {
     }
 
     /**
+     * application onclose handler
+     * @param event the event
+     */
+    private void onAppClose(WindowEvent event) {
+        if (!Settings.getInstance().showExitConfirmation()) {
+            // do not show
+            return;
+        }
+
+        // use a modified alert here
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, null);
+        VBox vb = new VBox(8);
+        Label l = new Label("Are you sure you want to quit ?");
+        final CheckBox cb = new CheckBox("Do not show anymore");
+        vb.getChildren().add(l);
+        vb.getChildren().add(cb);
+        alert.getDialogPane().setContent(vb);
+        Optional<ButtonType> res = alert.showAndWait();
+        if (res.get() == ButtonType.OK) {
+            // update the show confirmation state, cleanup and exit
+            Settings.getInstance().setShowExitConfirmation(!cb.isSelected());
+            try {
+                Settings.getInstance().serialize();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Utils.clearFolder(Settings.getInstance().tmpFolder());
+            return;
+        }
+        else {
+            // ignore
+            event.consume();
+        }
+    }
+    /**
      * initialize application
      * @param root the root stage
      * @return 0 on success
      */
     public int initController(Stage root) {
         _rootStage = root;
+
+        // set onclose button
+        _rootStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                onAppClose(event);
+            }
+        });
 
         // handle refresh roms button
         refreshTreeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -1248,12 +1291,5 @@ public class MainController {
                 MouseButton.PRIMARY, 1, false, false, false, false, true, false, false, false, false, false, null));
 
         return 0;
-    }
-
-    /**
-     * cleanup
-     */
-    public void cleanupController() {
-        Utils.clearFolder(Settings.getInstance().tmpFolder());
     }
 }

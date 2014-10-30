@@ -5,17 +5,12 @@ package com.valerino.fronteend;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
-import java.util.Optional;
 
 public class Main extends Application {
 
@@ -35,20 +30,6 @@ public class Main extends Application {
         primaryStage.setTitle(APP_NAME);
         primaryStage.setMaximized(true);
         primaryStage.setScene(s);
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to quit ?");
-                Optional<ButtonType> res = alert.showAndWait();
-                if (res.get() != ButtonType.OK) {
-                    // avoid closing
-                    event.consume();
-                } else {
-                    // cleanup
-                    mc.cleanupController();
-                }
-            }
-        });
         primaryStage.show();
 
         // init
