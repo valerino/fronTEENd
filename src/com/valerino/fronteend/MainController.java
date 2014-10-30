@@ -23,7 +23,6 @@ import javafx.stage.*;
 
 import java.io.*;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 import java.util.function.Predicate;
 
 /**
@@ -277,26 +276,9 @@ public class MainController {
                 // dump to rw folder
                 if (Utils.isCompressed(it.file())) {
                     // decompress
-                    _rootStage.getScene().setCursor(Cursor.WAIT);
-                    final int[] res = {0};
-                    Runnable r = new Runnable() {
-                        @Override
-                        public void run() {
-                            res[0] = Utils.decompress(Settings.getInstance().sevenZipPath(), it.file(), dstFolder);
-                            _rootStage.getScene().setCursor(Cursor.DEFAULT);
-                        }
-                    };
-                    try {
-                        Utils.runAndWait(r);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
-                    finally {
-                        if (res[0] != 0) {
-                            return null;
-                        }
+                    int res = Utils.decompress(Settings.getInstance().sevenZipPath(), it.file(), dstFolder);
+                    if (res != 0) {
+                        return null;
                     }
                 }
                 else {
@@ -369,109 +351,147 @@ public class MainController {
      * @throws IOException
      */
     private void runEmulator(final Emulator emu) throws IOException {
-        // get the selected items
-        List<RomTreeItem> l = getRomsTreeSelection();
-        if (l == null || l.isEmpty()) {
-            return;
+        romsTree.setCursor(Cursor.WAIT);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
-        if (emu.supportRw()) {
-            // handle r/w support
-            for (RomTreeItem i : l) {
-                File f = new File (emu.rwFolder(), i.file().getName());
-                boolean overwrite = true;
-                if (f.exists()) {
-                    // already found, ask to load it instead
-                    Alert al = new Alert(Alert.AlertType.CONFIRMATION, f.getName() + " found in the r/w folder. Use it ?");
-                    Optional<ButtonType> res = al.showAndWait();
-                    if (res.get() == ButtonType.OK) {
-                        i.setFile(f);
-                        overwrite = false;
-                    }
-                    else {
-                        // ask to delete (only if checkbox is not selected)
-                        if (!rwCheckBox.isSelected()) {
-                            al = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + f.getName() + "\nfrom the r/w folder ?");
-                            res = al.showAndWait();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                // get the selected items
+                List<RomTreeItem> l = getRomsTreeSelection();
+                romsTree.setCursor(Cursor.DEFAULT);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+
+                if (l == null || l.isEmpty()) {
+                    return;
+                }
+
+                if (emu.supportRw()) {
+                    // handle r/w support
+                    for (RomTreeItem i : l) {
+                        File f = new File (emu.rwFolder(), i.file().getName());
+                        boolean overwrite = true;
+                        if (f.exists()) {
+                            // already found, ask to load it instead
+                            Alert al = new Alert(Alert.AlertType.CONFIRMATION, f.getName() + " found in the r/w folder. Use it ?");
+                            Optional<ButtonType> res = al.showAndWait();
                             if (res.get() == ButtonType.OK) {
-                                // delete file and update clear button status
-                                f.delete();
-                                evaluateRwFolder(emu);
+                                i.setFile(f);
+                                overwrite = false;
                             }
+                            else {
+                                // ask to delete (only if checkbox is not selected)
+                                if (!rwCheckBox.isSelected()) {
+                                    al = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + f.getName() + "\nfrom the r/w folder ?");
+                                    res = al.showAndWait();
+                                    if (res.get() == ButtonType.OK) {
+                                        // delete file and update clear button status
+                                        f.delete();
+                                        evaluateRwFolder(emu);
+                                    }
+                                }
+                            }
+                        }
+                        if (overwrite && rwCheckBox.isSelected()) {
+                            // copy to r/w folder
+                            boolean r = false;
+                            try {
+                                r = Utils.copyFile(i.file(), f, true);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            if (r == false) {
+                                Alert al = new Alert(Alert.AlertType.ERROR, "Error copying to rw folder:\n" + i.file().getAbsolutePath());
+                                Optional<ButtonType> res = al.showAndWait();
+                                return;
+                            }
+
+                            // change path to the rw folder one
+                            i.setFile(f);
                         }
                     }
                 }
-                if (overwrite && rwCheckBox.isSelected()) {
-                    // copy to r/w folder
-                    boolean r = Utils.copyFile(i.file(),f,true);
-                    if (r == false) {
-                        Alert al = new Alert(Alert.AlertType.ERROR, "Error copying to rw folder:\n" + i.file().getAbsolutePath());
-                        Optional<ButtonType> res = al.showAndWait();
-                        return;
-                    }
 
-                    // change path to the rw folder one
-                    i.setFile(f);
-                }
-            }
-        }
-
-        // show custom parameters box if needed
-        String params;
-        if (customParamsCheckBox.isSelected()) {
-            // we must show the custom parameters box
-            customParamsCheckBox.setSelected(false);
-            params = getCustomParameters(emu.emuParams());
-        }
-        else {
-            params = emu.emuParams();
-        }
-
-        // build commandline
-        String path = "";
-        if (emu.stripPath()) {
-            // path is always set to the first selection's path
-            path = l.get(0).file().getParent();
-        }
-        List<String> ar = new ArrayList<String>();
-        ar.add(emu.emuBinary());
-        String[] tokens = params.split(" ");
-        int num = l.size();
-        for (String s : tokens) {
-            s = s.replace("%path%", path);
-            s = s.replace("%pathsep%", path + File.separator);
-            for (int i=0; i < num; i++) {
-                final String placeHolder = "%" + (i+1) + "%";
-                if (emu.isMame() || !emu.roms().isEmpty()) {
-                    s = s.replace(placeHolder, l.get(i).name());
+                // show custom parameters box if needed
+                String params;
+                if (customParamsCheckBox.isSelected()) {
+                    // we must show the custom parameters box
+                    customParamsCheckBox.setSelected(false);
+                    params = getCustomParameters(emu.emuParams());
                 }
                 else {
-                    if (emu.stripPath()) {
-                        s = s.replace(placeHolder, l.get(i).file().getName());
+                    params = emu.emuParams();
+                }
+
+                // build commandline
+                String path = "";
+                if (emu.stripPath()) {
+                    // path is always set to the first selection's path
+                    path = l.get(0).file().getParent();
+                }
+                List<String> ar = new ArrayList<String>();
+                ar.add(emu.emuBinary());
+                String[] tokens = params.split(" ");
+                int num = l.size();
+                for (String s : tokens) {
+                    s = s.replace("%path%", path);
+                    s = s.replace("%pathsep%", path + File.separator);
+                    for (int i=0; i < num; i++) {
+                        final String placeHolder = "%" + (i+1) + "%";
+                        if (emu.isMame() || !emu.roms().isEmpty()) {
+                            s = s.replace(placeHolder, l.get(i).name());
+                        }
+                        else {
+                            if (emu.stripPath()) {
+                                s = s.replace(placeHolder, l.get(i).file().getName());
+                            }
+                            else {
+                                s = s.replace(placeHolder, l.get(i).file().getAbsolutePath());
+                            }
+                        }
                     }
-                    else {
-                        s = s.replace(placeHolder, l.get(i).file().getAbsolutePath());
+                    ar.add(s);
+                }
+
+                // check if there's more roms placeholder than the ones we selected
+                for (final String s : ar) {
+                    if (s.startsWith("%") && s.endsWith("%")) {
+                        ar.remove(s);
                     }
                 }
+
+                String[] cmdLine = { };
+                cmdLine = ar.toArray(cmdLine);
+
+                // run emulator
+                _rootStage.getScene().setCursor(Cursor.WAIT);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                final String[] finalCmdLine = cmdLine;
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        Utils.runProcess(finalCmdLine, !emu.noCheckReturn());
+                        _rootStage.getScene().setCursor(Cursor.DEFAULT);
+
+                        // evaluate the rwfolder again
+                        evaluateRwFolder(emu);
+                    }
+                });
             }
-            ar.add(s);
-        }
-
-        // check if there's more roms placeholder than the ones we selected
-        for (final String s : ar) {
-            if (s.startsWith("%") && s.endsWith("%")) {
-                ar.remove(s);
-            }
-        }
-
-        String[] cmdLine = { };
-        cmdLine = ar.toArray(cmdLine);
-
-        // run emulator
-        Utils.runProcess(cmdLine, emu.noCheckReturn());
-
-        // evaluate the rwfolder again
-        evaluateRwFolder(emu);
+        });
     }
 
     /**
@@ -621,6 +641,12 @@ public class MainController {
      */
     private void addRoms(final Emulator emu) {
         _rootStage.getScene().setCursor(Cursor.WAIT);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         final ObservableList<TreeItem<RomTreeItem>> c = romsTree.getRoot().getChildren();
         c.clear();
         romsTree.getSelectionModel().clearSelection();
@@ -1032,7 +1058,7 @@ public class MainController {
             if (!f.isEmpty()) {
                 // scroll to the first found item
                 romsTree.scrollTo(f.getSourceIndex(0));
-                romsTree.getSelectionModel().select(f.getSourceIndex(0));
+                //romsTree.getSelectionModel().select(f.getSourceIndex(0));
             }
         }
     }
@@ -1041,7 +1067,7 @@ public class MainController {
      * handle romstree clicks (doubleclick only, to run emulator)
      * @param event the MouseEvent
      */
-    private void romsTreeClick(MouseEvent event) {
+    private void romsTreeDoubleClick(MouseEvent event) {
         if (event.getClickCount() != 2) {
             return;
         }
@@ -1176,7 +1202,7 @@ public class MainController {
         romsTree.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                romsTreeClick(event);
+                romsTreeDoubleClick(event);
             }
         });
 

@@ -1,13 +1,8 @@
 package com.valerino.fronteend;
 
-import javafx.application.Platform;
 import javafx.scene.control.Alert;
 
 import java.io.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * generic utilities
@@ -22,8 +17,8 @@ public class Utils {
      * @return
      */
     public static int decompress(final String sevenZipPath, final File what, final File to) {
-        String[] cmdLine = new String[] { sevenZipPath, "x", what.getAbsolutePath(), "-o" + to.getAbsolutePath()};
-        int r = Utils.runProcess(cmdLine);
+        String[] cmdLine = new String[] { sevenZipPath, "x", what.getAbsolutePath(), "-y", "-o" + to.getAbsolutePath()};
+        int r = Utils.runProcess(cmdLine, true);
         return r;
     }
 
@@ -45,53 +40,6 @@ public class Utils {
             }
         }
         return false;
-    }
-
-    /**
-     * runs in the ui thread and wait for completion
-     * @param run the Runnable
-     * @throws InterruptedException
-     * @throws ExecutionException
-     */
-    public static void runAndWait(final Runnable run) throws InterruptedException, ExecutionException {
-        if (Platform.isFxApplicationThread()) {
-            try {
-                run.run();
-            } catch (Exception e) {
-                throw new ExecutionException(e);
-            }
-        } else {
-            final Lock lock = new ReentrantLock();
-            final Condition condition = lock.newCondition();
-            final Throwable[] t = {null};
-            lock.lock();
-            try {
-                Platform.runLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        lock.lock();
-                        try {
-                            run.run();
-                        } catch (Throwable e) {
-                            t[0] = e;
-                        } finally {
-                            try {
-                                condition.signal();
-                            } finally {
-                                lock.unlock();
-                            }
-                        }
-                    }
-                });
-                condition.await();
-                if (t[0] != null) {
-                    throw new ExecutionException(t[0]);
-                }
-            } finally {
-                lock.unlock();
-            }
-        }
     }
 
     /**
@@ -154,21 +102,25 @@ public class Utils {
         return false;
     }
     /**
-     * run a process
+     * run a process and wait for completion
      * @param cmdLine the commandline to be run
-     * @param noCheckReturn true to not check for exitcode
+     * @param checkReturn true to check for exitcode != 0 (wait for execution), false to not wait
      * @return
      */
-    public static int runProcess(String[] cmdLine, boolean noCheckReturn) {
+    public static int runProcess(String[] cmdLine, boolean checkReturn) {
         int r = 0;
         try {
             Process p = Runtime.getRuntime().exec(cmdLine, null, new File(cmdLine[0]).getParentFile());
-            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            while ((reader.readLine()) != null) {}
-            int res = p.waitFor();
-            reader.close();
+            int res = 0;
+            if (checkReturn) {
+                // wait and check return code
+                BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                while ((reader.readLine()) != null) {}
+                res = p.waitFor();
+                reader.close();
+            }
 
-            if (res != 0 && !noCheckReturn) {
+            if (res != 0) {
                 String cmd = "";
                 for (final String s : cmdLine) {
                     cmd += (s + " ");
@@ -193,12 +145,11 @@ public class Utils {
     }
 
     /**
-     * run a process
+     * run a process without waiting for execution result
      * @param cmdLine the commandline to be run
      * @return
      */
     public static int runProcess(String[] cmdLine) {
         return runProcess(cmdLine, false);
     }
-
 }
