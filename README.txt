@@ -132,7 +132,16 @@ emulator of choice, simply copy it in your %home%/.fronteend/emudefs folder.
   // i.e. more than one disk to be loaded at the same time (amiga with
   // more than one disk drive). you can use %1%, %2%, ... in the params
   // string to represent the rom/sets.
-  "allowMultiSelect": false
+  "allowMultiSelect": false,
+  
+  // this is an optional warning text (which can be dismissed after the
+  // first view) for emulators needing a particular preconfiguration
+  "warningText": "On linux at least, you need to do the following to run the emulator in fronTEENd:\n. Put this shellscript in the emulator's binary folder:\n#!/bin/sh\nexport LD_LIBRARY_PATH=./lib.\n/daphne $@\n. Use such script as emulator binary.\n\nMoreover, you need to always use custom parameters to load the different sets, specifying different options and framefiles.\nProbably, one day i'll implement this automatically in fronTEENd directly....\n",
+  
+  // this is automatically added by fronTEENd when the user choose to
+  // not show the warning box anymore
+  "warningTextShow": true
+
 }
 ----cut here---
 
