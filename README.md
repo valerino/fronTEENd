@@ -7,9 +7,9 @@ A simple and lightweight generic emulator fronteend without the usual bloat, ful
 
 Screenshots
 -----------
-![alt text](https://github.com/valerino/fronTEENd/tree/master/screenshots/0.png "Standard selection")
+![Image](../screenshots/0.png?raw=true "Standard selection")
 
-![alt text](https://github.com/valerino/fronTEENd/tree/master/screenshots/1.png "Multiple selection")
+![Image](../screenshots/1.png?raw=true "Multiple selection")
 
 Why ?
 -----
