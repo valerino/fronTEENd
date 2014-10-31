@@ -3,7 +3,7 @@ fronTEENd
 
 What is it ?
 ------------
-A simple and lightweight generic emulator fronteend without the usual bloat, fully configurable through JSON and quickly hacked-up in a bunch of days.
+A simple and lightweight generic emulator frontend without the usual bloat, fully configurable through JSON and quickly hacked-up in a bunch of days.
 
 Screenshots
 -----------
@@ -30,7 +30,8 @@ It's portable, and who knows ..... one day it could run on android, if they port
 
 How do i use it ?
 -----------------
-Recompile (you need the Java8 JDK and IntelliJ IDEA) or just download the prebuilt JAR, then run with `[%JAVAHOME%]/bin/java -jar /path/to/fronTEENd.jar`.
+1. Recompile (you need the Java8 JDK and IntelliJ IDEA)
+2. Just download the prebuilt [JAR](https://github.com/valerino/fronTEENd/blob/master/out/artifacts/fronTEENd_jar/fronTEENd.jar), then run with `[%JAVAHOME%]/bin/java -jar /path/to/fronTEENd.jar` (you need the Oracle JAVA8 JRE).
 
 On first run, you need to specify path to the 7zip binary (not included, go to (www.7zip.org), or use `apt get install 7z` for debian-alike distros, or similar).
 
@@ -44,7 +45,7 @@ When such box is checked, you can edit the parameters before running the rom wit
 
 What's the `Read/Write support` checkbox for ?
 ----------------------------------------------
-If the emulator uses R/W images (i.e. c64/amiga/.../generally all emulators using writable media images like floppies), you may want them to be effectively writable, for instance if you play games saving on their disks.
+If the emulator uses R/W images (i.e. `c64`/`amiga`/.../generally all emulators using writable media images like floppies), you may want them to be effectively writable, for instance if you play games saving on their disks.
 
 To not touch the original image (and to allow write support if the image is run from a read-only media as a cd-rom), if the checkbox is enabled fronTEENd copies the selected rom to its private `%HOME%/fronteend/%EMUNAME%` folder and uses the copied image to run the emulator with.
 
@@ -149,7 +150,7 @@ Once you have the json for your emulator of choice, simply copy it in your `%hom
 
 Emulator `<name>` seems to not work with fronTEENd. WTF?!
 ---------------------------------------------------------
-1. Check the emulator from plain commandline first, read its documentation carefully (some emulators like mame needs some configuration files to be set before running for the first time).
+1. Check the emulator from plain commandline first, read its documentation carefully (some emulators like `mame` needs some configuration files to be set before running for the first time).
 2. Improve it yourself and contribute to the project! :)
 
 `emuParams` in the emulator `name` definition do not work
