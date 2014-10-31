@@ -1,6 +1,15 @@
+fronTEENd
+=========
+
 What is it ?
-============
+------------
 A simple and lightweight generic emulator fronteend without the usual bloat, fully configurable through JSON and quickly hacked-up in a bunch of days.
+
+Screenshots
+-----------
+https://github.com/valerino/fronTEENd/screenshots/0.png
+
+https://github.com/valerino/fronTEENd/screenshots/1.png
 
 Why ?
 -----
@@ -143,8 +152,8 @@ Emulator `<name>` seems to not work with fronTEENd. WTF?!
 1. Check the emulator from plain commandline first, read its documentation carefully (some emulators like mame needs some configuration files to be set before running for the first time).
 2. Improve it yourself and contribute to the project! :)
 
-`params` in the emulator definitions do not work
-------------------------------------------------
+`emuParams` in the emulator `name` definition do not work
+---------------------------------------------------------
 Probably they need to be edited with your paths (i.e. for `daphne`, -homedir must be set to the emulator's binary folder).
 
 How do i run i.e. a multi-disk game on Amiga emulator (or any other emulator supporting multiple devices) ?
