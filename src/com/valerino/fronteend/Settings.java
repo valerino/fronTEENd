@@ -184,6 +184,34 @@ public class Settings {
         }
     }
 
+    /**
+     * ask to setup the 7zip binary
+     * @return
+     */
+    public int setup7z() {
+        if (!_settings.sevenZipPath.isEmpty()) {
+            // 7z is already set
+            return 0;
+        }
+
+        Alert al = new Alert(Alert.AlertType.INFORMATION,"Please navigate to 7z binary");
+        al.showAndWait();
+
+        FileChooser fc = new FileChooser();
+        File szip = fc.showOpenDialog(al.getOwner());
+        if (szip == null) {
+            // show a warning box
+            al = new Alert(Alert.AlertType.WARNING, "Beware, without 7zip you will not be able to run compressed sets unless the emulator natively supports that!");
+            al.showAndWait();
+            return 1;
+        }
+        else {
+            // set path to 7zip binary
+            _settings.sevenZipPath = szip.getAbsolutePath();
+        }
+        return 0;
+    }
+
     /** q
      * initialize settings
      * @throws IOException
@@ -197,19 +225,6 @@ public class Settings {
             dumpEmuDefs();
         } catch (IOException e) {
             // 1st run, create the configuration file
-            Alert al = new Alert(Alert.AlertType.INFORMATION,"First run, navigate to 7z binary");
-            al.showAndWait();
-
-            FileChooser fc = new FileChooser();
-            File szip = null;
-            while (szip == null) {
-                szip = fc.showOpenDialog(al.getOwner());
-            }
-
-            // set path to 7zip binary
-            _settings.sevenZipPath = szip.getAbsolutePath();
-
-            // write to file
             serialize();
 
             // dump emulator definitions aswell in the home folder

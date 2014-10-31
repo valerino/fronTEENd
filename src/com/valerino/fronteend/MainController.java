@@ -275,18 +275,22 @@ public class MainController {
 
                 // dump to rw folder
                 if (Utils.isCompressed(it.file())) {
-                    // decompress
-                    int res = Utils.decompress(Settings.getInstance().sevenZipPath(), it.file(), dstFolder);
-                    if (res != 0) {
-                        return null;
+                    // ask for 7z if needed
+                    int sevenZipAvailable = Settings.getInstance().setup7z();
+                    if (sevenZipAvailable == 0) {
+                        // decompress
+                        int res = Utils.decompress(Settings.getInstance().sevenZipPath(), it.file(), dstFolder);
+                        if (res != 0) {
+                            return null;
+                        }
                     }
-                }
-                else {
-                    // just copy
-                    try {
-                        Utils.copyFile(it.file(),new File (dstFolder,it.file().getName()),false);
-                    } catch (IOException e) {
-                        return null;
+                    else {
+                        // just copy, may not work if the emulator do not support compression
+                        try {
+                            Utils.copyFile(it.file(),new File (dstFolder,it.file().getName()),false);
+                        } catch (IOException e) {
+                            return null;
+                        }
                     }
                 }
             }
