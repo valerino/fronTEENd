@@ -31,7 +31,7 @@ It's portable, and who knows ..... one day it could run on android, if they port
 How do i use it ?
 -----------------
 1. Recompile (you need the Java8 JDK and IntelliJ IDEA)
-2. Just download the prebuilt [JAR](https://github.com/valerino/fronTEENd/blob/master/out/artifacts/fronTEENd_jar/fronTEENd.jar), then run with `[%JAVAHOME%]/bin/java -jar /path/to/fronTEENd.jar` (you need the Oracle JAVA8 JRE).
+2. Just download the prebuilt [JAR](https://github.com/valerino/fronTEENd/blob/master/out/artifacts/fronTEENd_jar/fronTEENd.jar?raw=true), then run with `[%JAVAHOME%]/bin/java -jar /path/to/fronTEENd.jar` (you need the Oracle JAVA8 JRE).
 
 On first run, you need to specify path to the 7zip binary (not included, go to (www.7zip.org), or use `apt get install 7z` for debian-alike distros, or similar).
 
