@@ -7,9 +7,9 @@ A simple and lightweight generic emulator fronteend without the usual bloat, ful
 
 Screenshots
 -----------
-![Image](../screenshots/0.png?raw=true "Standard selection")
+![Image](../blob/master/public/screenshots/0.png?raw=true "Standard selection")
 
-![Image](../screenshots/1.png?raw=true "Multiple selection")
+![Image](../blob/master/public/screenshots/1.png?raw=true "Multiple selection")
 
 Why ?
 -----
