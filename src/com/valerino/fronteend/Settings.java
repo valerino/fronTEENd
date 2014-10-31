@@ -217,7 +217,7 @@ public class Settings {
         return 0;
     }
 
-    /** q
+    /**
      * initialize settings
      * @throws IOException
      */
