@@ -5,12 +5,15 @@ A simple and lightweight generic emulator fronteend without the usual bloat, ful
 Why ?
 -----
 The others i found lacked the ease of use i wanted: run fronteend, choose emulator, choose rom, play.
+
 Moreover, fronTEENd supports compressed sets (through 7zip binary, not included), merged sets (a compressed file holding more than a rom) and a simple built-in web-browser which automatically seach Google for the selected
 rom.
 
 Why fronTEENd ?
 ---------------
-It's a frontend for emulators. And emulators reminds me of my teen years, when i spent hours with c64, spectrum, amiga and older computers.
+It's a frontend for emulators. 
+
+And emulators reminds me of my teen years, when i spent hours with c64, spectrum, amiga and older computers.
 
 Why JavaFX ?
 ------------
@@ -19,12 +22,16 @@ It's portable, and who knows ..... one day it could run on android, if they port
 How do i use it ?
 -----------------
 Recompile (you need the Java8 JDK and IntelliJ IDEA) or just download the prebuilt JAR, then run with `[%JAVAHOME%]/bin/java -jar /path/to/fronTEENd.jar`.
+
 On first run, you need to specify path to the 7zip binary (not included, go to (www.7zip.org), or use `apt get install 7z` for debian-alike distros, or similar).
+
 **NOTE: Sometimes i may forgot to commit the prebuilt binary (and, it's not a good practice to use git to store binaries....). I do this just as a favour for the less skilled users, you're advised to build fronTEENd yourself to ensure having the latest version!**
 
 What's the `Use custom parameters` checkbox for ?
 -------------------------------------------------
-Some emulators (i.e. `daphne`) needs customized parameters different for each romset. When such box is checked, you can edit the parameters before running the rom without it to affect the emulator's stored settings.
+Some emulators (i.e. `daphne`) needs customized parameters different for each romset. 
+
+When such box is checked, you can edit the parameters before running the rom without it to affect the emulator's stored settings.
 
 What's the `Read/Write support` checkbox for ?
 ----------------------------------------------
@@ -128,24 +135,28 @@ Once you have the json for your emulator of choice, simply copy it in your `%hom
   // this is automatically added by fronTEENd when the user choose to
   // not show the warning box anymore
   "warningTextShow": true
-
 }
 ```
 
-[Q]: Emulator <name> seems to not work with fronTEENd. WTF?!
-[A]: Solution 1: check the emulator from plain commandline first, read its
-documentation carefully (some emulators like mame needs some configuration
-files to be set before running for the first time.
-Solution 2: improve it yourself and contribute to the project! :)
+Emulator `<name>` seems to not work with fronTEENd. WTF?!
+---------------------------------------------------------
+1. Check the emulator from plain commandline first, read its documentation carefully (some emulators like mame needs some configuration files to be set before running for the first time).
+2. Improve it yourself and contribute to the project! :)
 
-[Q]: 'params' in the emulator definitions do not work
-[A]: Probably they need to be edited with your paths
-(i.e. for daphne, -homedir must be set to your daphne folder).
+`params` in the emulator definitions do not work
+------------------------------------------------
+Probably they need to be edited with your paths (i.e. for `daphne`, -homedir must be set to the emulator's binary folder).
 
-[Q]: Not all roms are working with emu <name>
-[A]: Sometimes an emulator needs specific parameters for different roms,
-try to use the Custom Parameters checkbox
-(i.e. daphne needs a different framefile for each rom, read its documentation)
+How do i run i.e. a multi-disk game on Amiga emulator (or any other emulator supporting multiple devices) ?
+-----------------------------------------------------------------------------------------------------------
+Just multi-select with `CTRL-Click` the disk images and double click.
 
-[Q]: May i improve/fork it ?
-[A]: Sure, just quote me for the original idea/author :)
+This assumes you have correctly setup the emulator definition's `emuParams` with the correct parameters (i.e. for `FS-Uae`: `--floppy-drive-0=%1% --floppy-drive-1=%2%`.
+
+Not all roms are working with emulator `name`
+---------------------------------------------
+Sometimes an emulator needs specific parameters for different roms, try to use the `Custom Parameters` checkbox (i.e. `daphne` needs a different framefile for each rom, read its documentation)
+
+May i improve/fork it ?
+-----------------------
+Sure, just quote me as the original author :)
