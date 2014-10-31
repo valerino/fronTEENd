@@ -3,7 +3,7 @@
   "roms" : {
   },
   "isMame" : true,
-  "system" : "mame",
+  "system" : "arcade",
   "lastFolder" : "",
   "emuBinary" : "",
   "emuParams" : "-rompath <path> %1%",

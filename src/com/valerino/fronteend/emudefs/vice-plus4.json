@@ -1,0 +1,14 @@
+{
+  "name" : "Vice plus4 (Commodore 16/Plus4 emulator)",
+  "roms" : {
+  },
+  "isMame" : false,
+  "system" : "plus4",
+  "lastFolder" : "",
+  "emuBinary" : "",
+  "emuParams" : "%1%",
+  "stripPath" : false,
+  "noCheckReturn" : false,
+  "supportRw": true,
+  "allowMultiSelect": false
+}

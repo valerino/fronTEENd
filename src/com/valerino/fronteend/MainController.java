@@ -944,6 +944,9 @@ public class MainController {
             rwCheckBox.setVisible(false);
         }
 
+        // show the warning box if present
+        showWarningBox(newValue);
+
         if (newValue.isMame() && newValue.emuBinary().isEmpty()) {
             // mame and no binary set -> we can't query the emulator for roms
             browseEmuBinaryButton.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0,
@@ -1131,6 +1134,44 @@ public class MainController {
             event.consume();
         }
     }
+
+    /**
+     * show the warning box (for particular settings, ...) if present
+     * @param emu the Emulator
+     */
+    private void showWarningBox(final Emulator emu) {
+        if (emu.warningText().isEmpty() || !emu.warningTextShow()) {
+            // no warning
+            return;
+        }
+
+        // use a modified alert here
+        final Alert alert = new Alert(Alert.AlertType.WARNING, null);
+        VBox vb = new VBox(8);
+        Label l = new Label(emu.warningText());
+        final CheckBox cb = new CheckBox("Do not show anymore");
+        vb.getChildren().add(l);
+        vb.getChildren().add(cb);
+        alert.getDialogPane().setContent(vb);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Optional<ButtonType> res = alert.showAndWait();
+                if (res.get() == ButtonType.OK) {
+                    // update the show warning state
+                    emu.setWarningTextShow(!cb.isSelected());
+                    try {
+                        emu.serialize();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return;
+                }
+            }
+        });
+    }
+
     /**
      * initialize application
      * @param root the root stage

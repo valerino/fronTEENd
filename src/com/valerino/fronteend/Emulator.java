@@ -18,6 +18,10 @@ public class Emulator {
 
         public HashMap<String, List<String> > roms = new HashMap<String, List<String>>();
 
+        public String warningText = "";
+
+        public boolean warningTextShow = false;
+
         public boolean isMame = false;
 
         public String system = "";
@@ -69,6 +73,8 @@ public class Emulator {
     public void deserialize() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         _emulator = mapper.readValue(_defFile, EmulatorInternal.class);
+        int r = 0;
+        r++;
     }
 
     /**
@@ -119,6 +125,30 @@ public class Emulator {
      */
     public String name() {
         return _emulator.name;
+    }
+
+    /**
+     * the emulator warning text, if any
+     * @return
+     */
+    public String warningText() {
+        return _emulator.warningText;
+    }
+
+    /**
+     * whether to show or not the warning text
+     * @return
+     */
+    public boolean warningTextShow() {
+        return _emulator.warningTextShow;
+    }
+
+    /**
+     * set whether to show or not the warning text
+     * @param show true to show
+     */
+    public void setWarningTextShow(boolean show) {
+        _emulator.warningTextShow = show;
     }
 
     /**

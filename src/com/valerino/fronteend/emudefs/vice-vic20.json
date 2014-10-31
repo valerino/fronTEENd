@@ -1,0 +1,14 @@
+{
+  "name" : "Vice xvic (Commodore Vic20 emulator)",
+  "roms" : {
+  },
+  "isMame" : false,
+  "system" : "vic20",
+  "lastFolder" : "",
+  "emuBinary" : "",
+  "emuParams" : "%1%",
+  "stripPath" : false,
+  "noCheckReturn" : false,
+  "supportRw": true,
+  "allowMultiSelect": false
+}

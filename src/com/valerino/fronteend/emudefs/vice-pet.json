@@ -1,0 +1,14 @@
+{
+  "name" : "Vice xpet (Commodore PET emulator)",
+  "roms" : {
+  },
+  "isMame" : false,
+  "system" : "'commdodore pet'",
+  "lastFolder" : "",
+  "emuBinary" : "",
+  "emuParams" : "%1%",
+  "stripPath" : false,
+  "noCheckReturn" : false,
+  "supportRw": true,
+  "allowMultiSelect": false
+}

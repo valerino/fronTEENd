@@ -35,5 +35,7 @@
   "emuParams" : "%1% vldp -framefile <framefilepath> -homedir <emudir> -ignore_aspect_ratio -blank_searches -min_seek_delay 1000 -seek_frames_per_ms 20 -fastboot -bank 0 11011001 -bank 1 00100111 -sound_buffer 2048",
   "stripPath" : false,
   "noCheckReturn" : false,
-  "supportRw": false
+  "supportRw": false,
+  "warningText": "On linux at least, you need to do the following to run the emulator in fronTEENd:\n. Put this shellscript in the emulator's binary folder:\n#!/bin/sh\nexport LD_LIBRARY_PATH=./lib.\n/daphne $@\n. Use such script as emulator binary.\n\nMoreover, you need to always use custom parameters to load the different sets, specifying different options and framefiles.\nProbably, one day i'll implement this automatically in fronTEENd directly....\n",
+  "warningTextShow": true
 }

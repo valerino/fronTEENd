@@ -1,0 +1,14 @@
+{
+  "name" : "ArcadeFlex (MAME Java port)",
+  "roms" : {
+  },
+  "isMame" : true,
+  "system" : "arcade",
+  "lastFolder" : "",
+  "emuBinary" : "",
+  "emuParams" : "<path> %1%",
+  "stripPath" : false,
+  "noCheckReturn" : false,
+  "warningText": "You need to do the following to run the emulator in fronTEENd:\n. On Unixs-alike, put this shellscript in the emulator's binary folder:\n#!/bin/sh\nln -s <YOUR_ROMS_FOLDER> <FULL_EMULATOR_FOLDER_PATH>/roms\n<YOUR_JAVA_HOME>/bin/java -jar <FULL_EMULATOR_BINARY_PATH> $@\n. (On windows, either you move or copy your entire romset in <FULL_EMULATOR_FOLDER_PATH>/roms instead of creating the symlink) and call the JAR in a .bat file as showed above.\n. Use such script as emulator binary.\n",
+  "warningTextShow": true
+}
