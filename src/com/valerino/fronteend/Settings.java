@@ -208,6 +208,11 @@ public class Settings {
         else {
             // set path to 7zip binary
             _settings.sevenZipPath = szip.getAbsolutePath();
+            try {
+                serialize();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return 0;
     }
