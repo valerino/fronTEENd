@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class Main extends Application {
         Parent root = loader.load();
         final MainController mc = ((MainController)loader.getController());
         Scene s = new Scene(root);
-
+        primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("icon.png")));
         primaryStage.setTitle(APP_NAME);
         primaryStage.setMaximized(true);
         primaryStage.setScene(s);

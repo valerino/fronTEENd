@@ -12,6 +12,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -170,6 +171,7 @@ public class MainController {
             }
         });
 
+        st.getIcons().add(new Image(this.getClass().getResourceAsStream("icon.png")));
         st.setScene(new Scene(vb));
         st.setResizable(false);
         st.setTitle("Custom parameters");
@@ -237,6 +239,7 @@ public class MainController {
         // show
         VBox vb = new VBox();
         vb.getChildren().add(lv);
+        st.getIcons().add(new Image(this.getClass().getResourceAsStream("icon.png")));
         st.setScene(new Scene(vb));
         st.setResizable(false);
         st.setTitle("Choose set");
