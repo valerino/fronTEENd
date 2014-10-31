@@ -7,9 +7,9 @@ A simple and lightweight generic emulator fronteend without the usual bloat, ful
 
 Screenshots
 -----------
-https://github.com/valerino/fronTEENd/screenshots/0.png
+https://github.com/valerino/fronTEENd/tree/master/screenshots/0.png
 
-https://github.com/valerino/fronTEENd/screenshots/1.png
+https://github.com/valerino/fronTEENd/tree/master/screenshots/1.png
 
 Why ?
 -----
