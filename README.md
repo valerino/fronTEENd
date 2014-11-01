@@ -144,7 +144,12 @@ Once you have the json for your emulator of choice, simply copy it in your `%hom
   
   // this is automatically added by fronTEENd when the user choose to
   // not show the warning box anymore
-  "warningTextShow": true
+  "warningTextShow": true,
+
+  // if emuParams string contains i.e. -floppydisk2 %2% and i.e. current selection has only 1 rom, 
+  // -floppydisk2 is removed together with %2% from the computed cmdline. this is not needed when
+  // the roms are specified as a single parameter with the related option (i.e. --floppy=%1% --floppy=%2% ...)
+  "removeUnmatchedRomPrefix": false
 }
 ```
 
