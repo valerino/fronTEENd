@@ -1,0 +1,17 @@
+{
+  "name" : "MESS (Acorn BBC-Micro Model B)",
+  "roms" : {
+  },
+  "removeUnmatchedRomPrefix" : true,
+  "warningText" : "-rompath must specify where the machine roms are,\n%n% refer to what to be loaded in the emulator.",
+  "warningTextShow" : false,
+  "isMame" : false,
+  "system" : "bbc-micro",
+  "lastFolder" : "",
+  "emuBinary" : "",
+  "emuParams" : "-rompath <path> bbcb -floppydisk1 %1% -floppydisk2 %2%",
+  "stripPath" : false,
+  "noCheckReturn" : false,
+  "supportRw" : true,
+  "allowMultiSelect" : true
+}

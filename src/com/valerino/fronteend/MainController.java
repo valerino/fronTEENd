@@ -531,8 +531,16 @@ public class MainController {
         if (!emu.lastFolder().isEmpty()) {
             dc.setInitialDirectory(new File (emu.lastFolder()));
         }
+        File lastFolder = null;
         dc.setTitle("Select roms folder for " + emu.name());
-        File lastFolder = lastFolder = dc.showDialog(_rootStage.getOwner());
+        try {
+            lastFolder = dc.showDialog(_rootStage.getOwner());
+        }
+        catch (IllegalArgumentException ex) {
+            // folder was not existent, reset and reissue
+            dc.setInitialDirectory(null);
+            lastFolder = dc.showDialog(_rootStage.getOwner());
+        }
         if (lastFolder != null) {
             emu.setLastFolder(lastFolder.getAbsolutePath());
             try {
