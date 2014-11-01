@@ -18,6 +18,8 @@ public class Emulator {
 
         public HashMap<String, List<String> > roms = new HashMap<String, List<String>>();
 
+        public boolean removeUnmatchedRomPrefix = false;
+
         public String warningText = "";
 
         public boolean warningTextShow = false;
@@ -221,6 +223,14 @@ public class Emulator {
      */
     public String emuBinary() {
         return _emulator.emuBinary;
+    }
+
+    /**
+     * if params string contains i.e. -floppydisk2 %2% and current selection has only 1 rom, -floppydisk2 is removed together with %2% from the computed cmdline
+     * @return
+     */
+    public boolean removeUnmatchedRomPrefix() {
+        return _emulator.removeUnmatchedRomPrefix;
     }
 
     /**

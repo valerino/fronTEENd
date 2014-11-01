@@ -1,5 +1,5 @@
 {
-  "name" : "Vice x64 (C64 emulator)",
+  "name" : "Vice (Commodore C64 emulator)",
   "roms" : {
   },
   "isMame" : false,
@@ -10,5 +10,6 @@
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw": true,
-  "allowMultiSelect": true
+  "allowMultiSelect": true,
+  "removeUnmatchedRomPrefix": true
 }

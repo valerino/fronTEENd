@@ -1,5 +1,5 @@
 {
-  "name" : "Vice xvic (Commodore Vic20 emulator)",
+  "name" : "Vice (Commodore Vic20 emulator)",
   "roms" : {
   },
   "isMame" : false,

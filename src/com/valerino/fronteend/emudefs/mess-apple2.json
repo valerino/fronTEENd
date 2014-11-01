@@ -1,16 +1,17 @@
 {
-  "name" : "MESS (Texas Instruments TI99/4a Emulator)",
+  "name" : "MESS (Apple II Emulator)",
   "roms" : {
   },
   "warningText" : "-rompath must specify where the machine roms are,\n%n% refer to what to be loaded in the emulator.",
   "warningTextShow" : true,
   "isMame" : false,
-  "system" : "ti994a",
+  "system" : "apple2",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> ti99_4a -cart %1%",
+  "emuParams" : "-rompath <path> apple2 -floppydisk1 %1% -floppydisk2 %2%",
   "stripPath" : false,
   "noCheckReturn" : false,
-  "supportRw" : false,
-  "allowMultiSelect" : false
+  "supportRw" : true,
+  "allowMultiSelect" : true,
+  "removeUnmatchedRomPrefix": true
 }

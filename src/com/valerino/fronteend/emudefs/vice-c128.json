@@ -1,5 +1,5 @@
 {
-  "name" : "Vice x128 (C128 emulator)",
+  "name" : "Vice (Commodore C128 emulator)",
   "roms" : {
   },
   "isMame" : false,
@@ -10,5 +10,6 @@
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw": true,
-  "allowMultiSelect": false
+  "allowMultiSelect": true,
+  "removeUnmatchedRomPrefix": true
 }

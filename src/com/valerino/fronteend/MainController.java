@@ -211,14 +211,21 @@ public class MainController {
         lv.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (event.getClickCount() == 2) {
-                    // on doubleclick, add items to list
-                    ObservableList<RomItem> l = lv.getSelectionModel().getSelectedItems();
-                    for (final RomItem i : l) {
-                        returnList.add(i);
-                    }
-                    st.close();
+                // doubleclick
+                if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() != 2) {
+                    return;
                 }
+                // middle click (for multiple selection)
+                if (event.getButton() == MouseButton.MIDDLE && event.getClickCount() != 1) {
+                    return;
+                }
+
+                // add items to list and close
+                ObservableList<RomItem> l = lv.getSelectionModel().getSelectedItems();
+                for (final RomItem i : l) {
+                    returnList.add(i);
+                }
+                st.close();
             }
         });
 
@@ -474,14 +481,23 @@ public class MainController {
                 }
 
                 // check if there's more roms placeholder than the ones we selected
-                for (final String s : ar) {
-                    if (s.startsWith("%") && s.endsWith("%")) {
-                        ar.remove(s);
+                List<String> arFinal = new ArrayList<String>();
+                boolean removeNext = false;
+                for (int i = 0; i < ar.size(); i++) {
+                    final String s = ar.get(i);
+                    if (s.endsWith("%")) {
+                        if (emu.removeUnmatchedRomPrefix()) {
+                            // remove the string before aswell
+                            arFinal.remove(i -1);
+                        }
+                    }
+                    else {
+                        arFinal.add(s);
                     }
                 }
 
                 String[] cmdLine = { };
-                cmdLine = ar.toArray(cmdLine);
+                cmdLine = arFinal.toArray(cmdLine);
 
                 // run emulator
                 _rootStage.getScene().setCursor(Cursor.WAIT);
@@ -1078,7 +1094,12 @@ public class MainController {
      * @param event the MouseEvent
      */
     private void romsListDoubleClick(MouseEvent event) {
-        if (event.getClickCount() != 2) {
+        // doubleclick
+        if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() != 2) {
+            return;
+        }
+        // middle click (for multiple selection)
+        if (event.getButton() == MouseButton.MIDDLE && event.getClickCount() != 1) {
             return;
         }
 
@@ -1086,14 +1107,14 @@ public class MainController {
         if (emu.emuBinary().isEmpty()) {
             Alert al = new Alert(Alert.AlertType.WARNING, "Please select an emulator binary first");
             al.showAndWait();
-            cfgAccordion.setExpandedPane(cfgAccordion.getPanes().get(0));
+            cfgAccordion.setExpandedPane(cfgAccordion.getPanes().get(1));
             Utils.nodeClick(browseEmuBinaryButton, MouseButton.PRIMARY, 1);
             return;
         }
         if (emu.emuParams().isEmpty()) {
             Alert al = new Alert(Alert.AlertType.WARNING, "Please fill emulator parameters first");
             al.showAndWait();
-            cfgAccordion.setExpandedPane(cfgAccordion.getPanes().get(0));
+            cfgAccordion.setExpandedPane(cfgAccordion.getPanes().get(1));
             return;
         }
 

@@ -1,5 +1,5 @@
 {
-  "name" : "Vice plus4 (Commodore 16/Plus4 emulator)",
+  "name" : "Vice (Commodore C16/Plus4 emulator)",
   "roms" : {
   },
   "isMame" : false,
@@ -10,5 +10,6 @@
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw": true,
-  "allowMultiSelect": false
+  "allowMultiSelect": true,
+  "removeUnmatchedRomPrefix": true
 }

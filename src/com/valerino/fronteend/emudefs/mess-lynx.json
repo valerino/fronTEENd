@@ -1,14 +1,14 @@
 {
-  "name" : "MESS (Texas Instruments TI99/4a Emulator)",
+  "name" : "MESS (Atari Lynx Emulator)",
   "roms" : {
   },
   "warningText" : "-rompath must specify where the machine roms are,\n%n% refer to what to be loaded in the emulator.",
   "warningTextShow" : true,
   "isMame" : false,
-  "system" : "ti994a",
+  "system" : "'atari lynx'",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> ti99_4a -cart %1%",
+  "emuParams" : "-rompath <path> lynx -cartridge %1%",
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw" : false,
