@@ -1,6 +1,9 @@
 package com.valerino.fronteend;
 
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 
 import java.io.*;
 
@@ -151,5 +154,19 @@ public class Utils {
      */
     public static int runProcess(String[] cmdLine) {
         return runProcess(cmdLine, false);
+    }
+
+    /**
+     * click on a node (button, ...)
+     * @param node the Node to be clicked
+     * @param mb the mouse button to click
+     * @param clicks how many clicks
+     */
+    public static void nodeClick (Node node, MouseButton mb, int clicks) {
+        if (clicks == 0) {
+            return;
+        }
+        node.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0,
+                mb, clicks, false, false, false, false, true, false, false, false, false, false, null));
     }
 }

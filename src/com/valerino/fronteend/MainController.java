@@ -35,7 +35,7 @@ public class MainController {
     private WebView infoWeb;
 
     @FXML
-    private TreeView<RomTreeItem> romsTree;
+    private ListView<RomItem> romsList;
 
     @FXML
     private ComboBox<Emulator> emuCombo;
@@ -65,7 +65,7 @@ public class MainController {
     private Button fwdButton;
 
     @FXML
-    private Button refreshTreeButton;
+    private Button refreshRomsButton;
 
     @FXML
     private Button clearRwButton;
@@ -95,7 +95,7 @@ public class MainController {
 
     private String _keyBuffer = "";
 
-    private FilteredList<TreeItem<RomTreeItem>> _searchList = null;
+    private FilteredList<RomItem> _searchList = null;
 
     private int _searchCurrentIndex = 0;
 
@@ -152,10 +152,9 @@ public class MainController {
         okButton.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.ENTER) {
+                if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE) {
                     // run emulator
-                    okButton.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0,
-                            MouseButton.PRIMARY, 1, false, false, false, false, true, false, false, false, false, false, null));
+                    Utils.nodeClick(okButton, MouseButton.PRIMARY, 1);
                     return;
                 }
             }
@@ -189,10 +188,10 @@ public class MainController {
      * @param list list to be shown
      * @return
      */
-    private List<RomTreeItem> getSetBoxSelection(final List<RomTreeItem> list) {
+    private List<RomItem> getSetBoxSelection(final List<RomItem> list) {
         final Stage st = new Stage(StageStyle.UNIFIED);
         st.setWidth(640);
-        final ListView<RomTreeItem> lv = new ListView<RomTreeItem>();
+        final ListView<RomItem> lv = new ListView<RomItem>();
         if (emuCombo.getValue().allowMultiSelect()) {
             lv.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
@@ -202,11 +201,11 @@ public class MainController {
         }
 
         // add sets
-        for (final RomTreeItem r : list) {
+        for (final RomItem r : list) {
             lv.getItems().add(r);
         }
 
-        final List<RomTreeItem> returnList = new ArrayList<RomTreeItem>();
+        final List<RomItem> returnList = new ArrayList<RomItem>();
 
         // handle doubleclicks
         lv.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -214,8 +213,8 @@ public class MainController {
             public void handle(MouseEvent event) {
                 if (event.getClickCount() == 2) {
                     // on doubleclick, add items to list
-                    ObservableList<RomTreeItem> l = lv.getSelectionModel().getSelectedItems();
-                    for (final RomTreeItem i : l) {
+                    ObservableList<RomItem> l = lv.getSelectionModel().getSelectedItems();
+                    for (final RomItem i : l) {
                         returnList.add(i);
                     }
                     st.close();
@@ -229,8 +228,7 @@ public class MainController {
             public void handle(KeyEvent event) {
                 if (event.getCode() == KeyCode.ENTER) {
                     // run emulator
-                    lv.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0,
-                            MouseButton.PRIMARY, 2, false, false, false, false, true, false, false, false, false, false, null));
+                    Utils.nodeClick(lv, MouseButton.PRIMARY, 2);
                     return;
                 }
             }
@@ -251,21 +249,21 @@ public class MainController {
     }
 
     /**
-     * get the romstree selection, decompress if needed and return an array of the found sets
+     * get the roms list selection, decompress if needed and return an array of the found sets
      * @return
      */
-    private List<RomTreeItem> getRomsTreeSelection() {
+    private List<RomItem> getRomsListSelection() {
         Emulator emu = emuCombo.getValue();
-        List<RomTreeItem> selection = new ArrayList<RomTreeItem>();
-        ObservableList<TreeItem<RomTreeItem>> l = romsTree.getSelectionModel().getSelectedItems();
+        List<RomItem> selection = new ArrayList<RomItem>();
+        ObservableList<RomItem> l = romsList.getSelectionModel().getSelectedItems();
 
         // check if the emulator has a predefined romset
         if (!emu.roms().isEmpty() || emu.isMame()) {
             // emulator has a predefined set, multiselection is not allowed.
             // we just get the sets into the selection list
-            RomTreeItem it = l.get(0).getValue();
+            RomItem it = l.get(0);
             for (final String s : it.sets()) {
-                RomTreeItem i = new RomTreeItem(s);
+                RomItem i = new RomItem(s);
                 selection.add(i);
             }
         }
@@ -273,9 +271,7 @@ public class MainController {
             // check each selection File and copy them to the temporary folder
             final File dstFolder = Settings.getInstance().tmpFolder();
             Utils.clearFolder(dstFolder);
-            for (TreeItem<RomTreeItem> item : l) {
-                final RomTreeItem it = item.getValue();
-
+            for (RomItem it : l) {
                 // dump to rw folder
                 if (Utils.isCompressed(it.file())) {
                     // ask for 7z if needed
@@ -322,16 +318,16 @@ public class MainController {
             });
             if (files != null && files.length > 0) {
                 for (File f : files) {
-                    RomTreeItem i = new RomTreeItem(f);
+                    RomItem i = new RomItem(f);
                     selection.add(i);
                 }
             }
         }
 
         // sort the selection
-        selection.sort(new Comparator<RomTreeItem>() {
+        selection.sort(new Comparator<RomItem>() {
             @Override
-            public int compare(RomTreeItem o1, RomTreeItem o2) {
+            public int compare(RomItem o1, RomItem o2) {
                 return o1.name().toLowerCase().compareTo(o2.name().toLowerCase());
             }
         });
@@ -366,7 +362,7 @@ public class MainController {
      * @throws IOException
      */
     private void runEmulator(final Emulator emu) throws IOException {
-        romsTree.setCursor(Cursor.WAIT);
+        romsList.setCursor(Cursor.WAIT);
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
@@ -377,8 +373,8 @@ public class MainController {
             @Override
             public void run() {
                 // get the selected items
-                List<RomTreeItem> l = getRomsTreeSelection();
-                romsTree.setCursor(Cursor.DEFAULT);
+                List<RomItem> l = getRomsListSelection();
+                romsList.setCursor(Cursor.DEFAULT);
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
@@ -392,7 +388,7 @@ public class MainController {
 
                 if (emu.supportRw()) {
                     // handle r/w support
-                    for (RomTreeItem i : l) {
+                    for (RomItem i : l) {
                         File f = new File (emu.rwFolder(), i.file().getName());
                         boolean overwrite = true;
                         if (f.exists()) {
@@ -533,7 +529,7 @@ public class MainController {
     }
 
     /**
-     * add roms to the tree (from filesystem)
+     * add roms to the listview (from filesystem)
      * @param emu the Emulator
      */
     private void addRomsFs(Emulator emu) {
@@ -561,10 +557,10 @@ public class MainController {
             return;
         }
 
-        // fill tree
-        ObservableList<TreeItem<RomTreeItem>> c = romsTree.getRoot().getChildren();
+        // fill listview
+        ObservableList<RomItem> c = romsList.getItems();
         for (File rom : files) {
-            TreeItem<RomTreeItem> item = new TreeItem<RomTreeItem>(new RomTreeItem(rom));
+            RomItem item = new RomItem(rom);
             c.add(item);
         }
     }
@@ -574,7 +570,7 @@ public class MainController {
      * @param emu the Emulator
      */
     private void addRomsMame(Emulator emu) {
-        ObservableList<TreeItem<RomTreeItem>> c = romsTree.getRoot().getChildren();
+        ObservableList<RomItem> c = romsList.getItems();
         c.clear();
 
         // execute mame -listfull
@@ -597,7 +593,7 @@ public class MainController {
                     l.add(set);
 
                     // add item
-                    TreeItem<RomTreeItem> item = new TreeItem<RomTreeItem>(new RomTreeItem(name,l));
+                    RomItem item = new RomItem(name,l);
                     c.add(item);
                 }
                 count++;
@@ -630,7 +626,7 @@ public class MainController {
     }
 
     /**
-     * add roms to the tree (from defined sets)
+     * add roms to the listview (from defined sets)
      * @param emu the Emulator
      */
     private void addRomsDefined(Emulator emu) {
@@ -642,16 +638,16 @@ public class MainController {
         }
         else {
             // add sets to list
-            ObservableList<TreeItem<RomTreeItem>> c = romsTree.getRoot().getChildren();
+            ObservableList<RomItem> c = romsList.getItems();
             for (final String s : roms.keySet()) {
-                TreeItem<RomTreeItem> item = new TreeItem<RomTreeItem>(new RomTreeItem(s, roms.get(s)));
+                RomItem item = new RomItem(s, roms.get(s));
                 c.add(item);
             }
         }
     }
 
     /**
-     * add roms to the tree
+     * add roms to the listview
      * @param emu the Emulator
      */
     private void addRoms(final Emulator emu) {
@@ -662,9 +658,9 @@ public class MainController {
             e.printStackTrace();
         }
 
-        final ObservableList<TreeItem<RomTreeItem>> c = romsTree.getRoot().getChildren();
+        final ObservableList<RomItem> c = romsList.getItems();
         c.clear();
-        romsTree.getSelectionModel().clearSelection();
+        romsList.getSelectionModel().clearSelection();
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -680,15 +676,14 @@ public class MainController {
                 }
 
                 // finally sort the list
-                c.sort(new Comparator<TreeItem<RomTreeItem>>() {
+                c.sort(new Comparator<RomItem>() {
                     @Override
-                    public int compare(TreeItem<RomTreeItem> o1, TreeItem<RomTreeItem> o2) {
-                        return o1.getValue().name().toLowerCase().compareTo(o2.getValue().name().toLowerCase());
+                    public int compare(RomItem o1, RomItem o2) {
+                        return o1.name().toLowerCase().compareTo(o2.name().toLowerCase());
                     }
                 });
 
-                selectRomLabel.setText("Select romset (" + romsTree.getRoot().getChildren().size() + ")");
-                romsTree.getRoot().setExpanded(true);
+                selectRomLabel.setText("Select romset (" + romsList.getItems().size() + ")");
                 _rootStage.getScene().setCursor(Cursor.DEFAULT);
             }
         });
@@ -827,7 +822,7 @@ public class MainController {
      */
     private void browseRomsClick(MouseEvent event) {
         if (event.getButton().compareTo(MouseButton.PRIMARY) == 0) {
-            // browse for roms and update tree
+            // browse for roms and update listview
             getRomsFolder(emuCombo.getValue());
             addRoms(emuCombo.getValue());
         }
@@ -840,11 +835,11 @@ public class MainController {
     private void searchRomClick(MouseEvent event) {
         if (event.getButton().compareTo(MouseButton.PRIMARY) == 0 && !romSearchText.getText().isEmpty()) {
             // search for items containing the given text
-            ObservableList<TreeItem<RomTreeItem>> l = romsTree.getRoot().getChildren();
-            _searchList = new FilteredList<TreeItem<RomTreeItem>>(l, new Predicate<TreeItem<RomTreeItem>>() {
+            ObservableList<RomItem> l = romsList.getItems();
+            _searchList = new FilteredList<RomItem>(l, new Predicate<RomItem>() {
                 @Override
-                public boolean test(TreeItem<RomTreeItem> romTreeItemTreeItem) {
-                    if (romTreeItemTreeItem.getValue().name().toLowerCase().contains(romSearchText.getText().toLowerCase())) {
+                public boolean test(RomItem item) {
+                    if (item.name().toLowerCase().contains(romSearchText.getText().toLowerCase())) {
                         return true;
                     }
                     return false;
@@ -895,8 +890,8 @@ public class MainController {
             idx = 0;
             _searchCurrentIndex = idx;
         }
-        romsTree.scrollTo(_searchList.getSourceIndex(idx));
-        romsTree.getSelectionModel().select(_searchList.getSourceIndex(idx));
+        romsList.scrollTo(_searchList.getSourceIndex(idx));
+        romsList.getSelectionModel().select(_searchList.getSourceIndex(idx));
     }
 
     /**
@@ -919,11 +914,11 @@ public class MainController {
 
         // setup ui elements
         if (newValue.allowMultiSelect()) {
-            romsTree.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+            romsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         }
         else {
-            romsTree.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+            romsList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         }
         emuBinText.setText(newValue.emuBinary());
         emuParamsText.setText(newValue.emuParams());
@@ -938,10 +933,10 @@ public class MainController {
         }
 
         if (!newValue.roms().isEmpty()) {
-            refreshTreeButton.setVisible(false);
+            refreshRomsButton.setVisible(false);
         }
         else {
-            refreshTreeButton.setVisible(true);
+            refreshRomsButton.setVisible(true);
         }
 
         // check for r/w support
@@ -964,13 +959,11 @@ public class MainController {
 
         if (newValue.isMame() && newValue.emuBinary().isEmpty()) {
             // mame and no binary set -> we can't query the emulator for roms
-            browseEmuBinaryButton.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0,
-                    MouseButton.PRIMARY, 1, false, false, false, false, true, false, false, false, false, false, null));
+            Utils.nodeClick(browseEmuBinaryButton, MouseButton.PRIMARY, 1);
         }
 
-        // fill the roms tree
-        refreshTreeButton.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0,
-                MouseButton.PRIMARY, 1, false, false, false, false, true, false, false, false, false, false, null));
+        // fill the roms listview
+        Utils.nodeClick(refreshRomsButton, MouseButton.PRIMARY, 1);
     }
 
     /**
@@ -1027,26 +1020,25 @@ public class MainController {
     }
 
     /**
-     * handle roms tree selection
+     * handle roms listview selection
      * @param c selections list
      */
-    private void romsTreeIndexChange(ListChangeListener.Change<? extends Integer> c) {
+    private void romsListIndexChange(ListChangeListener.Change<? extends Integer> c) {
         // consider the first selected item only
-        TreeItem<RomTreeItem> item = romsTree.getSelectionModel().getSelectedItems().get(0);
+        RomItem item = romsList.getSelectionModel().getSelectedItems().get(0);
         if (item != null) {
-            searchInfo(item.getValue().name());
+            searchInfo(item.name());
         }
     }
 
     /**
-     * handle roms tree keypress (search)
+     * handle roms list keypress (search)
      * @param event the KeyEvent
      */
-    private void romsTreeKeyPressed(final KeyEvent event) {
+    private void romsListKeyPressed(final KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             // run emulator
-            romsTree.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0,
-                    MouseButton.PRIMARY, 2, false, false, false, false, true, false, false, false, false, false, null));
+            Utils.nodeClick(romsList, MouseButton.PRIMARY, 2);
             return;
         }
         else if (event.getCode().isLetterKey()) {
@@ -1063,11 +1055,11 @@ public class MainController {
             _keyBuffer += event.getText();
 
             // search for an item starting with the pressed key
-            ObservableList<TreeItem<RomTreeItem>> l = romsTree.getRoot().getChildren();
-            FilteredList<TreeItem<RomTreeItem>> f = new FilteredList<TreeItem<RomTreeItem>>(l, new Predicate<TreeItem<RomTreeItem>>() {
+            ObservableList<RomItem> l = romsList.getItems();
+            FilteredList<RomItem> f = new FilteredList<RomItem>(l, new Predicate<RomItem>() {
                 @Override
-                public boolean test(TreeItem<RomTreeItem> romTreeItemTreeItem) {
-                    if (romTreeItemTreeItem.getValue().name().toLowerCase().startsWith(_keyBuffer.toLowerCase())) {
+                public boolean test(RomItem item) {
+                    if (item.name().toLowerCase().startsWith(_keyBuffer.toLowerCase())) {
                         return true;
                     }
                     return false;
@@ -1075,17 +1067,17 @@ public class MainController {
             });
             if (!f.isEmpty()) {
                 // scroll to the first found item
-                romsTree.scrollTo(f.getSourceIndex(0));
-                //romsTree.getSelectionModel().select(f.getSourceIndex(0));
+                romsList.scrollTo(f.getSourceIndex(0));
+                //romsList.getSelectionModel().select(f.getSourceIndex(0));
             }
         }
     }
 
     /**
-     * handle romstree clicks (doubleclick only, to run emulator)
+     * handle roms listview clicks (doubleclick only, to run emulator)
      * @param event the MouseEvent
      */
-    private void romsTreeDoubleClick(MouseEvent event) {
+    private void romsListDoubleClick(MouseEvent event) {
         if (event.getClickCount() != 2) {
             return;
         }
@@ -1095,8 +1087,7 @@ public class MainController {
             Alert al = new Alert(Alert.AlertType.WARNING, "Please select an emulator binary first");
             al.showAndWait();
             cfgAccordion.setExpandedPane(cfgAccordion.getPanes().get(0));
-            browseEmuBinaryButton.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0,
-                    MouseButton.PRIMARY, 1, false, false, false, false, true, false, false, false, false, false, null));
+            Utils.nodeClick(browseEmuBinaryButton, MouseButton.PRIMARY, 1);
             return;
         }
         if (emu.emuParams().isEmpty()) {
@@ -1204,10 +1195,18 @@ public class MainController {
         });
 
         // handle refresh roms button
-        refreshTreeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        refreshRomsButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 refreshRomsClick(event);
+            }
+        });
+        refreshRomsButton.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE) {
+                    Utils.nodeClick(refreshRomsButton, MouseButton.PRIMARY, 1);
+                }
             }
         });
 
@@ -1218,12 +1217,28 @@ public class MainController {
                 clearRwClick(event);
             }
         });
+        clearRwButton.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE) {
+                    Utils.nodeClick(clearRwButton, MouseButton.PRIMARY, 1);
+                }
+            }
+        });
 
         // handle browse for emulator binary click / change text
         browseEmuBinaryButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 browseEmuBinaryClick(event);
+            }
+        });
+        browseEmuBinaryButton.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE) {
+                    Utils.nodeClick(browseEmuBinaryButton, MouseButton.PRIMARY, 1);
+                }
             }
         });
 
@@ -1258,6 +1273,14 @@ public class MainController {
                 browseRomsClick(event);
             }
         });
+        browseFolderButton.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE) {
+                    Utils.nodeClick(browseFolderButton, MouseButton.PRIMARY, 1);
+                }
+            }
+        });
 
         // handle params editing
         emuParamsText.textProperty().addListener(new ChangeListener<String>() {
@@ -1268,10 +1291,10 @@ public class MainController {
         });
 
         // handle websearch on selection
-        romsTree.getSelectionModel().getSelectedIndices().addListener(new ListChangeListener<Integer>() {
+        romsList.getSelectionModel().getSelectedIndices().addListener(new ListChangeListener<Integer>() {
             @Override
             public void onChanged(Change<? extends Integer> c) {
-                romsTreeIndexChange(c);
+                romsListIndexChange(c);
             }
         });
 
@@ -1282,6 +1305,14 @@ public class MainController {
                 rescanButtonClick(event);
             }
         });
+        rescanButton.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE) {
+                    Utils.nodeClick(rescanButton, MouseButton.PRIMARY, 1);
+                }
+            }
+        });
 
         // handle search rom clicks
         romSearchButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -1290,26 +1321,42 @@ public class MainController {
                 searchRomClick(event);
             }
         });
+        romSearchButton.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE) {
+                    Utils.nodeClick(romSearchButton, MouseButton.PRIMARY, 1);
+                }
+            }
+        });
         romSearchNextButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 searchNextClick(event);
             }
         });
+        romSearchNextButton.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE) {
+                    Utils.nodeClick(romSearchNextButton, MouseButton.PRIMARY, 1);
+                }
+            }
+        });
 
-        // handle tree clicks
-        romsTree.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        // handle listview clicks
+        romsList.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                romsTreeDoubleClick(event);
+                romsListDoubleClick(event);
             }
         });
 
         // simple search
-        romsTree.setOnKeyPressed(new EventHandler<KeyEvent>() {
+        romsList.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(final KeyEvent event) {
-                romsTreeKeyPressed(event);
+                romsListKeyPressed(event);
             }
         });
 
@@ -1320,6 +1367,14 @@ public class MainController {
                 browsePrevClick(event);
             }
         });
+        backButton.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE) {
+                    Utils.nodeClick(backButton, MouseButton.PRIMARY, 1);
+                }
+            }
+        });
 
         // forward webview button
         fwdButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -1328,10 +1383,14 @@ public class MainController {
                 browseNextClick(event);
             }
         });
-
-        // init tree
-        romsTree.setRoot(new TreeItem<RomTreeItem>());
-        romsTree.setShowRoot(false);
+        fwdButton.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE) {
+                    Utils.nodeClick(fwdButton, MouseButton.PRIMARY, 1);
+                }
+            }
+        });
 
         // load settings
         try {
@@ -1343,9 +1402,7 @@ public class MainController {
         }
 
         // scan emulators
-        rescanButton.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, 0, 0, 0,
-                MouseButton.PRIMARY, 1, false, false, false, false, true, false, false, false, false, false, null));
-
+        Utils.nodeClick(rescanButton, MouseButton.PRIMARY, 1);
         return 0;
     }
 }

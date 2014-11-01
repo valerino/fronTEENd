@@ -31,7 +31,7 @@
                         <HBox alignment="CENTER_RIGHT" prefHeight="51.0" prefWidth="235.0" spacing="4.0" BorderPane.alignment="CENTER">
                            <children>
                               <Button fx:id="browseFolderButton" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Change folder" visible="false" />
-                              <Button fx:id="refreshTreeButton" mnemonicParsing="false" text="Refresh" visible="false" />
+                              <Button fx:id="refreshRomsButton" mnemonicParsing="false" text="Refresh" visible="false" />
                            </children>
                            <BorderPane.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
@@ -42,10 +42,11 @@
                         <Label fx:id="selectRomLabel" prefHeight="10.0" prefWidth="227.0" text="Select ROM image or set" BorderPane.alignment="CENTER" />
                      </left>
                   </BorderPane>
-                  <TreeView fx:id="romsTree" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                  <ListView fx:id="romsList" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                     </VBox.margin></TreeView>
+                     </VBox.margin>
+                  </ListView>
                   <HBox alignment="CENTER_LEFT" spacing="4.0">
                      <children>
                         <CheckBox fx:id="customParamsCheckBox" mnemonicParsing="false" text="Use custom parameters" />
