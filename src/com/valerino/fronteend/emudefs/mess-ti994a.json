@@ -1,0 +1,16 @@
+{
+  "name" : "MESS TI99/4a (Texas Instruments TI99/4a Emulator)",
+  "roms" : {
+  },
+  "warningText" : "-rompath must specify where the machine roms are,\n%n% refer to what to be loaded in the emulator.",
+  "warningTextShow" : true,
+  "isMame" : false,
+  "system" : "ti99/4a",
+  "lastFolder" : "",
+  "emuBinary" : "",
+  "emuParams" : "-rompath <path> ti99_4a -cart %1%",
+  "stripPath" : false,
+  "noCheckReturn" : false,
+  "supportRw" : false,
+  "allowMultiSelect" : false
+}

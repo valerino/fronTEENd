@@ -296,6 +296,14 @@ public class MainController {
                         }
                     }
                 }
+                else {
+                    // just copy
+                    try {
+                        Utils.copyFile(it.file(),new File (dstFolder,it.file().getName()),false);
+                    } catch (IOException e) {
+                        return null;
+                    }
+                }
             }
 
             // list the files in the tmp folder
