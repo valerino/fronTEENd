@@ -164,7 +164,7 @@ Probably they need to be edited with your paths (i.e. for `daphne`, -homedir mus
 
 How do i run i.e. a multi-disk game on Amiga emulator (or any other emulator supporting multiple devices) ?
 -----------------------------------------------------------------------------------------------------------
-Just multi-select with `CTRL-Click` the disk images and double click.
+Just multi-select with `CTRL-Click` the disk images and double click. You may even middle-click or press enter on one of the selected sets.
 
 This assumes you have correctly setup the emulator definition's `emuParams` with the correct parameters (i.e. for `FS-Uae`: `--floppy-drive-0=%1% --floppy-drive-1=%2%`.
 
