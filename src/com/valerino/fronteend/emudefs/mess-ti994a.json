@@ -5,7 +5,7 @@
   "warningText" : "-rompath must specify where the machine roms are,\n%n% refer to what to be loaded in the emulator.",
   "warningTextShow" : true,
   "isMame" : false,
-  "system" : "ti99/4a",
+  "system" : "ti994a",
   "lastFolder" : "",
   "emuBinary" : "",
   "emuParams" : "-rompath <path> ti99_4a -cart %1%",
