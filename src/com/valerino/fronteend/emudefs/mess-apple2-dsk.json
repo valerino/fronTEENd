@@ -1,14 +1,14 @@
 {
-  "name" : "MESS (Apple II/GS Emulator)",
+  "name" : "MESS (Apple II Emulator - Disk)",
   "roms" : {
   },
   "warningText" : "-rompath must specify where the machine roms are,\n%n% refer to what to be loaded in the emulator.",
   "warningTextShow" : true,
   "isMame" : false,
-  "system" : "apple2gs",
+  "system" : "apple2",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> apple2gs -floppydisk1 %1% -floppydisk2 %2%",
+  "emuParams" : "-rompath <path> apple2 -floppydisk1 %1% -floppydisk2 %2%",
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw" : true,

@@ -1,5 +1,5 @@
 {
-  "name" : "MESS (Acorn BBC-Micro Model B)",
+  "name" : "MESS (Acorn BBC-Micro Model B - Disk)",
   "roms" : {
   },
   "removeUnmatchedRomPrefix" : true,
