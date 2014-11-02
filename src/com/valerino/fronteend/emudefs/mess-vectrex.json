@@ -1,0 +1,17 @@
+{
+  "name" : "MESS (GCE Vectrex Emulator)",
+  "roms" : {
+  },
+  "removeUnmatchedRomPrefix" : false,
+  "warningText" : "-rompath must specify where the machine roms are,\n%n% refer to what to be loaded in the emulator.",
+  "warningTextShow" : true,
+  "isMame" : false,
+  "system" : "vectrex",
+  "lastFolder" : "",
+  "emuBinary" : "",
+  "emuParams" : "-rompath <path> -artpath [path] -cart %1%",
+  "stripPath" : false,
+  "noCheckReturn" : false,
+  "supportRw" : false,
+  "allowMultiSelect" : false
+}
