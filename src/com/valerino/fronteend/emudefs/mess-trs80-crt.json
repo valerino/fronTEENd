@@ -2,9 +2,9 @@
   "name" : "MESS (Tandy TRS-80 Color Computer Model 2 - Cartridge)",
   "roms" : {
   },
-  "removeUnmatchedRomPrefix" : true,
+  "removeUnmatchedRomPrefix" : false,
   "warningText" : "-rompath must specify where the machine roms are,\n%n% refer to what to be loaded in the emulator.",
-  "warningTextShow" : false,
+  "warningTextShow" : true,
   "isMame" : false,
   "system" : "trs80",
   "lastFolder" : "",

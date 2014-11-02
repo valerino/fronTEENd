@@ -4,7 +4,7 @@
   },
   "removeUnmatchedRomPrefix" : true,
   "warningText" : "-rompath must specify where the machine roms are,\n%n% refer to what to be loaded in the emulator.",
-  "warningTextShow" : false,
+  "warningTextShow" : true,
   "isMame" : false,
   "system" : "bbc-micro",
   "lastFolder" : "",
