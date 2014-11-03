@@ -1,0 +1,16 @@
+{
+  "name" : "MESS (SNK NeoGeo Pocket/Color Emulator)",
+  "roms" : {
+  },
+  "warningText" : "-rompath must specify where the machine roms are,\n%n% refer to what to be loaded in the emulator.",
+  "warningTextShow" : true,
+  "isMame" : false,
+  "system" : "'neogeo pocket'",
+  "lastFolder" : "",
+  "emuBinary" : "",
+  "emuParams" : "-rompath <path> -artpath <path> ngpc -cartridge %1%",
+  "stripPath" : false,
+  "noCheckReturn" : false,
+  "supportRw" : false,
+  "allowMultiSelect" : false
+}
