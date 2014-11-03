@@ -1,0 +1,17 @@
+{
+  "name" : "MESS (CBS Colecovision Emulator)",
+  "roms" : {
+  },
+  "removeUnmatchedRomPrefix" : false,
+  "warningText" : "-rompath must specify where the machine roms are,\n%n% refer to what to be loaded in the emulator.",
+  "warningTextShow" : true,
+  "isMame" : false,
+  "system" : "colecovision",
+  "lastFolder" : "",
+  "emuBinary" : "",
+  "emuParams" : "-rompath <path> coleco -cartridge %1%",
+  "stripPath" : false,
+  "noCheckReturn" : false,
+  "supportRw" : false,
+  "allowMultiSelect" : false
+}
