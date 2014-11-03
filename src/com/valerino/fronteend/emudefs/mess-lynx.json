@@ -8,7 +8,7 @@
   "system" : "'atari lynx'",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> lynx -cartridge %1%",
+  "emuParams" : "-rompath <path> -artpath <path> lynx -cartridge %1%",
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw" : false,

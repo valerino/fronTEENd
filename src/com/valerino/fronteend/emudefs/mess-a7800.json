@@ -1,14 +1,15 @@
 {
-  "name" : "MESS (Sega GameGear Emulator)",
+  "name" : "MESS (Atari 7800 Emulator)",
   "roms" : {
   },
+  "removeUnmatchedRomPrefix" : false,
   "warningText" : "-rompath must specify where the machine roms are,\n%n% refer to what to be loaded in the emulator.",
   "warningTextShow" : true,
   "isMame" : false,
-  "system" : "'game gear'",
+  "system" : "'atari 7800'",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> -artpath <path> gamegear -cartridge %1%",
+  "emuParams" : "-rompath <path> a7800 -cartridge %1%",
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw" : false,

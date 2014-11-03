@@ -1,16 +1,17 @@
 {
-  "name" : "MESS (Sega GameGear Emulator)",
+  "name" : "MESS (Atari 800XL Emulator - Disk)",
   "roms" : {
   },
+  "removeUnmatchedRomPrefix" : true,
   "warningText" : "-rompath must specify where the machine roms are,\n%n% refer to what to be loaded in the emulator.",
   "warningTextShow" : true,
   "isMame" : false,
-  "system" : "'game gear'",
+  "system" : "'atari 800'",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> -artpath <path> gamegear -cartridge %1%",
+  "emuParams" : "-rompath <path> a800xl -floppydisk1 %1% -floppydisk2 %2%",
   "stripPath" : false,
   "noCheckReturn" : false,
-  "supportRw" : false,
-  "allowMultiSelect" : false
+  "supportRw" : true,
+  "allowMultiSelect" : true
 }
