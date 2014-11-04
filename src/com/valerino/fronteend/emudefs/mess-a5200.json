@@ -1,5 +1,5 @@
 {
-  "name" : "MESS (Atari 5200 Emulator)",
+  "name" : "MESS (Atari 5200)",
   "roms" : {
   },
   "removeUnmatchedRomPrefix" : false,

@@ -1,5 +1,5 @@
 {
-  "name" : "MESS (CBS Colecovision Emulator)",
+  "name" : "MESS (CBS Colecovision)",
   "roms" : {
   },
   "removeUnmatchedRomPrefix" : false,

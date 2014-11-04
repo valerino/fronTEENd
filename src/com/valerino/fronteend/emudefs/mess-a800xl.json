@@ -1,5 +1,5 @@
 {
-  "name" : "MESS (Atari 800XL Emulator - Disk)",
+  "name" : "MESS (Atari 800XL - Disk)",
   "roms" : {
   },
   "removeUnmatchedRomPrefix" : true,

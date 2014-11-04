@@ -1,5 +1,5 @@
 {
-  "name" : "MESS (Nintendo Gameboy Advance Emulator)",
+  "name" : "MESS (Nintendo Gameboy Advance)",
   "roms" : {
   },
   "warningText" : "-rompath must specify where the machine roms are,\n%n% refer to what to be loaded in the emulator.",

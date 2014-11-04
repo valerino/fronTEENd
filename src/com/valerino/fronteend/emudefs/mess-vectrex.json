@@ -1,5 +1,5 @@
 {
-  "name" : "MESS (GCE Vectrex Emulator)",
+  "name" : "MESS (GCE Vectrex)",
   "roms" : {
   },
   "removeUnmatchedRomPrefix" : false,

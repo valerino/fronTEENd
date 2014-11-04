@@ -1,5 +1,5 @@
 {
-  "name" : "MESS (Atari 2600 VCS Emulator)",
+  "name" : "MESS (Atari 2600 VCS)",
   "roms" : {
   },
   "removeUnmatchedRomPrefix" : false,

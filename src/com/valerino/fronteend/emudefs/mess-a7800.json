@@ -1,5 +1,5 @@
 {
-  "name" : "MESS (Atari 7800 Emulator)",
+  "name" : "MESS (Atari 7800)",
   "roms" : {
   },
   "removeUnmatchedRomPrefix" : false,

@@ -1,5 +1,5 @@
 {
-  "name" : "Daphne (LaserDisc emulator)",
+  "name" : "Daphne (LaserDisc)",
   "roms" : {
     "Interstellar" : [ "interstellar" ],
     "GP World" : [ "gpworld" ],

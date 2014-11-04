@@ -1,5 +1,5 @@
 {
-  "name" : "MESS (SNK NeoGeo Pocket/Color Emulator)",
+  "name" : "MESS (SNK NeoGeo Pocket/Color)",
   "roms" : {
   },
   "warningText" : "-rompath must specify where the machine roms are,\n%n% refer to what to be loaded in the emulator.",

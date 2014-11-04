@@ -1,5 +1,5 @@
 {
-  "name" : "MESS (Sega Genesis/Megadrive/32X Emulator)",
+  "name" : "MESS (Sega Genesis/Megadrive/32X)",
   "roms" : {
   },
   "removeUnmatchedRomPrefix" : false,

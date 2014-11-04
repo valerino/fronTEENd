@@ -1,14 +1,15 @@
 {
-  "name" : "MESS (Bandai Wonderswan/Color)",
+  "name" : "MESS (Commodore C64 - Cartridge)",
   "roms" : {
   },
+  "removeUnmatchedRomPrefix" : false,
   "warningText" : "-rompath must specify where the machine roms are,\n%n% refer to what to be loaded in the emulator.",
   "warningTextShow" : true,
   "isMame" : false,
-  "system" : "wonderswan",
+  "system" : "c64",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> wscolor -nvram_directory <path> -artpath <path> -effect <effect> -cart %1%",
+  "emuParams" : "-rompath <path> c64 -artpath <path> -effect <effect> -cart %1%",
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw" : false,

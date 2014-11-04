@@ -1,5 +1,5 @@
 {
-  "name" : "MESS (Nintendo NES emulator)",
+  "name" : "MESS (Nintendo NES)",
   "roms" : {
   },
   "removeUnmatchedRomPrefix" : false,
