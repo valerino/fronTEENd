@@ -1,14 +1,14 @@
 {
-  "name" : "MESS (Nintendo Gameboy Advance Emulator)",
+  "name" : "MESS (Nintendo VirtualBoy Emulator)",
   "roms" : {
   },
   "warningText" : "-rompath must specify where the machine roms are,\n%n% refer to what to be loaded in the emulator.",
   "warningTextShow" : true,
   "isMame" : false,
-  "system" : "'gameboy advance'",
+  "system" : "virtualboy",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> gba -artpath <path> -effect <effect> -cart %1%",
+  "emuParams" : "-rompath <path> vboy -artpath <path> -effect <effect> -cart %1%",
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw" : false,

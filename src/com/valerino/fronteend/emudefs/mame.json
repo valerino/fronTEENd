@@ -6,7 +6,7 @@
   "system" : "arcade",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> %1%",
+  "emuParams" : "-rompath <path> -artpath <path> -samplepath <path> -effect <effect> %1%",
   "stripPath" : false,
   "noCheckReturn" : false
 }

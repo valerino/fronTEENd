@@ -3,8 +3,8 @@
   "roms" : {
   },
   "removeUnmatchedRomPrefix" : true,
-"warningText" : "-rompath must specify where the machine roms are,\n%n% refer to what to be loaded in the emulator.\nYou may use 'a800xlp' instead of 'a800xl' to run PAL system.",
-    "warningTextShow" : true,
+  "warningText" : "-rompath must specify where the machine roms are,\n%n% refer to what to be loaded in the emulator.\nYou may use 'a800xlp' instead of 'a800xl' to run PAL system.",
+  "warningTextShow" : true,
   "isMame" : false,
   "system" : "'atari 800'",
   "lastFolder" : "",
