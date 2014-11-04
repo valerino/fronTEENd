@@ -9,7 +9,7 @@
   "system" : "'sega master system'",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> sms1 -artpath <path> -effect <effect> -cart %1%",
+  "emuParams" : "-rompath <path> sms1 -nvram_directory <path> -artpath <path> -effect <effect> -cart %1%",
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw" : false,

@@ -8,7 +8,7 @@
   "system" : "wonderswan",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> wscolor -artpath <path> -effect <effect> -cart %1%",
+  "emuParams" : "-rompath <path> wscolor -nvram_directory <path> -artpath <path> -effect <effect> -cart %1%",
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw" : false,

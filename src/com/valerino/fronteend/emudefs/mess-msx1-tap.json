@@ -1,0 +1,17 @@
+{
+  "name" : "MESS (MSX 1 - Tape)",
+  "roms" : {
+  },
+  "removeUnmatchedRomPrefix" : false,
+  "warningText" : "-rompath must specify where the machine roms are,\n%n% refer to what to be loaded in the emulator. There's many MSX1 versions in MESS (just change 'cf3300' to emulate another).",
+  "warningTextShow" : true,
+  "isMame" : false,
+  "system" : "msx",
+  "lastFolder" : "",
+  "emuBinary" : "",
+  "emuParams" : "-rompath <path> cf3300 -artpath <path> -effect <effect> -cass %1%",
+  "stripPath" : false,
+  "noCheckReturn" : false,
+  "supportRw" : true,
+  "allowMultiSelect" : false
+}

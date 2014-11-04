@@ -8,7 +8,7 @@
   "system" : "'game gear'",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> gamegear -artpath <path> -effect <effect> -cart %1%",
+  "emuParams" : "-rompath <path> gamegear -nvram_directory <path> -artpath <path> -effect <effect> -cart %1%",
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw" : false,
