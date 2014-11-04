@@ -8,7 +8,7 @@
   "system" : "apple2gs",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> apple2gs -floppydisk1 %1% -floppydisk2 %2%",
+  "emuParams" : "-rompath <path> apple2gs -artpath <path> -effect <effect> -floppydisk1 %1% -floppydisk2 %2%",
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw" : true,

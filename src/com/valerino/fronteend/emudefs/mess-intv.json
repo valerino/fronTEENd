@@ -8,7 +8,7 @@
   "system" : "intellivision",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> intv -cartridge %1%",
+  "emuParams" : "-rompath <path> intv -artpath <path> -effect <effect> -cart %1%",
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw" : false,

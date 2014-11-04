@@ -8,7 +8,7 @@
   "system" : "'gameboy advance'",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> -artpath <path> gba -cartridge %1%",
+  "emuParams" : "-rompath <path> gba -artpath <path> -effect <effect.png> -cart %1%",
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw" : false,

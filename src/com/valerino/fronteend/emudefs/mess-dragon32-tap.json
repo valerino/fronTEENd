@@ -9,7 +9,7 @@
   "system" : "dragon32",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> dragon32 -cass %1%",
+  "emuParams" : "-rompath <path> dragon32 -artpath <path> -effect <effect> -cass %1%",
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw" : true,

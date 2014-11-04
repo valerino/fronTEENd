@@ -8,7 +8,7 @@
   "system" : "ti994a",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> ti99_4a -cart %1%",
+  "emuParams" : "-rompath <path> ti99_4a -artpath <path> -effect <effect> -cart %1%",
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw" : false,

@@ -8,7 +8,7 @@
   "system" : "'gameboy'",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> -artpath <path> gbcolor -cartridge %1%",
+  "emuParams" : "-rompath <path> gbcolor -artpath <path> -effect <effect> -cart %1%",
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw" : false,

@@ -8,7 +8,7 @@
   "system" : "apple2",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> apple2 -floppydisk1 %1% -floppydisk2 %2%",
+  "emuParams" : "-rompath <path> apple2 -artpath <path> -effect <effect> -floppydisk1 %1% -floppydisk2 %2%",
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw" : true,

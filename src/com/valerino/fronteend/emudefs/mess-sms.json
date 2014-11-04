@@ -1,15 +1,15 @@
 {
-  "name" : "MESS (Atari 5200 Emulator)",
+  "name" : "MESS (Sega Master System I)",
   "roms" : {
   },
   "removeUnmatchedRomPrefix" : false,
   "warningText" : "-rompath must specify where the machine roms are,\n%n% refer to what to be loaded in the emulator.",
   "warningTextShow" : true,
   "isMame" : false,
-  "system" : "'atari 5200'",
+  "system" : "'sega master system'",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> a5200 -artpath <path> -effect <effect> -cartridge %1%",
+  "emuParams" : "-rompath <path> sms1 -artpath <path> -effect <effect> -cart %1%",
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw" : false,

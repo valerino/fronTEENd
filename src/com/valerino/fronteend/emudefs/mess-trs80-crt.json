@@ -9,7 +9,7 @@
   "system" : "trs80",
   "lastFolder" : "",
   "emuBinary" : "/usr/games/mess",
-  "emuParams" : "-rompath <path> coco2 -cart %1%",
+  "emuParams" : "-rompath <path> coco2 -artpath <path> -effect <effect> -cart %1%",
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw" : false,

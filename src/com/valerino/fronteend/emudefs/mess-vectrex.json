@@ -9,7 +9,7 @@
   "system" : "vectrex",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> -artpath [path] -cart %1%",
+  "emuParams" : "-rompath <path> vectrex -artpath <path> -effect <effect> -cart %1%",
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw" : false,

@@ -9,7 +9,7 @@
   "system" : "bbc-micro",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> bbcb -floppydisk1 %1% -floppydisk2 %2%",
+  "emuParams" : "-rompath <path> bbcb -artpath <path> -effect <effect> -floppydisk1 %1% -floppydisk2 %2%",
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw" : true,

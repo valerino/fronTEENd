@@ -688,6 +688,9 @@ public class MainController {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                // show the warning box if present
+                showWarningBox(emu);
+
                 // add items
                 HashMap<String, List<String>> roms = emu.roms();
 
@@ -977,9 +980,6 @@ public class MainController {
         else {
             rwCheckBox.setVisible(false);
         }
-
-        // show the warning box if present
-        showWarningBox(newValue);
 
         if (newValue.isMame() && newValue.emuBinary().isEmpty()) {
             // mame and no binary set -> we can't query the emulator for roms
