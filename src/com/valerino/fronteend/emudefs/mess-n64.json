@@ -1,14 +1,14 @@
 {
-  "name" : "MESS (Nintendo VirtualBoy)",
+  "name" : "MESS (Nintendo 64)",
   "roms" : {
   },
   "warningText" : "-rompath must specify where the machine roms are,\n%n% refer to what to be loaded in the emulator.",
   "warningTextShow" : true,
   "isMame" : false,
-  "system" : "virtualboy",
+  "system" : "'nintendo 64'",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> vboy -artpath <path> -nvram_directory <path> -effect <effect> -cart %1%",
+  "emuParams" : "-rompath <path> n64 -nvram_directory <path> -artpath <path> -effect <effect> -cart %1%",
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw" : false,

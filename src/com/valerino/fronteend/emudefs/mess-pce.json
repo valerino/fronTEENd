@@ -1,5 +1,5 @@
 {
-  "name" : "MESS (NEC PCEngine/Turbografx 16)",
+  "name" : "MESS (NEC PCEngine/Turbografx 16 - Cartridge)",
   "roms" : {
   },
   "warningText" : "-rompath must specify where the machine roms are,\n%n% refer to what to be loaded in the emulator. Use 'tg16' instead of 'pce' to emulate Turbografx.",
@@ -8,7 +8,7 @@
   "system" : "turbografx",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> pce -artpath <path> -effect <effect> -cart %1%",
+  "emuParams" : "-rompath <path> pce -artpath <path> -nvram_directory <path> -effect <effect> -cart %1%",
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw" : false,

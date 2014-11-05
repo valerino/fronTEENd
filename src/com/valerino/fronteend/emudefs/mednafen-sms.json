@@ -3,7 +3,7 @@
   "roms" : {
   },
   "isMame" : false,
-  "system" : "mastersystem",
+  "system" : "'master system'",
   "lastFolder" : "",
   "emuBinary" : "",
   "emuParams" : "%1%",

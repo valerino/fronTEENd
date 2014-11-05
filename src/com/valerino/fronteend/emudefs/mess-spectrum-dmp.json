@@ -1,14 +1,15 @@
 {
-  "name" : "MESS (Nintendo VirtualBoy)",
+  "name" : "MESS (Sinclair ZX-Spectrum 48k - Snapshot)",
   "roms" : {
   },
+  "removeUnmatchedRomPrefix" : false,
   "warningText" : "-rompath must specify where the machine roms are,\n%n% refer to what to be loaded in the emulator.",
   "warningTextShow" : true,
   "isMame" : false,
-  "system" : "virtualboy",
+  "system" : "spectrum",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> vboy -artpath <path> -nvram_directory <path> -effect <effect> -cart %1%",
+  "emuParams" : "-rompath <path> spectrum -artpath <path> -effect <effect> -dump %1%",
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw" : false,

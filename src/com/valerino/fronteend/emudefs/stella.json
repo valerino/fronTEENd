@@ -3,7 +3,7 @@
   "roms" : {
   },
   "isMame" : false,
-  "system" : "atari2600",
+  "system" : "'atari 2600'",
   "lastFolder" : "",
   "emuBinary" : "",
   "emuParams" : "%1%",

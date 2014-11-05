@@ -8,7 +8,7 @@
   "system" : "'neogeo pocket'",
   "lastFolder" : "",
   "emuBinary" : "",
-  "emuParams" : "-rompath <path> ngpc -artpath <path> -effect <effect> -cart %1%",
+  "emuParams" : "-rompath <path> ngpc -artpath <path> -nvram_directory <path> -effect <effect> -cart %1%",
   "stripPath" : false,
   "noCheckReturn" : false,
   "supportRw" : false,

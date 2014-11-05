@@ -3,7 +3,7 @@
   "roms" : {
   },
   "isMame" : false,
-  "system" : "gba",
+  "system" : "'gameboy advance'",
   "lastFolder" : "",
   "emuBinary" : "",
   "emuParams" : "%1%",
