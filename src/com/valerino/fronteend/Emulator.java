@@ -84,7 +84,7 @@ public class Emulator {
      * @return
      */
     public String infoUrl(final String rom) {
-        final String google = "https://www.google.com/search?q=";
+        final String google = "https://www.google.com/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#safe=off&q=";
 
         // try to normalize name (strip substrings starting with ( and [ common in romsets)
         String[] tokens = rom.split("[\\(|\\[]");

@@ -30,12 +30,9 @@ It's portable, and who knows ..... one day it could run on android, if they port
 
 How do i use it ?
 -----------------
-1. Recompile (you need the Java8 JDK and IntelliJ IDEA)
-2. Just download the prebuilt [JAR](https://github.com/valerino/fronTEENd/blob/master/out/artifacts/fronTEENd_jar/fronTEENd.jar?raw=true), then run with `[%JAVAHOME%]/bin/java -jar /path/to/fronTEENd.jar` (you need the Oracle JAVA8 JRE).
+Recompile (you need the Java8 JDK and IntelliJ IDEA). IDEA should come pre-bundled with Java8, though, just import the project from existing source.
 
 To use compressed sets you need to specify path to the [7zip binary] (http://www.7-zip.org/) (not included). *Without 7z, you can't use compressed/merged sets unless the emulator supports them natively!*
-
-**NOTE: Sometimes i may forgot to commit the prebuilt binary (and, it's not a good practice to use git to store binaries....). I do this just as a favour for the less skilled users, you're advised to build fronTEENd yourself to ensure having the latest version!**
 
 What's the `Use custom parameters` checkbox for ?
 -------------------------------------------------
