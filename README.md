@@ -32,6 +32,8 @@ How do i use it ?
 -----------------
 Recompile (you need the Java8 JDK and IntelliJ IDEA). IDEA should come pre-bundled with Java8, though, just import the project from existing source.
 
+Also, you need Jackson (http://wiki.fasterxml.com/JacksonDownload) JARs in fronTEENd/lib (or get them from Maven when importing the project)
+
 To use compressed sets you need to specify path to the [7zip binary] (http://www.7-zip.org/) (not included). *Without 7z, you can't use compressed/merged sets unless the emulator supports them natively!*
 
 What's the `Use custom parameters` checkbox for ?
