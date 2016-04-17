@@ -34,6 +34,9 @@ Recompile (you need the Java8 JDK and IntelliJ IDEA). IDEA should come pre-bundl
 
 Also, you need Jackson (http://wiki.fasterxml.com/JacksonDownload) JARs in fronTEENd/lib (or get them from Maven when importing the project)
 
+To create a standalone JAR, Project Structure -> Artifacts -> JAR -> From Module with Dependencies.
+Then check 'Build on Make', JAR will be built in the 'out' folder.
+
 To use compressed sets you need to specify path to the [7zip binary] (http://www.7-zip.org/) (not included). *Without 7z, you can't use compressed/merged sets unless the emulator supports them natively!*
 
 What's the `Use custom parameters` checkbox for ?
